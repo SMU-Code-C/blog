@@ -66,7 +66,8 @@ const staticData = {
      * @param {String} selection character to add to text area
      */
     addChar(selection) {
-        let words = this.kbdFocus ? this.kbdFocus : $("#editbox"); // DOM object of the text area
+        // DOM object of the text area
+        let words = this.kbdFocus ? this.kbdFocus : $("#editbox");
 
         // Get the value from the id'ed field
         let currChars = words.value;
