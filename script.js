@@ -52,7 +52,9 @@ const staticData = {
             }
         });
 
-        this.kbdFocus = $("#editbox");
+        if (!this.editOn) {
+            this.kbdFocus = $("#editbox");
+        }
     },
 
     /* ----------------------------- Keyboard ---------------------------- */
