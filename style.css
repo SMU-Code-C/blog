@@ -1,0 +1,74 @@
+/*
+    Styles for the blog tools
+
+    author: Sheikh Saad Abdullah (A00447871)
+*/
+
+/* --------------------------- Global Styles --------------------------- */
+:root {
+    --grid-ratio: 1fr;
+
+    --kbd-rows: 4;
+    --kbd-cols: 12;
+
+    --key-size: 0px;
+    --key-sp-width: span 2;
+
+    --bl-rows: 2;
+    --bl-cols: 3;
+    --bl-width: 100px;
+    --bl-height: 30px;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+/* ----------------------------- Blog List ----------------------------- */
+
+.form-switch .form-check-input[type="checkbox"] {
+    width: var(--bl-width);
+    height: var(--bl-height);
+}
+
+.blog-list {
+    width: 0;
+
+    grid-template-rows: repeat(var(--bl-rows) var(--grid-ratio));
+    grid-template-columns: repeat(var(--bl-cols) var(--grid-ratio));
+}
+
+.bl-header {
+    grid-row: 1;
+    margin-bottom: -4px;
+}
+
+/* --------------------------- Keyboard Grid --------------------------- */
+
+.kbd {
+    width: calc(var(--key-size) * 12);
+    height: calc(var(--key-size) * 4);
+
+    grid-template-columns: repeat(var(--kbd-cols) var(--grid-ratio));
+    grid-template-rows: repeat(var(--kbd-rows) var(--grid-ratio));
+}
+
+#shift {
+    grid-row: 1;
+    grid-column: 11 / var(--key-sp-width);
+}
+
+#delete {
+    grid-row: 2;
+    grid-column: 11 / var(--key-sp-width);
+}
+
+#return {
+    grid-row: 3;
+    grid-column: 10 / var(--key-sp-width);
+}
+
+#space {
+    grid-row: 4;
+    grid-column: 8 / var(--key-sp-width);
+}
