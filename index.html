@@ -164,43 +164,38 @@
                 </button>
             </div>
             <!-- Keyboard -->
-            <div id="keyboard" class="d-grid gap-1 my-2 kbd">
+            <div id="kbd" class="d-grid gap-1 my-2">
                 <template x-for="glyph in glyphs">
-                    <a
-                        data-role="button"
+                    <button
                         class="btn btn-danger"
                         @mousedown="addChar(glyph)"
                         x-text="glyph.toUpperCase()"
-                    ></a
+                    ></button
                 ></template>
-                <a
-                    data-role="button"
+                <button
                     id="shift"
                     class="btn btn-dark"
                     @mousedown="shiftOn = !shiftOn"
                     x-text="shiftOn ? sp.shift.toUpperCase() : sp.shift"
-                ></a>
-                <a
-                    data-role="button"
+                ></button>
+                <button
                     id="delete"
                     class="btn btn-dark"
                     @mousedown="addChar('del')"
                     x-text="sp.delete"
-                ></a>
-                <a
-                    data-role="button"
+                ></button>
+                <button
                     id="return"
                     class="btn btn-dark"
                     @mousedown="addChar('\n')"
                     x-text="sp.return"
-                ></a>
-                <a
-                    data-role="button"
+                ></button>
+                <button
                     id="space"
                     class="btn btn-dark"
                     @mousedown="addChar(' ')"
                     x-text="sp.space"
-                ></a>
+                ></button>
             </div>
         </div>
     </body>

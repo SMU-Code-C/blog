@@ -45,12 +45,12 @@
 
 /* --------------------------- Keyboard Grid --------------------------- */
 
-.kbd {
-    width: calc(var(--key-size) * 12);
-    height: calc(var(--key-size) * 4);
+#kbd {
+    width: calc(var(--key-size) * var(--kbd-cols));
+    height: calc(var(--key-size) * var(--kbd-rows));
 
-    grid-template-columns: repeat(var(--kbd-cols) var(--grid-ratio));
-    grid-template-rows: repeat(var(--kbd-rows) var(--grid-ratio));
+    grid-template-columns: repeat(var(--kbd-cols), var(--grid-ratio));
+    grid-template-rows: repeat(var(--kbd-rows), var(--grid-ratio));
 }
 
 #shift {
