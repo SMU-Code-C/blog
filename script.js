@@ -1,16 +1,31 @@
 /**
- * Blog tool functionality
+ * Script to control the functionality of the Blog tool
  *
+ * CSCI-2356 Project: Phase 1
+ *
+ * @author Mohak Shrivastava (A00445470)
+ * @author Nayem Imtiaz (A00448982)
+ * @author Naziya Tasnim (A00447506)
  * @author Sheikh Saad Abdullah (A00447871)
  */
 
-// aliases for convenience
+/**
+ * aliases for convenience
+ *
+ * @author Sheikh Saad Abdullah (A00447871)
+ * @param {String} id selector for the element
+ * @returns DOM Object for specified element
+ */
 const $ = (id) => document.querySelector(id);
 const $_ = (id) => document.querySelectorAll(id);
 
 // global data store for Alpine.js
 const staticData = {
-    /* ---------------------------- Blog List ---------------------------- */
+    /** ---------------------------- Blog List ----------------------------
+     * Database to store the list of blogs and publication states
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     * -------------------------------------------------------------------- */
 
     blogList: [
         { name: "Blog 1", content: "This is blog post 1", published: false },
@@ -18,7 +33,13 @@ const staticData = {
         { name: "Blog 3", content: "This is blog post 3", published: false },
     ],
 
-    /* ---------------------------- Edit Group --------------------------- */
+    /** ---------------------------- Edit Group ---------------------------
+     * Variables and functions to control the behaviour
+     * of the group of toggle switches and list of blog posts displayed
+     *
+     * @author Mohak Shrivastava (A00445470)
+     * @author Nayem Imtiaz (A00448982)
+     * -------------------------------------------------------------------- */
 
     editOn: false, // whether a blog is being edited
     currentlyEditing: -1, // index of the blog being edited
@@ -26,6 +47,7 @@ const staticData = {
     /**
      * Gets the blog post content from the database
      *
+     * @author Nayem Imtiaz (A00448982)
      * @returns string to populate text area with
      */
     getEditText() {
@@ -37,6 +59,7 @@ const staticData = {
     /**
      * Enable or disable the editing of a blog post
      *
+     * @author Mohak Shrivastava (A00445470)
      * @param {Object} elem DOM object of the switched edit toggle
      * @param {Integer} index index of the toggle switch
      */
@@ -57,7 +80,11 @@ const staticData = {
         }
     },
 
-    /* ----------------------------- Keyboard ---------------------------- */
+    /** ----------------------------- Keyboard ----------------------------
+     * Variables and functions to control behaviour of the Keyboard
+     *
+     * @author Naziya Tasnim (A00447506)
+     * -------------------------------------------------------------------- */
 
     kbdFocus: null, // text field to focus
     shiftOn: false, // state of the shift key
@@ -65,6 +92,7 @@ const staticData = {
     /**
      * Adds a character to the text area
      *
+     * @author Naziya Tasnim (A00447506)
      * @param {String} selection character to add to text area
      */
     addChar(selection) {
