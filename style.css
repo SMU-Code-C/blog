@@ -1,10 +1,16 @@
 /*
-    Styles for the blog tools
+    Stylesheet for the blog tools
 
+    author: Mohak Shrivastava (A00445470)
+    author: Naziya Tasnim (A00447506)
     author: Sheikh Saad Abdullah (A00447871)
 */
 
-/* --------------------------- Global Styles --------------------------- */
+/* --------------------------- Global Styles ---------------------------
+    Variables to DRY styles and other global style initializations
+
+    author: Sheikh Saad Abdullah (A00447871)
+------------------------------------------------------------------------ */
 :root {
     --grid-ratio: 1fr;
 
@@ -24,8 +30,11 @@
     display: none !important;
 }
 
-/* ----------------------------- Blog List ----------------------------- */
+/* ----------------------------- Blog List -----------------------------
+    Style rules for the list of blogs and toggle buttons
 
+    author: Mohak Shrivastava (A00445470)
+------------------------------------------------------------------------ */
 .form-switch .form-check-input[type="checkbox"] {
     width: var(--bl-width);
     height: var(--bl-height);
@@ -43,8 +52,11 @@
     margin-bottom: -4px;
 }
 
-/* --------------------------- Keyboard Grid --------------------------- */
+/* --------------------------- Keyboard Grid ---------------------------
+    Style rules for the keyboard grid and special keys
 
+    author: Naziya Tasnim (A00447506)
+------------------------------------------------------------------------ */
 #kbd {
     width: calc(var(--key-size) * var(--kbd-cols));
     height: calc(var(--key-size) * var(--kbd-rows));
