@@ -58,7 +58,7 @@ const staticData = {
                 $("#editbox").value
             );
         } else {
-            console.error("Local storage is not available.");
+            console.error("Local storage unavailable.");
         }
     },
 
