@@ -8,9 +8,17 @@
     author: Naziya Tasnim (A00447506)
     author: Sheikh Saad Abdullah (A00447871)
  -->
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <!-- { START }
+            HEAD:
+                Header information for the HTML document,
+                specifying stylesheets, scripts, and metadata
+
+            author: Sheikh Saad Abdullah (A00447871)
+         -->
         <title>Blog</title>
 
         <meta charset="utf-8" />
@@ -36,8 +44,9 @@
             defer
             src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
         ></script>
+        <!-- HEAD: { END } -->
     </head>
-    <body x-data="staticData" class="m-5" x-cloak>
+    <body x-data="staticData" class="m-5" x-cloak @load="load">
         <!-- { START }
             Blog List:
                 Display list of blogs with options
@@ -122,16 +131,14 @@
                     <button
                         type="button"
                         class="btn btn-danger save-btn"
-                        @mousedown="blogList[currentlyEditing].content
-                    = $refs.editbox.value"
+                        @mousedown="save"
                     >
                         Save
                     </button>
                     <button
                         type="button"
                         class="btn btn-warning cancel-btn"
-                        @mousedown="$refs.editbox.value
-                    = blogList[currentlyEditing].content"
+                        @mousedown="cancel"
                     >
                         Cancel
                     </button>
@@ -154,16 +161,14 @@
                     <button
                         type="button"
                         class="btn btn-danger save-btn"
-                        @mousedown="blogList[currentlyEditing].content
-                    = $refs.editbox.value"
+                        @mousedown="save"
                     >
                         Save
                     </button>
                     <button
                         type="button"
                         class="btn btn-warning cancel-btn"
-                        @mousedown="$refs.editbox.value
-                    = blogList[currentlyEditing].content"
+                        @mousedown="cancel"
                     >
                         Cancel
                     </button>
