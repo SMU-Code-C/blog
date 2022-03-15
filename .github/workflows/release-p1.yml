@@ -1,0 +1,31 @@
+---
+name: "release"
+
+on:
+    push:
+        branches:
+            - "phase-1"
+
+jobs:
+    release:
+        name: "Project Release"
+        runs-on: "ubuntu-latest"
+
+        steps:
+            - uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
+            - name: "Compress and Release"
+              run: |
+                  echo "Compressing files..."
+                  zip phase-1 *.html *.js *.css
+            - uses: "marvinpinto/action-automatic-releases@latest"
+              with:
+                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                  automatic_release_tag: "phase-1"
+                  prerelease: false
+                  title: "Phase 1"
+                  files: |
+                      phase-1.zip
+            - run: |
+                  echo "Files have been successfully compressed."
