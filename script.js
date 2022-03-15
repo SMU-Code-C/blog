@@ -91,7 +91,7 @@ const staticData = {
     },
 
     /**
-     * Gets the blog post content from the database
+     * Populate the text area with the currently editing blog content
      *
      * @author Nayem Imtiaz (A00448982)
      * @returns string to populate text area with
