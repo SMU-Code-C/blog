@@ -10,14 +10,14 @@
  */
 
 /**
- * aliases for convenience
+ * Aliases to create DOM objects using $() like in JQuery
  *
  * @author Sheikh Saad Abdullah (A00447871)
- * @param {String} id selector for the element
+ * @param {String} selector selector for the element
  * @returns DOM Object for specified element
  */
-const $ = (id) => document.querySelector(id);
-const $_ = (id) => document.querySelectorAll(id);
+const $ = (selector) => document.querySelector(selector);
+const $_ = (selector) => document.querySelectorAll(selector);
 
 // global data store for Alpine.js
 const staticData = {
@@ -28,9 +28,9 @@ const staticData = {
      * -------------------------------------------------------------------- */
 
     blogList: [
-        { name: "Blog 1", content: "This is blog 1.", published: false },
-        { name: "Blog 2", content: "This is blog 2.", published: false },
-        { name: "Blog 3", content: "This is blog 3.", published: false },
+        { name: "Blog 1", content: "", published: false },
+        { name: "Blog 2", content: "", published: false },
+        { name: "Blog 3", content: "", published: false },
     ],
 
     /** ---------------------------- Edit Group ---------------------------
@@ -54,7 +54,7 @@ const staticData = {
      */
     save() {
         if (typeof Storage !== "undefined") {
-            window.localStorage.setItem(
+            localStorage.setItem(
                 `blog${this.currentlyEditing}`,
                 $("#editbox").value
             );
@@ -71,7 +71,7 @@ const staticData = {
      * @returns string to populate text area with
      */
     cancel() {
-        $("#editbox").value = window.localStorage.getItem(
+        $("#editbox").value = localStorage.getItem(
             `blog${this.currentlyEditing}`
         );
     },
@@ -84,7 +84,7 @@ const staticData = {
      */
     load() {
         for (let i = 0; i < 3; i++) {
-            this.blogList[i] = window.localStorage.getItem(
+            this.blogList[i] = localStorage.getItem(
                 `blog${this.currentlyEditing}`
             );
         }
@@ -97,9 +97,7 @@ const staticData = {
      * @returns string to populate text area with
      */
     getEditText() {
-        return this.currentlyEditing < 0
-            ? ""
-            : window.localStorage.getItem(`blog${this.currentlyEditing}`);
+        return localStorage.getItem(`blog${this.currentlyEditing}`) || "";
     },
 
     /**
