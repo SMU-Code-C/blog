@@ -28,9 +28,9 @@ const staticData = {
      * -------------------------------------------------------------------- */
 
     blogList: [
-        { name: "", content: "", published: false },
-        { name: "", content: "", published: false },
-        { name: "", content: "", published: false },
+        { name: "Blog 1", content: "This is blog 1.", published: false },
+        { name: "Blog 2", content: "This is blog 2.", published: false },
+        { name: "Blog 3", content: "This is blog 3.", published: false },
     ],
 
     /** ---------------------------- Edit Group ---------------------------
