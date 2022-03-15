@@ -12,9 +12,13 @@ jobs:
         runs-on: "ubuntu-latest"
 
         steps:
+            - uses: actions/checkout@v3
+              with:
+                  fetch-depth: 0
             - name: "Compress and Release"
               run: |
                   echo "Compressing files..."
+                  zip phase-3 *.html *.js *.css
             - uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
@@ -22,8 +26,6 @@ jobs:
                   prerelease: false
                   title: "Phase 3"
                   files: |
-                      index.html
-                      script.js
-                      style.css
+                      phase-3.zip
             - run: |
                   echo "Files have been successfully compressed."
