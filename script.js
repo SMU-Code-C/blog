@@ -17,7 +17,7 @@
  * @returns DOM Object for specified element
  */
 const $ = (selector) => document.querySelector(selector);
-const $_ = (id) => document.querySelectorAll(id);
+const $_ = (selector) => document.querySelectorAll(selector);
 
 // global data store for Alpine.js
 const staticData = {
