@@ -20,7 +20,7 @@ jobs:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
                   automatic_release_tag: "phase-2"
                   prerelease: false
-                  title: "Project Release"
+                  title: "Phase 2"
                   files: |
                       index.html
                       script.js
