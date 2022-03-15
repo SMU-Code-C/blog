@@ -13,7 +13,9 @@ jobs:
 
         steps:
             - name: "Compress and Release"
-              uses: "marvinpinto/action-automatic-releases@latest"
+              run: |
+                  echo "Compressing files..."
+            - uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
                   automatic_release_tag: "latest"
@@ -23,5 +25,5 @@ jobs:
                       index.html
                       script.js
                       style.css
-              run: |
+            - run: |
                   echo "Files have been successfully compressed."
