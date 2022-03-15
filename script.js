@@ -71,8 +71,9 @@ const staticData = {
      * @returns string to populate text area with
      */
     cancel() {
-        $("#editbox").value =
-            window.localStorage.getItem(`blog${this.currentlyEditing}`) || "";
+        $("#editbox").value = window.localStorage.getItem(
+            `blog${this.currentlyEditing}`
+        );
     },
 
     /**
