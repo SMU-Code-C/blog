@@ -46,8 +46,9 @@ const staticData = {
     currentlyEditing: -1, // index of the blog being edited
 
     /**
-     * Gets the blog post content from the database
+     * Saves the blog post content to the database
      *
+     * @author Nayem Imtiaz (A00448982)
      * @author Sheikh Saad Abdullah (A00447871)
      * @returns string to populate text area with
      */
@@ -65,6 +66,7 @@ const staticData = {
     /**
      * Gets the blog post content from the database
      *
+     * @author Nayem Imtiaz (A00448982)
      * @author Sheikh Saad Abdullah (A00447871)
      * @returns string to populate text area with
      */
@@ -74,7 +76,7 @@ const staticData = {
     },
 
     /**
-     * Gets the blog post content from the database
+     * Gets all blogs from the database and populates a local list
      *
      * @author Sheikh Saad Abdullah (A00447871)
      * @returns string to populate text area with
