@@ -28,9 +28,9 @@ const staticData = {
      * -------------------------------------------------------------------- */
 
     blogList: [
-        { name: "Blog 1", content: "This is blog post 1", published: false },
-        { name: "Blog 2", content: "This is blog post 2", published: false },
-        { name: "Blog 3", content: "This is blog post 3", published: false },
+        { name: "", content: "", published: false },
+        { name: "", content: "", published: false },
+        { name: "", content: "", published: false },
     ],
 
     /** ---------------------------- Edit Group ---------------------------
@@ -39,10 +39,53 @@ const staticData = {
      *
      * @author Mohak Shrivastava (A00445470)
      * @author Nayem Imtiaz (A00448982)
+     * @author Sheikh Saad Abdullah (A00447871)
      * -------------------------------------------------------------------- */
 
     editOn: false, // whether a blog is being edited
     currentlyEditing: -1, // index of the blog being edited
+
+    /**
+     * Gets the blog post content from the database
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     * @returns string to populate text area with
+     */
+    save() {
+        if (typeof Storage !== "undefined") {
+            window.localStorage.setItem(
+                `blog${this.currentlyEditing}`,
+                $("#editbox").value
+            );
+        } else {
+            console.error("Local storage is not available.");
+        }
+    },
+
+    /**
+     * Gets the blog post content from the database
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     * @returns string to populate text area with
+     */
+    cancel() {
+        $("#editbox").value =
+            window.localStorage.getItem(`blog${this.currentlyEditing}`) || "";
+    },
+
+    /**
+     * Gets the blog post content from the database
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     * @returns string to populate text area with
+     */
+    load() {
+        for (let i = 0; i < 3; i++) {
+            this.blogList[i] = window.localStorage.getItem(
+                `blog${this.currentlyEditing}`
+            );
+        }
+    },
 
     /**
      * Gets the blog post content from the database
@@ -53,7 +96,7 @@ const staticData = {
     getEditText() {
         return this.currentlyEditing < 0
             ? ""
-            : this.blogList[this.currentlyEditing].content;
+            : window.localStorage.getItem(`blog${this.currentlyEditing}`);
     },
 
     /**
@@ -78,6 +121,8 @@ const staticData = {
         if (!this.editOn) {
             this.kbdFocus = $("#editbox");
         }
+
+        this.cancel();
     },
 
     /** ----------------------------- Keyboard ----------------------------

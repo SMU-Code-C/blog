@@ -45,7 +45,7 @@
         ></script>
         <!-- HEAD: { END } -->
     </head>
-    <body x-data="staticData" class="m-5" x-cloak>
+    <body x-data="staticData" class="m-5" x-cloak @load="load">
         <!-- { START }
             Blog List:
                 Display list of blogs with options
@@ -130,16 +130,14 @@
                     <button
                         type="button"
                         class="btn btn-danger save-btn"
-                        @mousedown="blogList[currentlyEditing].content
-                    = $refs.editbox.value"
+                        @mousedown="save"
                     >
                         Save
                     </button>
                     <button
                         type="button"
                         class="btn btn-warning cancel-btn"
-                        @mousedown="$refs.editbox.value
-                    = blogList[currentlyEditing].content"
+                        @mousedown="cancel"
                     >
                         Cancel
                     </button>
@@ -162,16 +160,14 @@
                     <button
                         type="button"
                         class="btn btn-danger save-btn"
-                        @mousedown="blogList[currentlyEditing].content
-                    = $refs.editbox.value"
+                        @mousedown="save"
                     >
                         Save
                     </button>
                     <button
                         type="button"
                         class="btn btn-warning cancel-btn"
-                        @mousedown="$refs.editbox.value
-                    = blogList[currentlyEditing].content"
+                        @mousedown="cancel"
                     >
                         Cancel
                     </button>
