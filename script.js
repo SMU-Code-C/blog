@@ -10,13 +10,13 @@
  */
 
 /**
- * aliases for convenience
+ * Aliases to create DOM objects using $() like in JQuery
  *
  * @author Sheikh Saad Abdullah (A00447871)
- * @param {String} id selector for the element
+ * @param {String} selector selector for the element
  * @returns DOM Object for specified element
  */
-const $ = (id) => document.querySelector(id);
+const $ = (selector) => document.querySelector(selector);
 const $_ = (id) => document.querySelectorAll(id);
 
 // global data store for Alpine.js
