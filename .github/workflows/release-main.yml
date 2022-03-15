@@ -1,0 +1,27 @@
+---
+name: "release"
+
+on:
+    push:
+        branches:
+            - "main"
+
+jobs:
+    release:
+        name: "Project Release"
+        runs-on: "ubuntu-latest"
+
+        steps:
+            - name: "Compress and Release"
+              uses: "marvinpinto/action-automatic-releases@latest"
+              with:
+                  repo_token: "${{ secrets.GITHUB_TOKEN }}"
+                  automatic_release_tag: "latest"
+                  prerelease: false
+                  title: "Project Release"
+                  files: |
+                      index.html
+                      script.js
+                      style.css
+              run: |
+                  echo "Files have been successfully compressed."
