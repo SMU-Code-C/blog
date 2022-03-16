@@ -16,7 +16,7 @@
 :root {
     --grid-ratio: 1fr;
 
-    --kbd-rows: 4;
+    --kbd-rows: 5;
     --kbd-cols: 12;
 
     --key-size: 0px;
@@ -24,6 +24,7 @@
 
     --bl-rows: 2;
     --bl-cols: 3;
+
     --bl-width: 100px;
     --bl-height: 30px;
 }
@@ -38,20 +39,12 @@
     author: Mohak Shrivastava (A00445470)
 ------------------------------------------------------------------------ */
 .form-switch .form-check-input[type="checkbox"] {
-    width: var(--bl-width);
     height: var(--bl-height);
-}
-
-.blog-list {
-    width: 0;
-
-    grid-template-rows: repeat(var(--bl-rows) var(--grid-ratio));
-    grid-template-columns: repeat(var(--bl-cols) var(--grid-ratio));
+    width: var(--bl-width);
 }
 
 .bl-header {
-    grid-row: 1;
-    margin-bottom: -4px;
+    color: var(--bs-blue);
 }
 
 /* --------------------------- Keyboard Grid ---------------------------
@@ -59,7 +52,7 @@
 
     author: Naziya Tasnim (A00447506)
 ------------------------------------------------------------------------ */
-#kbd {
+.kbd {
     width: calc(var(--key-size) * var(--kbd-cols));
     height: calc(var(--key-size) * var(--kbd-rows));
 
@@ -67,22 +60,52 @@
     grid-template-rows: repeat(var(--kbd-rows), var(--grid-ratio));
 }
 
-#shift {
+/* Keys */
+#kbd-shift {
     grid-row: 1;
     grid-column: 11 / var(--key-sp-width);
 }
 
-#delete {
+#kbd-del {
     grid-row: 2;
     grid-column: 11 / var(--key-sp-width);
 }
 
-#return {
+#kbd-cr {
     grid-row: 3;
     grid-column: 10 / var(--key-sp-width);
 }
 
-#space {
+#kbd-spc {
     grid-row: 4;
     grid-column: 8 / var(--key-sp-width);
+}
+
+/* Word Suggestions */
+.kbd-wb {
+    grid-row: var(--kbd-rows);
+}
+
+#suggest-l {
+    grid-column: 1 / span 2;
+}
+
+#suggest-r {
+    grid-column: 7 / span 2;
+}
+
+#fav-r {
+    grid-column: 12 / span 1;
+}
+
+#fav-l {
+    grid-column: 6 / span 1;
+}
+
+#wb-l {
+    grid-column: 3 / span 3;
+}
+
+#wb-r {
+    grid-column: 9 / span 3;
 }

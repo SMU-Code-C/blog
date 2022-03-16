@@ -108,12 +108,12 @@ const staticData = {
      * @param {Integer} index index of the toggle switch
      */
     editText(elem, index) {
-        $_(".bl-name-text")[index].disabled = this.editOn;
+        $_(".bl-name")[index].disabled = this.editOn;
 
         this.editOn = !this.editOn;
         this.currentlyEditing = elem.checked ? index : -1;
 
-        $_(".bl-edit-toggle").forEach((el) => {
+        $_(".bl-edit").forEach((el) => {
             if (!el.checked) {
                 el.style.visibility = elem.checked ? "hidden" : "visible";
             }
