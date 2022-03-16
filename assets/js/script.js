@@ -111,7 +111,7 @@ const staticData = {
         $_(".bl-name")[index].disabled = this.editOn;
 
         this.editOn = !this.editOn;
-        this.currentlyEditing = elem.checked ? index : -1;
+        this.currentlyEditing = index;
 
         $_(".bl-edit").forEach((el) => {
             if (!el.checked) {
