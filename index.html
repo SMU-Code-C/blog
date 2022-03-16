@@ -51,7 +51,7 @@
             src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
         ></script>
     </head>
-    <body x-data="staticData" x-cloak="" x-on:load="load">
+    <body x-data="staticData" x-cloak x-on:load="load">
         <div class="row d-xxl-flex justify-content-xxl-center my-5">
             <div class="col-5">
                 <!-- Blog List:
@@ -144,7 +144,7 @@
                 </div>
                 <!-- End: Blog List -->
                 <!-- Start: Edit Group -->
-                <div class="row" x-show="editOn" x-transition="" x-cloak="">
+                <div class="row" x-show="editOn" x-transition x-cloak>
                     <div class="col">
                         <!-- Edit Area:
                                 Text area to edit blog posts in,
