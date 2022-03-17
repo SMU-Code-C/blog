@@ -83,6 +83,7 @@
 .kbd-sp {
     grid-column: 11 / var(--key-sp-width);
 }
+
 #kbd-caps {
     grid-row: 1;
 }
