@@ -16,24 +16,30 @@
 :root {
     --grid-ratio: 1fr;
 
-    --kbd-rows: 6;
-    --kbd-cols: 12;
-
-    --key-size: 0px;
-    --key-size-popup: 1.3;
-    --key-sp-width: span 2;
-    --key-font-size: 1.25em;
-    --key-transition-duration: 0.15s;
+    --btn-grp-size-popup: 1.5;
 
     --bl-rows: 2;
     --bl-cols: 3;
 
     --bl-width: 100px;
     --bl-height: 30px;
+
+    --kbd-rows: 6;
+    --kbd-cols: 12;
+
+    --key-size: 0px;
+    --key-size-popup: 2;
+    --key-sp-width: span 2;
+    --key-font-size: 1.25em;
+    --key-transition-duration: 0.15s;
 }
 
 [x-cloak] {
     display: none !important;
+}
+
+body {
+    background-color: antiquewhite;
 }
 
 .btn {
@@ -60,6 +66,10 @@
     background-color: var(--bs-gray);
 }
 
+.btn-group .btn:hover {
+    transform: scale(var(--btn-grp-size-popup), var(--btn-grp-size-popup));
+}
+
 /* ----------------------------- Blog List -----------------------------
     Style rules for the list of blogs and toggle buttons
 
@@ -71,7 +81,7 @@
 }
 
 .bl-header {
-    color: var(--bs-blue);
+    color: var(--bs-red);
 }
 
 /* --------------------------- Keyboard Grid ---------------------------
@@ -89,7 +99,13 @@
 
 /* Keys */
 .kbd-sp {
+    background-color: #0a58ca;
     grid-column: 11 / var(--key-sp-width);
+}
+
+.kbd-sp:hover {
+    background-color: var(--bs-blue);
+    transform: scale(1.5, var(--key-size-popup));
 }
 
 #kbd-caps {
@@ -118,6 +134,10 @@
 }
 
 /* Word Suggestions */
+button.kbd-wb:hover {
+    transform: scale(1.5, var(--key-size-popup));
+}
+
 .kbd-wb {
     grid-row: var(--kbd-rows);
 }
@@ -136,6 +156,11 @@
 
 #fav-l {
     grid-column: 6 / span 1;
+}
+
+#fav-l:hover,
+#fav-r:hover {
+    transform: scale(var(--key-size-popup), var(--key-size-popup));
 }
 
 #wb-l {
