@@ -81,6 +81,7 @@ body {
 }
 
 .bl-header {
+    font-weight: bold;
     color: var(--bs-red);
 }
 
