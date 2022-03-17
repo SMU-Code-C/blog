@@ -52,7 +52,7 @@
         ></script>
     </head>
     <body x-data="staticData" x-cloak x-on:load="load">
-        <div class="row d-xxl-flex justify-content-xxl-center my-2">
+        <div class="row d-flex justify-content-center my-2">
             <div class="col-5">
                 <!-- Blog List:
                         Display list of blogs with options
@@ -68,21 +68,21 @@
                         <div class="row my-1">
                             <div class="col">
                                 <h2
-                                    class="d-xxl-flex justify-content-xxl-center bl-header"
+                                    class="d-flex justify-content-center bl-header"
                                 >
                                     Blog Name
                                 </h2>
                             </div>
                             <div class="col">
                                 <h2
-                                    class="d-xxl-flex justify-content-xxl-center bl-header"
+                                    class="d-flex justify-content-center bl-header"
                                 >
                                     Edit
                                 </h2>
                             </div>
                             <div class="col">
                                 <h2
-                                    class="d-xxl-flex justify-content-xxl-center bl-header"
+                                    class="d-flex justify-content-center bl-header"
                                 >
                                     Publish
                                 </h2>
@@ -96,7 +96,7 @@
                                 <template x-for="(blog, index) in blogList">
                                     <div class="row my-1">
                                         <div
-                                            class="col-xxl-4 d-xxl-flex justify-content-xxl-center align-items-xxl-center form-check form-switch"
+                                            class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
                                         >
                                             <input
                                                 x-id="['bl-name']"
@@ -112,7 +112,7 @@
                                             />
                                         </div>
                                         <div
-                                            class="col-xxl-4 d-xxl-flex justify-content-xxl-center align-items-xxl-center form-check form-switch"
+                                            class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
                                         >
                                             <input
                                                 class="bl-edit form-check-input my-1"
@@ -123,7 +123,7 @@
                                             />
                                         </div>
                                         <div
-                                            class="col-xxl-4 d-xxl-flex justify-content-xxl-center align-items-xxl-center form-check form-switch"
+                                            class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
                                         >
                                             <input
                                                 class="bl-publish form-check-input my-1"
