@@ -10,14 +10,14 @@
  */
 
 /**
- * aliases for convenience
+ * Aliases to create DOM objects using $() like in JQuery
  *
  * @author Sheikh Saad Abdullah (A00447871)
- * @param {String} id selector for the element
+ * @param {String} selector selector for the element
  * @returns DOM Object for specified element
  */
-const $ = (id) => document.querySelector(id);
-const $_ = (id) => document.querySelectorAll(id);
+const $ = (selector) => document.querySelector(selector);
+const $_ = (selector) => document.querySelectorAll(selector);
 
 // global data store for Alpine.js
 const staticData = {
@@ -28,9 +28,9 @@ const staticData = {
      * -------------------------------------------------------------------- */
 
     blogList: [
-        { name: "Blog 1", content: "This is blog 1.", published: false },
-        { name: "Blog 2", content: "This is blog 2.", published: false },
-        { name: "Blog 3", content: "This is blog 3.", published: false },
+        { name: "Blog 1", content: "", published: false },
+        { name: "Blog 2", content: "", published: false },
+        { name: "Blog 3", content: "", published: false },
     ],
 
     /** ---------------------------- Edit Group ---------------------------
@@ -54,7 +54,7 @@ const staticData = {
      */
     save() {
         if (typeof Storage !== "undefined") {
-            window.localStorage.setItem(
+            localStorage.setItem(
                 `blog${this.currentlyEditing}`,
                 $("#editbox").value
             );
@@ -71,7 +71,7 @@ const staticData = {
      * @returns string to populate text area with
      */
     cancel() {
-        $("#editbox").value = window.localStorage.getItem(
+        $("#editbox").value = localStorage.getItem(
             `blog${this.currentlyEditing}`
         );
     },
@@ -84,7 +84,7 @@ const staticData = {
      */
     load() {
         for (let i = 0; i < 3; i++) {
-            this.blogList[i] = window.localStorage.getItem(
+            this.blogList[i] = localStorage.getItem(
                 `blog${this.currentlyEditing}`
             );
         }
@@ -97,9 +97,7 @@ const staticData = {
      * @returns string to populate text area with
      */
     getEditText() {
-        return this.currentlyEditing < 0
-            ? ""
-            : window.localStorage.getItem(`blog${this.currentlyEditing}`);
+        return localStorage.getItem(`blog${this.currentlyEditing}`) || "";
     },
 
     /**
@@ -110,12 +108,12 @@ const staticData = {
      * @param {Integer} index index of the toggle switch
      */
     editText(elem, index) {
-        $_(".bl-name-text")[index].disabled = this.editOn;
+        $_(".bl-name")[index].disabled = this.editOn;
 
         this.editOn = !this.editOn;
-        this.currentlyEditing = elem.checked ? index : -1;
+        this.currentlyEditing = index;
 
-        $_(".bl-edit-toggle").forEach((el) => {
+        $_(".bl-edit").forEach((el) => {
             if (!el.checked) {
                 el.style.visibility = elem.checked ? "hidden" : "visible";
             }
@@ -135,6 +133,7 @@ const staticData = {
      * -------------------------------------------------------------------- */
 
     kbdFocus: null, // text field to focus
+    capsOn: false, // state of the caps key
     shiftOn: false, // state of the shift key
 
     /**
@@ -155,9 +154,13 @@ const staticData = {
             words.value = currChars.substring(0, currChars.length - 1);
         } else {
             // handle shift toggle
-            if (this.shiftOn) {
-                selection = selection.toUpperCase();
-                this.shiftOn = !this.shiftOn;
+            if (this.capsOn || this.shiftOn) {
+                if (!(this.capsOn && this.shiftOn)) {
+                    selection = selection.toUpperCase();
+                }
+                if (this.shiftOn) {
+                    this.shiftOn = false;
+                }
             }
             // Set the id'ed field to the longer string
             words.value = currChars.concat(selection);
@@ -166,6 +169,7 @@ const staticData = {
 
     // special keys
     sp: {
+        caps: "caps",
         shift: "shift",
         delete: "delete",
         return: "return",
@@ -211,8 +215,11 @@ const staticData = {
         "b",
         "n",
         "m",
+        ",",
         ".",
         "?",
-        ",",
+        "!",
+        "(",
+        ")",
     ],
 };
