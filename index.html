@@ -52,7 +52,7 @@
         ></script>
     </head>
     <body x-data="staticData" x-cloak x-on:load="load">
-        <div class="row d-xxl-flex justify-content-xxl-center my-5">
+        <div class="row d-xxl-flex justify-content-xxl-center my-2">
             <div class="col-5">
                 <!-- Blog List:
                         Display list of blogs with options
@@ -160,13 +160,13 @@
                                     <div class="col text-center">
                                         <div class="btn-group" role="group">
                                             <button
-                                                class="btn btn-primary btn-danger"
+                                                class="btn btn-danger"
                                                 type="button"
                                                 x-on:mousedown="save"
                                             >
                                                 Save</button
                                             ><button
-                                                class="btn btn-primary btn-warning"
+                                                class="btn btn-warning"
                                                 type="button"
                                                 x-on:mousedown="cancel"
                                             >
@@ -178,8 +178,8 @@
                                 <!-- End: Buttons -->
                                 <textarea
                                     id="editbox"
-                                    rows="8"
-                                    cols="64"
+                                    rows="9"
+                                    cols="80"
                                     :value="getEditText"
                                     x-on:focus="kbdFocus = $el"
                                 ></textarea>
@@ -188,13 +188,13 @@
                                     <div class="col text-center">
                                         <div class="btn-group" role="group">
                                             <button
-                                                class="btn btn-primary btn-danger"
+                                                class="btn btn-danger"
                                                 type="button"
                                                 x-on:mousedown="save"
                                             >
                                                 Save</button
                                             ><button
-                                                class="btn btn-primary btn-warning"
+                                                class="btn btn-warning"
                                                 type="button"
                                                 x-on:mousedown="cancel"
                                             >
@@ -216,87 +216,96 @@
                         <!-- Start: Keyboard -->
                         <div class="row">
                             <div class="col d-grid gap-2 kbd">
+                                <!-- Start: Caps Key -->
+                                <button
+                                    id="kbd-caps"
+                                    class="btn btn-dark kbd-sp"
+                                    type="button"
+                                    x-on:mousedown="capsOn = !capsOn"
+                                    x-html="capsOn ? sp.caps.toUpperCase() : sp.caps"
+                                ></button>
+                                <!-- End: Caps Key -->
                                 <!-- Start: Shift Key -->
                                 <button
                                     id="kbd-shift"
-                                    class="btn btn-primary btn-dark kbd-sp"
+                                    class="btn btn-dark kbd-sp"
                                     type="button"
                                     x-on:mousedown="shiftOn = !shiftOn"
-                                    x-text="shiftOn ? sp.shift.toUpperCase() : sp.shift"
-                                >
-                                    shift
-                                </button>
+                                    x-html="shiftOn ? sp.shift.toUpperCase() : sp.shift"
+                                ></button>
                                 <!-- End: Shift Key -->
                                 <!-- Start: Delete Key -->
                                 <button
                                     id="kbd-del"
-                                    class="btn btn-primary btn-dark kbd-sp"
+                                    class="btn btn-dark kbd-sp"
                                     type="button"
                                     x-on:mousedown="addChar('del')"
-                                >
-                                    delete
-                                </button>
+                                    x-html="sp.delete"
+                                ></button>
                                 <!-- End: Delete Key -->
                                 <!-- Start: Return Key -->
                                 <button
                                     id="kbd-cr"
-                                    class="btn btn-primary btn-dark kbd-sp"
+                                    class="btn btn-dark kbd-sp"
                                     type="button"
                                     x-on:mousedown="addChar('\n')"
-                                >
-                                    return
-                                </button>
+                                    x-html="sp.return"
+                                ></button>
                                 <!-- End: Return Key -->
                                 <!-- Start: Space Key -->
                                 <button
                                     id="kbd-spc"
-                                    class="btn btn-primary btn-dark kbd-sp"
+                                    class="btn btn-dark"
                                     type="button"
                                     x-on:mousedown="addChar(' ')"
-                                >
-                                    space
-                                </button>
+                                    x-html="sp.space"
+                                ></button>
                                 <!-- End: Space Key -->
                                 <!-- Start: Character Keys -->
                                 <template x-for="glyph in glyphs">
                                     <button
                                         class="btn btn-danger"
                                         @mousedown="addChar(glyph)"
-                                        x-text="glyph.toUpperCase()"
-                                    ></button
-                                ></template>
+                                        x-html="glyph.toUpperCase()"
+                                    ></button>
+                                </template>
                                 <!-- End: Character Keys -->
                                 <!-- Start: Word Suggestions -->
                                 <button
-                                    class="btn btn-primary btn-secondary kbd-wb"
+                                    class="btn btn-secondary kbd-wb"
                                     id="suggest-l"
                                     type="button"
                                 >
-                                    Word</button
-                                ><input
+                                    Word
+                                </button>
+                                <input
                                     type="text"
                                     id="wb-l"
                                     class="kbd-wb"
                                     disabled="true"
-                                /><button
-                                    class="btn btn-primary btn-secondary kbd-wb"
+                                />
+                                <button
+                                    class="btn btn-secondary kbd-wb"
                                     id="fav-l"
                                     type="button"
                                 >
-                                    <i class="fa fa-star"></i></button
-                                ><button
-                                    class="btn btn-primary btn-secondary kbd-wb"
+                                    <i class="fa fa-star"></i>
+                                </button>
+                                <button
+                                    class="btn btn-secondary kbd-wb"
                                     id="suggest-r"
                                     type="button"
                                 >
-                                    Word</button
-                                ><input
+                                    Word
+                                </button>
+                                <input
                                     type="text"
                                     id="wb-r"
                                     class="kbd-wb"
                                     disabled="true"
-                                /><button
-                                    class="btn btn-primary btn-secondary kbd-wb"
+                                />
+                                <button
+                                    class="btn btn-secondary kbd-wb"
                                     id="fav-r"
                                     type="button"
                                 >

@@ -16,7 +16,7 @@
 :root {
     --grid-ratio: 1fr;
 
-    --kbd-rows: 5;
+    --kbd-rows: 6;
     --kbd-cols: 12;
 
     --key-size: 0px;
@@ -31,6 +31,25 @@
 
 [x-cloak] {
     display: none !important;
+}
+
+.btn {
+    font-weight: bold;
+    font-size: 1.25em;
+}
+
+.btn-danger:hover {
+    color: var(--bs-black);
+    background-color: var(--bs-yellow);
+}
+
+.btn-warning:hover {
+    color: var(--bs-white);
+    background-color: var(--bs-red);
+}
+
+.btn-dark:hover {
+    background-color: var(--bs-gray);
 }
 
 /* ----------------------------- Blog List -----------------------------
@@ -61,24 +80,28 @@
 }
 
 /* Keys */
-#kbd-shift {
-    grid-row: 1;
+.kbd-sp {
     grid-column: 11 / var(--key-sp-width);
+}
+#kbd-caps {
+    grid-row: 1;
+}
+
+#kbd-shift {
+    grid-row: 2;
 }
 
 #kbd-del {
-    grid-row: 2;
-    grid-column: 11 / var(--key-sp-width);
+    grid-row: 3;
 }
 
 #kbd-cr {
-    grid-row: 3;
-    grid-column: 10 / var(--key-sp-width);
+    grid-row: 4;
 }
 
 #kbd-spc {
-    grid-row: 4;
-    grid-column: 8 / var(--key-sp-width);
+    grid-row: 5;
+    grid-column: 1 / calc(var(--kbd-cols) - 2);
 }
 
 /* Word Suggestions */

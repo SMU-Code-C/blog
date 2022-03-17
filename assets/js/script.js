@@ -133,6 +133,7 @@ const staticData = {
      * -------------------------------------------------------------------- */
 
     kbdFocus: null, // text field to focus
+    capsOn: false, // state of the caps key
     shiftOn: false, // state of the shift key
 
     /**
@@ -153,9 +154,13 @@ const staticData = {
             words.value = currChars.substring(0, currChars.length - 1);
         } else {
             // handle shift toggle
-            if (this.shiftOn) {
-                selection = selection.toUpperCase();
-                this.shiftOn = !this.shiftOn;
+            if (this.capsOn || this.shiftOn) {
+                if (!(this.capsOn && this.shiftOn)) {
+                    selection = selection.toUpperCase();
+                }
+                if (this.shiftOn) {
+                    this.shiftOn = false;
+                }
             }
             // Set the id'ed field to the longer string
             words.value = currChars.concat(selection);
@@ -164,6 +169,7 @@ const staticData = {
 
     // special keys
     sp: {
+        caps: "caps",
         shift: "shift",
         delete: "delete",
         return: "return",
@@ -209,8 +215,11 @@ const staticData = {
         "b",
         "n",
         "m",
+        ",",
         ".",
         "?",
-        ",",
+        "!",
+        "(",
+        ")",
     ],
 };
