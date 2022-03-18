@@ -18,24 +18,46 @@
     author: Sheikh Saad Abdullah (A00447871)
 ------------------------------------------------------------------------ */
 :root {
+    /* grid config */
     --grid-ratio: 1fr;
-
-    --btn-grp-size-popup: 1.5;
 
     --bl-rows: 2;
     --bl-cols: 3;
 
-    --bl-width: 100px;
-    --bl-height: 30px;
-
     --kbd-rows: 6;
     --kbd-cols: 12;
 
+    --key-sp-width: span 2;
+
+    /* buttons config */
+    --btn-grp-size-popup: 1.5;
+
+    --bl-width: 100px;
+    --bl-height: 30px;
+
     --key-size: 0px;
     --key-size-popup: 2;
-    --key-sp-width: span 2;
     --key-font-size: 1.25em;
     --key-transition-duration: 0.15s;
+
+    /* colours */
+    --mc-red: #f1aeb5;
+    --mc-red-dark: var(--bs-red);
+    --mc-red-light: #f8d7da;
+
+    --mc-blue: #052c65;
+    --mc-blue-light: #cfe2ff;
+
+    --mc-white: antiquewhite;
+
+    --btn-black: var(--bs-black);
+    --btn-white: var(--bs-white);
+    --btn-grey: var(--bs-gray);
+    --btn-grey-light: #ced4da;
+
+    --btn-yellow: #ffda6a;
+    --btn-yellow-dark: #cc9a06;
+    --btn-yellow-light: #fff3cd;
 }
 
 [x-cloak] {
@@ -62,15 +84,15 @@ textarea {
 }
 
 .btn-save {
-    color: var(--bs-black);
-    background-color: #f8d7da;
-    border-color: var(--bs-red);
+    color: var(--btn-black);
+    background-color: var(--mc-red-light);
+    border-color: var(--mc-red-dark);
 }
 
 .btn-cancel {
-    color: var(--bs-black);
-    background-color: #fff3cd;
-    border-color: #cc9a06;
+    color: var(--btn-black);
+    background-color: var(--btn-yellow-light);
+    border-color: var(--btn-yellow-dark);
 }
 
 .btn-save:hover,
@@ -79,11 +101,11 @@ textarea {
 }
 
 .btn-save:hover {
-    background-color: #f1aeb5;
+    background-color: var(--mc-red);
 }
 
 .btn-cancel:hover {
-    background-color: #ffda6a;
+    background-color: var(--btn-yellow);
 }
 
 /* ----------------------------- Blog List -----------------------------
@@ -96,9 +118,13 @@ textarea {
     width: var(--bl-width);
 }
 
+.form-switch .form-check-input[type="checkbox"]:checked {
+    background-color: var(--mc-blue-light);
+}
+
 .bl-header {
     font-weight: bold;
-    color: var(--bs-red);
+    color: var(--mc-red-dark);
 }
 
 /* --------------------------- Keyboard Grid ---------------------------
@@ -116,25 +142,25 @@ textarea {
 
 /* Keys */
 .kbd button.kbd-char {
-    color: var(--bs-black);
-    background-color: antiquewhite;
+    color: var(--btn-black);
+    background-color: var(--mc-white);
 }
 
 .kbd button.kbd-char:hover {
-    color: var(--bs-white);
-    background-color: var(--bs-red);
+    color: var(--btn-white);
+    background-color: var(--mc-red-dark);
 }
 
 .kbd-sp {
-    color: var(--bs-black);
-    border-color: #052c65;
-    background-color: #cfe2ff;
+    color: var(--btn-black);
+    border-color: var(--mc-blue);
+    background-color: var(--mc-blue-light);
     grid-column: 11 / var(--key-sp-width);
 }
 
 .kbd-sp:hover {
-    color: var(--bs-white);
-    background-color: #052c65;
+    color: var(--btn-white);
+    background-color: var(--mc-blue);
     transform: scale(1.5, var(--key-size-popup));
 }
 
@@ -165,14 +191,14 @@ textarea {
 
 /* Word Suggestions */
 button.kbd-wb {
-    color: var(--bs-black);
-    border-color: var(--bs-gray);
-    background-color: #ced4da;
+    color: var(--btn-black);
+    border-color: var(--btn-grey);
+    background-color: var(--btn-grey-light);
 }
 
 button.kbd-wb:hover {
-    color: var(--bs-white);
-    background-color: var(--bs-gray);
+    color: var(--btn-white);
+    background-color: var(--btn-grey);
     transform: scale(1.5, var(--key-size-popup));
 }
 
