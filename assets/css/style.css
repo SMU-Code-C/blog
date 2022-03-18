@@ -35,7 +35,7 @@
     --bl-width: 100px;
     --bl-height: 30px;
 
-    --key-size: 0px;
+    --key-size: 50px;
     --key-size-popup: 2;
     --key-font-size: 1.25em;
     --key-transition-duration: 0.15s;
@@ -137,9 +137,6 @@ textarea {
     author: Naziya Tasnim (A00447506)
 ------------------------------------------------------------------------ */
 .kbd {
-    width: calc(var(--key-size) * var(--kbd-cols));
-    height: calc(var(--key-size) * var(--kbd-rows));
-
     grid-template-columns: repeat(var(--kbd-cols), var(--grid-ratio));
     grid-template-rows: repeat(var(--kbd-rows), var(--grid-ratio));
 }
