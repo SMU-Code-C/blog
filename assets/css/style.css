@@ -64,17 +64,13 @@ textarea {
 .btn-save {
     color: var(--bs-black);
     background-color: #f8d7da;
-    border-top-color: var(--bs-red);
-    border-left-color: var(--bs-red);
-    border-bottom-color: var(--bs-red);
+    border-color: var(--bs-red);
 }
 
 .btn-cancel {
     color: var(--bs-black);
     background-color: #fff3cd;
-    border-top-color: var(--bs-yellow);
-    border-right-color: var(--bs-yellow);
-    border-bottom-color: var(--bs-yellow);
+    border-color: #cc9a06;
 }
 
 .btn-save:hover {
@@ -127,7 +123,6 @@ textarea {
 
 .kbd button.kbd-char:hover {
     color: var(--bs-white);
-    border-color: antiquewhite;
     background-color: var(--bs-red);
 }
 
