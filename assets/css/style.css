@@ -55,6 +55,9 @@
     --btn-grey: var(--bs-gray);
     --btn-grey-light: #ced4da;
 
+    --btn-green: #75b798;
+    --btn-green-dark: #146c43;
+
     --btn-yellow: #ffda6a;
     --btn-yellow-dark: #cc9a06;
     --btn-yellow-light: #fff3cd;
@@ -119,7 +122,8 @@ textarea {
 }
 
 .form-switch .form-check-input[type="checkbox"]:checked {
-    background-color: var(--mc-blue-light);
+    border-color: var(--btn-green-dark);
+    background-color: var(--btn-green);
 }
 
 .bl-header {
