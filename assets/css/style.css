@@ -4,6 +4,7 @@
     CSCI-2356 Project: Phase 1
 
     author: Mohak Shrivastava (A00445470)
+    author: Nayem Imtiaz (A00448982)
     author: Naziya Tasnim (A00447506)
     author: Sheikh Saad Abdullah (A00447871)
 */
@@ -41,10 +42,6 @@
     display: none !important;
 }
 
-body {
-    background-color: antiquewhite;
-}
-
 .btn {
     font-weight: bold;
     font-size: var(--key-font-size);
@@ -55,21 +52,42 @@ body {
     transform: scale(var(--key-size-popup), var(--key-size-popup));
 }
 
-.btn-danger:hover {
+/* ----------------------------- Blog List -----------------------------
+    Style rules for the list of blogs and toggle buttons
+
+    author: Nayem Imtiaz (A00448982)
+------------------------------------------------------------------------ */
+textarea {
+    resize: none;
+}
+
+.btn-save {
     color: var(--bs-black);
-    background-color: var(--bs-yellow);
+    background-color: #f8d7da;
+    border-top-color: var(--bs-red);
+    border-left-color: var(--bs-red);
+    border-bottom-color: var(--bs-red);
 }
 
-.btn-warning:hover {
-    color: var(--bs-white);
-    background-color: var(--bs-red);
+.btn-cancel {
+    color: var(--bs-black);
+    background-color: #fff3cd;
+    border-top-color: var(--bs-yellow);
+    border-right-color: var(--bs-yellow);
+    border-bottom-color: var(--bs-yellow);
 }
 
-.btn-dark:hover {
-    background-color: var(--bs-gray);
+.btn-save:hover {
+    background-color: #f1aeb5;
 }
 
-.btn-group .btn:hover {
+.btn-cancel:hover {
+    background-color: #ffda6a;
+}
+
+.btn-save:hover,
+.btn-cancel:hover {
+    border-color: #052c65;
     transform: scale(var(--btn-grp-size-popup), var(--btn-grp-size-popup));
 }
 
@@ -102,13 +120,27 @@ body {
 }
 
 /* Keys */
+.kbd button.kbd-char {
+    color: var(--bs-black);
+    background-color: antiquewhite;
+}
+
+.kbd button.kbd-char:hover {
+    color: var(--bs-white);
+    border-color: antiquewhite;
+    background-color: var(--bs-red);
+}
+
 .kbd-sp {
-    background-color: #0a58ca;
+    color: var(--bs-black);
+    border-color: #052c65;
+    background-color: #cfe2ff;
     grid-column: 11 / var(--key-sp-width);
 }
 
 .kbd-sp:hover {
-    background-color: var(--bs-blue);
+    color: var(--bs-white);
+    background-color: #052c65;
     transform: scale(1.5, var(--key-size-popup));
 }
 
@@ -138,7 +170,15 @@ body {
 }
 
 /* Word Suggestions */
+button.kbd-wb {
+    color: var(--bs-black);
+    border-color: var(--bs-gray);
+    background-color: #ced4da;
+}
+
 button.kbd-wb:hover {
+    color: var(--bs-white);
+    background-color: var(--bs-gray);
     transform: scale(1.5, var(--key-size-popup));
 }
 

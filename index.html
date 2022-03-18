@@ -149,46 +149,26 @@
                         <!-- Start: Edit Area -->
                         <div class="row my-1">
                             <div class="col text-center">
-                                <!-- Start: Buttons -->
-                                <div class="row mt-2 mb-3">
-                                    <div class="col text-center">
-                                        <div class="btn-group" role="group">
-                                            <button
-                                                class="btn btn-danger"
-                                                type="button"
-                                                x-on:mousedown="save"
-                                            >
-                                                Save</button
-                                            ><button
-                                                class="btn btn-warning"
-                                                type="button"
-                                                x-on:mousedown="cancel"
-                                            >
-                                                Cancel
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- End: Buttons -->
                                 <textarea
                                     id="editbox"
+                                    class="mt-2"
                                     rows="9"
                                     cols="80"
                                     :value="getEditText"
                                     x-on:focus="kbdFocus = $el"
                                 ></textarea>
                                 <!-- Start: Buttons -->
-                                <div class="row my-2">
+                                <div class="row my-4">
                                     <div class="col text-center">
                                         <div class="btn-group" role="group">
                                             <button
-                                                class="btn btn-danger"
+                                                class="btn btn-save"
                                                 type="button"
                                                 x-on:mousedown="save"
                                             >
                                                 Save</button
                                             ><button
-                                                class="btn btn-warning"
+                                                class="btn btn-cancel"
                                                 type="button"
                                                 x-on:mousedown="cancel"
                                             >
@@ -213,7 +193,7 @@
                                 <!-- Start: Caps Key -->
                                 <button
                                     id="kbd-caps"
-                                    class="btn btn-dark kbd-sp"
+                                    class="btn kbd-sp"
                                     type="button"
                                     x-on:mousedown="capsOn = !capsOn"
                                     x-html="capsOn ? sp.caps.toUpperCase() : sp.caps"
@@ -222,7 +202,7 @@
                                 <!-- Start: Shift Key -->
                                 <button
                                     id="kbd-shift"
-                                    class="btn btn-dark kbd-sp"
+                                    class="btn kbd-sp"
                                     type="button"
                                     x-on:mousedown="shiftOn = !shiftOn"
                                     x-html="shiftOn ? sp.shift.toUpperCase() : sp.shift"
@@ -231,7 +211,7 @@
                                 <!-- Start: Delete Key -->
                                 <button
                                     id="kbd-del"
-                                    class="btn btn-dark kbd-sp"
+                                    class="btn kbd-sp"
                                     type="button"
                                     x-on:mousedown="addChar('del')"
                                     x-html="sp.delete"
@@ -240,7 +220,7 @@
                                 <!-- Start: Return Key -->
                                 <button
                                     id="kbd-cr"
-                                    class="btn btn-dark kbd-sp"
+                                    class="btn kbd-sp"
                                     type="button"
                                     x-on:mousedown="addChar('\n')"
                                     x-html="sp.return"
@@ -249,7 +229,7 @@
                                 <!-- Start: Space Key -->
                                 <button
                                     id="kbd-spc"
-                                    class="btn btn-dark kbd-sp"
+                                    class="btn kbd-sp"
                                     type="button"
                                     x-on:mousedown="addChar(' ')"
                                     x-html="sp.space"
@@ -258,7 +238,7 @@
                                 <!-- Start: Character Keys -->
                                 <template x-for="glyph in glyphs">
                                     <button
-                                        class="btn btn-danger"
+                                        class="btn btn-outline-danger kbd-char"
                                         @mousedown="addChar(glyph)"
                                         x-html="glyph.toUpperCase()"
                                     ></button>
@@ -266,7 +246,7 @@
                                 <!-- End: Character Keys -->
                                 <!-- Start: Word Suggestions -->
                                 <button
-                                    class="btn btn-secondary kbd-wb"
+                                    class="btn kbd-wb"
                                     id="suggest-l"
                                     type="button"
                                 >
@@ -279,14 +259,14 @@
                                     disabled="true"
                                 />
                                 <button
-                                    class="btn btn-secondary kbd-wb"
+                                    class="btn kbd-wb"
                                     id="fav-l"
                                     type="button"
                                 >
                                     <i class="bi bi-star-fill"></i>
                                 </button>
                                 <button
-                                    class="btn btn-secondary kbd-wb"
+                                    class="btn kbd-wb"
                                     id="suggest-r"
                                     type="button"
                                 >
@@ -299,7 +279,7 @@
                                     disabled="true"
                                 />
                                 <button
-                                    class="btn btn-secondary kbd-wb"
+                                    class="btn kbd-wb"
                                     id="fav-r"
                                     type="button"
                                 >
