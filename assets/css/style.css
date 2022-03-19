@@ -1,0 +1,239 @@
+/*
+    Stylesheet for the blog tools
+
+    CSCI-2356 Project: Phase 1
+
+    author: Mohak Shrivastava (A00445470)
+    author: Nayem Imtiaz (A00448982)
+    author: Naziya Tasnim (A00447506)
+    author: Sheikh Saad Abdullah (A00447871)
+*/
+
+/* -------------------------- Bootstrap Icons -------------------------- */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css");
+
+/* --------------------------- Global Styles ---------------------------
+    Variables to DRY styles and other global style initializations
+
+    author: Sheikh Saad Abdullah (A00447871)
+------------------------------------------------------------------------ */
+:root {
+    /* grid config */
+    --grid-ratio: 1fr;
+
+    --bl-rows: 2;
+    --bl-cols: 3;
+
+    --kbd-rows: 6;
+    --kbd-cols: 12;
+
+    --key-sp-width: span 2;
+
+    /* buttons config */
+    --btn-grp-size-popup: 2;
+
+    --bl-width: 100px;
+    --bl-height: 30px;
+
+    --key-size: 45px;
+    --key-size-popup: 2;
+    --key-font-size: 1.25em;
+    --key-transition-duration: 0.15s;
+
+    /* colours */
+    --mc-red: #f1aeb5;
+    --mc-red-dark: var(--bs-red);
+    --mc-red-light: #f8d7da;
+
+    --mc-blue: #052c65;
+    --mc-blue-light: #cfe2ff;
+
+    --mc-white: antiquewhite;
+
+    --btn-black: var(--bs-black);
+    --btn-white: var(--bs-white);
+    --btn-grey: var(--bs-gray);
+    --btn-grey-light: #ced4da;
+
+    --btn-green: #75b798;
+    --btn-green-dark: #146c43;
+
+    --btn-yellow: #ffda6a;
+    --btn-yellow-dark: #cc9a06;
+    --btn-yellow-light: #fff3cd;
+}
+
+[x-cloak] {
+    display: none !important;
+}
+
+.btn {
+    font-weight: bold;
+    font-size: var(--key-font-size);
+}
+
+.btn:hover {
+    transition: transform var(--key-transition-duration);
+    transform: scale(var(--key-size-popup), var(--key-size-popup));
+}
+
+/* ----------------------------- Blog List -----------------------------
+    Style rules for the list of blogs and toggle buttons
+
+    author: Nayem Imtiaz (A00448982)
+------------------------------------------------------------------------ */
+textarea {
+    resize: none;
+}
+
+.btn-save {
+    color: var(--btn-black);
+    background-color: var(--mc-red-light);
+    border-color: var(--mc-red-dark);
+}
+
+.btn-cancel {
+    color: var(--btn-black);
+    background-color: var(--btn-yellow-light);
+    border-color: var(--btn-yellow-dark);
+}
+
+.btn-save:hover,
+.btn-cancel:hover {
+    transform: scale(var(--btn-grp-size-popup), var(--btn-grp-size-popup));
+}
+
+.btn-save:hover {
+    background-color: var(--mc-red);
+}
+
+.btn-cancel:hover {
+    background-color: var(--btn-yellow);
+}
+
+/* ----------------------------- Blog List -----------------------------
+    Style rules for the list of blogs and toggle buttons
+
+    author: Mohak Shrivastava (A00445470)
+------------------------------------------------------------------------ */
+.form-switch .form-check-input[type="checkbox"] {
+    height: var(--bl-height);
+    width: var(--bl-width);
+}
+
+.form-switch .form-check-input[type="checkbox"]:checked {
+    border-color: var(--btn-green-dark);
+    background-color: var(--btn-green);
+}
+
+.bl-header {
+    font-weight: bold;
+    color: var(--mc-red-dark);
+}
+
+/* --------------------------- Keyboard Grid ---------------------------
+    Style rules for the keyboard grid and special keys
+
+    author: Naziya Tasnim (A00447506)
+------------------------------------------------------------------------ */
+.kbd {
+    grid-template-columns: repeat(var(--kbd-cols), var(--grid-ratio));
+    grid-template-rows: repeat(var(--kbd-rows), var(--grid-ratio));
+}
+
+/* Keys */
+.kbd button.kbd-char {
+    width: var(--key-size);
+    height: var(--key-size);
+    color: var(--btn-black);
+    background-color: var(--mc-white);
+}
+
+.kbd button.kbd-char:hover {
+    color: var(--btn-white);
+    background-color: var(--mc-red-dark);
+}
+
+.kbd-sp {
+    color: var(--btn-black);
+    border-color: var(--mc-blue);
+    background-color: var(--mc-blue-light);
+    grid-column: 11 / var(--key-sp-width);
+}
+
+.kbd-sp:hover {
+    color: var(--btn-white);
+    background-color: var(--mc-blue);
+    transform: scale(1.5, var(--key-size-popup));
+}
+
+#kbd-caps {
+    grid-row: 1;
+}
+
+#kbd-shift {
+    grid-row: 2;
+}
+
+#kbd-del {
+    grid-row: 3;
+}
+
+#kbd-cr {
+    grid-row: 4;
+}
+
+#kbd-spc {
+    grid-row: 5;
+    grid-column: 1 / calc(var(--kbd-cols) - 2);
+}
+
+#kbd-spc:hover {
+    transform: scale(1.1, var(--key-size-popup));
+}
+
+/* Word Suggestions */
+button.kbd-wb {
+    color: var(--btn-black);
+    border-color: var(--btn-grey);
+    background-color: var(--btn-grey-light);
+}
+
+button.kbd-wb:hover {
+    color: var(--btn-white);
+    background-color: var(--btn-grey);
+    transform: scale(1.5, var(--key-size-popup));
+}
+
+.kbd-wb {
+    grid-row: var(--kbd-rows);
+}
+
+#suggest-l {
+    grid-column: 1 / span 2;
+}
+
+#suggest-r {
+    grid-column: 7 / span 2;
+}
+
+#fav-r {
+    grid-column: 12 / span 1;
+}
+
+#fav-l {
+    grid-column: 6 / span 1;
+}
+
+#fav-l:hover,
+#fav-r:hover {
+    transform: scale(var(--key-size-popup), var(--key-size-popup));
+}
+
+#wb-l {
+    grid-column: 3 / span 3;
+}
+
+#wb-r {
+    grid-column: 9 / span 3;
+}

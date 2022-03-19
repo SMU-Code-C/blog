@@ -108,22 +108,20 @@ const staticData = {
      * @param {Integer} index index of the toggle switch
      */
     editText(elem, index) {
-        $_(".bl-name-text")[index].disabled = this.editOn;
+        $_(".bl-name")[index].disabled = this.editOn;
+
+        if (this.editOn) {
+            this.kbdFocus = $("#editbox");
+        }
 
         this.editOn = !this.editOn;
-        this.currentlyEditing = elem.checked ? index : -1;
+        this.currentlyEditing = index;
 
-        $_(".bl-edit-toggle").forEach((el) => {
+        $_(".bl-edit").forEach((el) => {
             if (!el.checked) {
                 el.style.visibility = elem.checked ? "hidden" : "visible";
             }
         });
-
-        if (!this.editOn) {
-            this.kbdFocus = $("#editbox");
-        }
-
-        this.cancel();
     },
 
     /** ----------------------------- Keyboard ----------------------------
@@ -133,6 +131,7 @@ const staticData = {
      * -------------------------------------------------------------------- */
 
     kbdFocus: null, // text field to focus
+    capsOn: false, // state of the caps key
     shiftOn: false, // state of the shift key
 
     /**
@@ -153,17 +152,24 @@ const staticData = {
             words.value = currChars.substring(0, currChars.length - 1);
         } else {
             // handle shift toggle
-            if (this.shiftOn) {
-                selection = selection.toUpperCase();
-                this.shiftOn = !this.shiftOn;
+            if (this.capsOn || this.shiftOn) {
+                if (!(this.capsOn && this.shiftOn)) {
+                    selection = selection.toUpperCase();
+                }
+                if (this.shiftOn) {
+                    this.shiftOn = false;
+                }
             }
             // Set the id'ed field to the longer string
-            words.value = currChars.concat(selection);
+            words.value = currChars.concat(
+                ",;:.?!".includes(selection) ? selection + " " : selection
+            );
         }
     },
 
     // special keys
     sp: {
+        caps: "caps",
         shift: "shift",
         delete: "delete",
         return: "return",
@@ -209,8 +215,11 @@ const staticData = {
         "b",
         "n",
         "m",
+        ",",
         ".",
         "?",
-        ",",
+        "!",
+        "(",
+        ")",
     ],
 };
