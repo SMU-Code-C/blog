@@ -110,6 +110,10 @@ const staticData = {
     editText(elem, index) {
         $_(".bl-name")[index].disabled = this.editOn;
 
+        if (this.editOn) {
+            this.kbdFocus = $("#editbox");
+        }
+
         this.editOn = !this.editOn;
         this.currentlyEditing = index;
 
@@ -118,12 +122,6 @@ const staticData = {
                 el.style.visibility = elem.checked ? "hidden" : "visible";
             }
         });
-
-        if (!this.editOn) {
-            this.kbdFocus = $("#editbox");
-        }
-
-        this.cancel();
     },
 
     /** ----------------------------- Keyboard ----------------------------
@@ -163,7 +161,9 @@ const staticData = {
                 }
             }
             // Set the id'ed field to the longer string
-            words.value = currChars.concat(selection);
+            words.value = currChars.concat(
+                ",;:.?!".includes(selection) ? selection + " " : selection
+            );
         }
     },
 

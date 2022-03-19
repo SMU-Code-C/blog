@@ -35,7 +35,7 @@
     --bl-width: 100px;
     --bl-height: 30px;
 
-    --key-size: 50px;
+    --key-size: 45px;
     --key-size-popup: 2;
     --key-font-size: 1.25em;
     --key-transition-duration: 0.15s;
@@ -143,6 +143,8 @@ textarea {
 
 /* Keys */
 .kbd button.kbd-char {
+    width: var(--key-size);
+    height: var(--key-size);
     color: var(--btn-black);
     background-color: var(--mc-white);
 }

@@ -88,9 +88,10 @@
                             <div class="col">
                                 <!-- Start: Entry Row -->
                                 <template x-for="(blog, index) in blogList">
-                                    <div class="row my-1">
+                                    <div class="row my-1" :id="$id('bl-entry')">
                                         <div
                                             class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
+                                            :id="$id('bl-name-box')"
                                         >
                                             <input
                                                 x-id="['bl-name']"
@@ -107,6 +108,7 @@
                                         </div>
                                         <div
                                             class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
+                                            :id="$id('bl-edit-box')"
                                         >
                                             <input
                                                 class="bl-edit form-check-input my-1"
@@ -118,6 +120,7 @@
                                         </div>
                                         <div
                                             class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
+                                            :id="$id('bl-publish-box')"
                                         >
                                             <input
                                                 class="bl-publish form-check-input my-1"
@@ -196,7 +199,7 @@
                                     class="btn kbd-sp"
                                     type="button"
                                     x-on:mousedown="capsOn = !capsOn"
-                                    x-html="capsOn ? sp.caps.toUpperCase() : sp.caps"
+                                    x-text="capsOn ? sp.caps.toUpperCase() : sp.caps"
                                 ></button>
                                 <!-- End: Caps Key -->
                                 <!-- Start: Shift Key -->
@@ -205,7 +208,7 @@
                                     class="btn kbd-sp"
                                     type="button"
                                     x-on:mousedown="shiftOn = !shiftOn"
-                                    x-html="shiftOn ? sp.shift.toUpperCase() : sp.shift"
+                                    x-text="shiftOn ? sp.shift.toUpperCase() : sp.shift"
                                 ></button>
                                 <!-- End: Shift Key -->
                                 <!-- Start: Delete Key -->
@@ -214,7 +217,7 @@
                                     class="btn kbd-sp"
                                     type="button"
                                     x-on:mousedown="addChar('del')"
-                                    x-html="sp.delete"
+                                    x-text="sp.delete"
                                 ></button>
                                 <!-- End: Delete Key -->
                                 <!-- Start: Return Key -->
@@ -223,7 +226,7 @@
                                     class="btn kbd-sp"
                                     type="button"
                                     x-on:mousedown="addChar('\n')"
-                                    x-html="sp.return"
+                                    x-text="sp.return"
                                 ></button>
                                 <!-- End: Return Key -->
                                 <!-- Start: Space Key -->
@@ -232,7 +235,7 @@
                                     class="btn kbd-sp"
                                     type="button"
                                     x-on:mousedown="addChar(' ')"
-                                    x-html="sp.space"
+                                    x-text="sp.space"
                                 ></button>
                                 <!-- End: Space Key -->
                                 <!-- Start: Character Keys -->
@@ -240,7 +243,7 @@
                                     <button
                                         class="btn btn-outline-danger kbd-char"
                                         @mousedown="addChar(glyph)"
-                                        x-html="glyph.toUpperCase()"
+                                        x-text="(shiftOn || capsOn) ? glyph.toUpperCase() : glyph"
                                     ></button>
                                 </template>
                                 <!-- End: Character Keys -->
