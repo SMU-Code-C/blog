@@ -28,7 +28,7 @@ server.listen(PORT, () => {
 // ---------------------- Global data -----------------------------
 
 const blogs = { published: [false, false, false], contents: ["", "", ""] }, // list of blog posts being tracked
-    endpoints = { publish: "/publish", contentUpdate: "blogPost" }; // list of endpoints
+    endpoints = { publish: "/publish", contentUpdate: "/blogPost" }; // list of endpoints
 
 // -------------------------- GET ---------------------------------
 

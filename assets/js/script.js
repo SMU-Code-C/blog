@@ -9,6 +9,12 @@
  * @author Sheikh Saad Abdullah (A00447871)
  */
 
+// global data (general-purpose)
+const PORT = 49151, // port to connect to server on
+    SERVER_IPA = "http://140.184.230.209", // ip address of the UGDEV server
+    SERVER_URL = `${SERVER_IPA}:${PORT}`, // complete URL of the server
+    endpoints = { publish: "/publish", contentUpdate: "/blogPost" }; // list of endpoints
+
 /**
  * Aliases to create DOM objects using $() like in JQuery
  *
