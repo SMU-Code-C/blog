@@ -1,0 +1,303 @@
+<!--
+    Blog tools for client to edit and publish posts to webserver
+
+    CSCI-2356 Project: Phase 1
+
+    author: Mohak Shrivastava (A00445470)
+    author: Nayem Imtiaz (A00448982)
+    author: Naziya Tasnim (A00447506)
+    author: Sheikh Saad Abdullah (A00447871)
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- HEAD:
+                Header information for the HTML document,
+                specifying stylesheets, scripts, and metadata
+
+            author: Sheikh Saad Abdullah (A00447871)
+         -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+        />
+        <meta name="description" content="Blog tools for Northwood Project" />
+
+        <title>Blog Tools</title>
+
+        <!-- Bootstrap CSS -->
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+        />
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="assets/css/style.css" />
+
+        <!-- Custom JS -->
+        <script src="assets/js/script.js"></script>
+
+        <!-- Alpine.js -->
+        <script
+            defer
+            src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
+    </head>
+    <body x-data="staticData" x-cloak x-on:load="load">
+        <div class="row d-flex justify-content-center my-2">
+            <div class="col-5">
+                <!-- Blog List:
+                        Display list of blogs with options
+                        to edit and publish via toggle switches
+
+                    author: Mohak Shrivastava (A00445470)
+                    author: Sheikh Saad Abdullah (A00447871)
+                -->
+                <!-- Start: Blog List -->
+                <div class="row">
+                    <div class="col">
+                        <!-- Start: Blog Headers -->
+                        <div class="row my-1">
+                            <div class="col">
+                                <h2
+                                    class="d-flex justify-content-center bl-header"
+                                >
+                                    Blog Name
+                                </h2>
+                            </div>
+                            <div class="col">
+                                <h2
+                                    class="d-flex justify-content-center bl-header"
+                                >
+                                    Edit
+                                </h2>
+                            </div>
+                            <div class="col">
+                                <h2
+                                    class="d-flex justify-content-center bl-header"
+                                >
+                                    Publish
+                                </h2>
+                            </div>
+                        </div>
+                        <!-- End: Blog Headers -->
+                        <!-- Start: Blog Entries -->
+                        <div class="row">
+                            <div class="col">
+                                <!-- Start: Entry Row -->
+                                <template x-for="(blog, index) in blogList">
+                                    <div class="row my-1" :id="$id('bl-entry')">
+                                        <div
+                                            class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
+                                            :id="$id('bl-name-box')"
+                                        >
+                                            <input
+                                                x-id="['bl-name']"
+                                                class="bl-name my-1"
+                                                type="text"
+                                                :name="$id('bl-name')"
+                                                :id="$id('bl-name')"
+                                                placeholder="&lt;type name&gt;"
+                                                :value="blog.name"
+                                                x-model="blog.name"
+                                                @focus="kbdFocus = $el"
+                                                disabled
+                                            />
+                                        </div>
+                                        <div
+                                            class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
+                                            :id="$id('bl-edit-box')"
+                                        >
+                                            <input
+                                                class="bl-edit form-check-input my-1"
+                                                type="checkbox"
+                                                role="switch"
+                                                :id="$id('bl-edit')"
+                                                @change="editText($el, index)"
+                                            />
+                                        </div>
+                                        <div
+                                            class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
+                                            :id="$id('bl-publish-box')"
+                                        >
+                                            <input
+                                                class="bl-publish form-check-input my-1"
+                                                type="checkbox"
+                                                role="switch"
+                                                :id="$id('bl-publish')"
+                                                :checked="blog.published"
+                                                @change="blogList[index].published = !blogList[index].published"
+                                            />
+                                        </div>
+                                    </div>
+                                </template>
+                                <!-- End: Entry Row -->
+                            </div>
+                        </div>
+                        <!-- End: Blog Entries -->
+                    </div>
+                </div>
+                <!-- End: Blog List -->
+                <!-- Start: Edit Group -->
+                <div class="row" x-show="editOn" x-transition x-cloak>
+                    <div class="col">
+                        <!-- Edit Area:
+                                Text area to edit blog posts in,
+                                with Save and Cancel functionality
+
+                            author: Nayem Imtiaz (A00448982)
+                        -->
+                        <!-- Start: Edit Area -->
+                        <div class="row my-1">
+                            <div class="col text-center">
+                                <textarea
+                                    id="editbox"
+                                    class="mt-2"
+                                    rows="9"
+                                    cols="80"
+                                    :value="getEditText"
+                                    x-on:focus="kbdFocus = $el"
+                                ></textarea>
+                                <!-- Start: Buttons -->
+                                <div class="row my-4">
+                                    <div class="col text-center">
+                                        <div class="btn-group" role="group">
+                                            <button
+                                                class="btn btn-save"
+                                                type="button"
+                                                x-on:mousedown="save"
+                                            >
+                                                Save</button
+                                            ><button
+                                                class="btn btn-cancel"
+                                                type="button"
+                                                x-on:mousedown="cancel"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End: Buttons -->
+                            </div>
+                        </div>
+                        <!-- End: Edit Area -->
+                        <!-- Keyboard:
+                                Accessible on-screen keyboard
+                                for client to operate using mouse
+
+                            author: Naziya Tasnim (A00447506)
+                        -->
+                        <!-- Start: Keyboard -->
+                        <div class="row">
+                            <div class="col d-grid gap-4 kbd">
+                                <!-- Start: Caps Key -->
+                                <button
+                                    id="kbd-caps"
+                                    class="btn kbd-sp"
+                                    type="button"
+                                    x-on:mousedown="capsOn = !capsOn"
+                                    x-text="capsOn ? sp.caps.toUpperCase() : sp.caps"
+                                ></button>
+                                <!-- End: Caps Key -->
+                                <!-- Start: Shift Key -->
+                                <button
+                                    id="kbd-shift"
+                                    class="btn kbd-sp"
+                                    type="button"
+                                    x-on:mousedown="shiftOn = !shiftOn"
+                                    x-text="shiftOn ? sp.shift.toUpperCase() : sp.shift"
+                                ></button>
+                                <!-- End: Shift Key -->
+                                <!-- Start: Delete Key -->
+                                <button
+                                    id="kbd-del"
+                                    class="btn kbd-sp"
+                                    type="button"
+                                    x-on:mousedown="addChar('del')"
+                                    x-text="sp.delete"
+                                ></button>
+                                <!-- End: Delete Key -->
+                                <!-- Start: Return Key -->
+                                <button
+                                    id="kbd-cr"
+                                    class="btn kbd-sp"
+                                    type="button"
+                                    x-on:mousedown="addChar('\n')"
+                                    x-text="sp.return"
+                                ></button>
+                                <!-- End: Return Key -->
+                                <!-- Start: Space Key -->
+                                <button
+                                    id="kbd-spc"
+                                    class="btn kbd-sp"
+                                    type="button"
+                                    x-on:mousedown="addChar(' ')"
+                                    x-text="sp.space"
+                                ></button>
+                                <!-- End: Space Key -->
+                                <!-- Start: Character Keys -->
+                                <template x-for="glyph in glyphs">
+                                    <button
+                                        class="btn btn-outline-danger kbd-char"
+                                        @mousedown="addChar(glyph)"
+                                        x-text="(shiftOn || capsOn) ? glyph.toUpperCase() : glyph"
+                                    ></button>
+                                </template>
+                                <!-- End: Character Keys -->
+                                <!-- Start: Word Suggestions -->
+                                <button
+                                    class="btn kbd-wb"
+                                    id="suggest-l"
+                                    type="button"
+                                >
+                                    Word
+                                </button>
+                                <input
+                                    type="text"
+                                    id="wb-l"
+                                    class="kbd-wb"
+                                    disabled="true"
+                                />
+                                <button
+                                    class="btn kbd-wb"
+                                    id="fav-l"
+                                    type="button"
+                                >
+                                    <i class="bi bi-star-fill"></i>
+                                </button>
+                                <button
+                                    class="btn kbd-wb"
+                                    id="suggest-r"
+                                    type="button"
+                                >
+                                    Word
+                                </button>
+                                <input
+                                    type="text"
+                                    id="wb-r"
+                                    class="kbd-wb"
+                                    disabled="true"
+                                />
+                                <button
+                                    class="btn kbd-wb"
+                                    id="fav-r"
+                                    type="button"
+                                >
+                                    <i class="bi bi-star-fill"></i>
+                                </button>
+                                <!-- End: Word Suggestions -->
+                            </div>
+                        </div>
+                        <!-- End: Keyboard -->
+                    </div>
+                </div>
+                <!-- End: Edit Group -->
+            </div>
+        </div>
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
