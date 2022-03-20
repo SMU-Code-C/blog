@@ -46,9 +46,8 @@ const get = (endpoint) => {
             "Content-Type": "application/json",
         },
     })
-        .then((res) => res.json())
         .then((res) => {
-            response = res;
+            response = res.json();
         })
         .catch((err) => {
             console.log(err);
@@ -74,9 +73,8 @@ const post = (endpoint, data) => {
         },
         body: JSON.stringify(data),
     })
-        .then((res) => res.json())
         .then((res) => {
-            response = res;
+            response = res.json();
         })
         .catch((err) => {
             console.log(err);
