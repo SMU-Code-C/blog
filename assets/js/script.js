@@ -33,6 +33,7 @@ const $ = (selector) => {
 /**
  * Wrapper function around the fetch API to make GET requests
  *
+ * @author Sheikh Saad Abdullah (A00447871)
  * @param {String} endpoint address to send request to
  * @returns response from the server
  */
@@ -58,6 +59,7 @@ const get = (endpoint) => {
 /**
  * Wrapper function around the fetch API to make POST requests
  *
+ * @author Sheikh Saad Abdullah (A00447871)
  * @param {String} endpoint address to send request to
  * @param {Object} data data to send to the server
  * @returns response from the server
