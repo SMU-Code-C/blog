@@ -55,6 +55,7 @@
     --btn-black: black;
     --btn-white: white;
     --btn-grey: grey;
+    --btn-grey-semilight: #969696;
     --btn-grey-light: #ced4da;
 
     --btn-green: #75b798;
@@ -220,17 +221,20 @@ textarea {
 
 /* Word Suggestions */
 
+button.kbd-wb {
+    color: var(--btn-black);
+    border-color: var(--btn-grey);
+    background-color: var(--btn-grey-light);
+}
+
 button.kbd-wb:hover {
     color: var(--btn-white);
     background-color: var(--btn-grey);
     transform: scale(1.5, var(--key-size-popup));
 }
 
-button.kbd-wb,
 button.kbd-wb:active {
-    color: var(--btn-black);
-    border-color: var(--btn-grey);
-    background-color: var(--btn-grey-light);
+    background-color: var(--btn-grey-semilight);
 }
 
 .kbd-wb {
