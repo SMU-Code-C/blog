@@ -30,6 +30,58 @@ const $ = (selector) => {
     }
 };
 
+/**
+ * Wrapper function around the fetch API to make GET requests
+ *
+ * @param {String} endpoint address to send request to
+ * @returns response from the server
+ */
+const get = (endpoint) => {
+    let response = null;
+    fetch(endpoint, {
+        method: "GET",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+    })
+        .then((res) => res.json())
+        .then((res) => {
+            response = res;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    return response;
+};
+
+/**
+ * Wrapper function around the fetch API to make POST requests
+ *
+ * @param {String} endpoint address to send request to
+ * @param {Object} data data to send to the server
+ * @returns response from the server
+ */
+const post = (endpoint, data) => {
+    let response = null;
+    fetch(endpoint, {
+        method: "POST",
+        headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    })
+        .then((res) => res.json())
+        .then((res) => {
+            response = res;
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+    return response;
+};
+
 // global data store for Alpine.js
 const staticData = {
     /** ---------------------------- Blog List ----------------------------
