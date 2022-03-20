@@ -192,7 +192,14 @@
                         -->
                         <!-- Start: Keyboard -->
                         <div class="row">
-                            <div class="col d-grid gap-4 kbd">
+                            <div
+                                class="col d-grid gap-4 kbd"
+                                x-data="{
+                                    key(char) {
+                                        return altKeys() ? char.toUpperCase() : char
+                                    }
+                                }"
+                            >
                                 <!-- Start: Caps Key -->
                                 <button
                                     id="kbd-caps"
@@ -242,8 +249,8 @@
                                 <template x-for="glyph in glyphs">
                                     <button
                                         class="btn btn-outline-danger kbd-char"
-                                        @mousedown="addChar(altKeys() ? glyph.toUpperCase() : glyph)"
-                                        x-text="altKeys() ? glyph.toUpperCase() : glyph"
+                                        @mousedown="addChar(key(glyph))"
+                                        x-text="key(glyph)"
                                     ></button>
                                 </template>
                                 <!-- End: Character Keys -->
