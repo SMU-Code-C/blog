@@ -22,8 +22,13 @@ const PORT = 49151, // port to connect to server on
  * @param {String} selector selector for the element
  * @returns DOM Object for specified element
  */
-const $ = (selector) => document.querySelector(selector);
-const $_ = (selector) => document.querySelectorAll(selector);
+const $ = (selector) => {
+    if (selector[0] === "#") {
+        return document.querySelector(selector);
+    } else {
+        return document.querySelectorAll(selector);
+    }
+};
 
 // global data store for Alpine.js
 const staticData = {
@@ -114,7 +119,7 @@ const staticData = {
      * @param {Integer} index index of the toggle switch
      */
     editText(elem, index) {
-        $_(".bl-name")[index].disabled = this.editOn;
+        $(".bl-name")[index].disabled = this.editOn;
 
         if (this.editOn) {
             this.kbdFocus = $("#editbox");
@@ -123,7 +128,7 @@ const staticData = {
         this.editOn = !this.editOn;
         this.currentlyEditing = index;
 
-        $_(".bl-edit").forEach((el) => {
+        $(".bl-edit").forEach((el) => {
             if (!el.checked) {
                 el.style.visibility = elem.checked ? "hidden" : "visible";
             }
@@ -139,6 +144,10 @@ const staticData = {
     kbdFocus: null, // text field to focus
     capsOn: false, // state of the caps key
     shiftOn: false, // state of the shift key
+
+    altKeys() {
+        return (this.shiftOn || this.capsOn) && !(this.shiftOn && this.capsOn);
+    },
 
     /**
      * Adds a character to the text area
@@ -157,19 +166,15 @@ const staticData = {
             // Set the id'ed field to a shortened string
             words.value = currChars.substring(0, currChars.length - 1);
         } else {
-            // handle shift toggle
-            if (this.capsOn || this.shiftOn) {
-                if (!(this.capsOn && this.shiftOn)) {
-                    selection = selection.toUpperCase();
-                }
-                if (this.shiftOn) {
-                    this.shiftOn = false;
-                }
-            }
             // Set the id'ed field to the longer string
             words.value = currChars.concat(
                 ",;:.?!".includes(selection) ? selection + " " : selection
             );
+
+            // toggle shift key off if it's on
+            if (this.shiftOn) {
+                this.shiftOn = false;
+            }
         }
     },
 

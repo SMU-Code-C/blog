@@ -209,31 +209,19 @@ button.kbd-wb:hover {
     grid-row: var(--kbd-rows);
 }
 
-#suggest-l {
+#suggest {
     grid-column: 1 / span 2;
 }
 
-#suggest-r {
-    grid-column: 7 / span 2;
+#wb {
+    grid-column: 3 / span 7;
 }
 
-#fav-r {
-    grid-column: 12 / span 1;
+#fav {
+    grid-column: 10 / span 3;
 }
 
-#fav-l {
-    grid-column: 6 / span 1;
-}
-
-#fav-l:hover,
-#fav-r:hover {
-    transform: scale(var(--key-size-popup), var(--key-size-popup));
-}
-
-#wb-l {
-    grid-column: 3 / span 3;
-}
-
-#wb-r {
-    grid-column: 9 / span 3;
+#fav:hover {
+    transform: scale(1.5, var(--key-size-popup));
+    /* transform: scale(var(--key-size-popup), var(--key-size-popup)); */
 }

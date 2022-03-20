@@ -45,7 +45,7 @@
             src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
         ></script>
     </head>
-    <body x-data="staticData" x-cloak x-on:load="load">
+    <body x-data="staticData" x-cloak @load="load">
         <div class="row d-flex justify-content-center my-2">
             <div class="col-5">
                 <!-- Blog List:
@@ -158,7 +158,7 @@
                                     rows="9"
                                     cols="80"
                                     :value="getEditText"
-                                    x-on:focus="kbdFocus = $el"
+                                    @focus="kbdFocus = $el"
                                 ></textarea>
                                 <!-- Start: Buttons -->
                                 <div class="row my-4">
@@ -167,13 +167,13 @@
                                             <button
                                                 class="btn btn-save"
                                                 type="button"
-                                                x-on:mousedown="save"
+                                                @mousedown="save"
                                             >
                                                 Save</button
                                             ><button
                                                 class="btn btn-cancel"
                                                 type="button"
-                                                x-on:mousedown="cancel"
+                                                @mousedown="cancel"
                                             >
                                                 Cancel
                                             </button>
@@ -198,7 +198,7 @@
                                     id="kbd-caps"
                                     class="btn kbd-sp"
                                     type="button"
-                                    x-on:mousedown="capsOn = !capsOn"
+                                    @mousedown="capsOn = !capsOn"
                                     x-text="capsOn ? sp.caps.toUpperCase() : sp.caps"
                                 ></button>
                                 <!-- End: Caps Key -->
@@ -207,7 +207,7 @@
                                     id="kbd-shift"
                                     class="btn kbd-sp"
                                     type="button"
-                                    x-on:mousedown="shiftOn = !shiftOn"
+                                    @mousedown="shiftOn = !shiftOn"
                                     x-text="shiftOn ? sp.shift.toUpperCase() : sp.shift"
                                 ></button>
                                 <!-- End: Shift Key -->
@@ -216,7 +216,7 @@
                                     id="kbd-del"
                                     class="btn kbd-sp"
                                     type="button"
-                                    x-on:mousedown="addChar('del')"
+                                    @mousedown="addChar('del')"
                                     x-text="sp.delete"
                                 ></button>
                                 <!-- End: Delete Key -->
@@ -225,7 +225,7 @@
                                     id="kbd-cr"
                                     class="btn kbd-sp"
                                     type="button"
-                                    x-on:mousedown="addChar('\n')"
+                                    @mousedown="addChar('\n')"
                                     x-text="sp.return"
                                 ></button>
                                 <!-- End: Return Key -->
@@ -234,7 +234,7 @@
                                     id="kbd-spc"
                                     class="btn kbd-sp"
                                     type="button"
-                                    x-on:mousedown="addChar(' ')"
+                                    @mousedown="addChar(' ')"
                                     x-text="sp.space"
                                 ></button>
                                 <!-- End: Space Key -->
@@ -242,48 +242,28 @@
                                 <template x-for="glyph in glyphs">
                                     <button
                                         class="btn btn-outline-danger kbd-char"
-                                        @mousedown="addChar(glyph)"
-                                        x-text="(shiftOn || capsOn) ? glyph.toUpperCase() : glyph"
+                                        @mousedown="addChar(altKeys() ? glyph.toUpperCase() : glyph)"
+                                        x-text="altKeys() ? glyph.toUpperCase() : glyph"
                                     ></button>
                                 </template>
                                 <!-- End: Character Keys -->
                                 <!-- Start: Word Suggestions -->
                                 <button
                                     class="btn kbd-wb"
-                                    id="suggest-l"
+                                    id="suggest"
                                     type="button"
                                 >
                                     Word
                                 </button>
                                 <input
                                     type="text"
-                                    id="wb-l"
+                                    id="wb"
                                     class="kbd-wb"
                                     disabled="true"
                                 />
                                 <button
                                     class="btn kbd-wb"
-                                    id="fav-l"
-                                    type="button"
-                                >
-                                    <i class="bi bi-star-fill"></i>
-                                </button>
-                                <button
-                                    class="btn kbd-wb"
-                                    id="suggest-r"
-                                    type="button"
-                                >
-                                    Word
-                                </button>
-                                <input
-                                    type="text"
-                                    id="wb-r"
-                                    class="kbd-wb"
-                                    disabled="true"
-                                />
-                                <button
-                                    class="btn kbd-wb"
-                                    id="fav-r"
+                                    id="fav"
                                     type="button"
                                 >
                                     <i class="bi bi-star-fill"></i>
