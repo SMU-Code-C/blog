@@ -192,18 +192,12 @@
                         -->
                         <!-- Start: Keyboard -->
                         <div class="row">
-                            <div
-                                class="col d-grid gap-4 kbd"
-                                x-data="{
-                                    key(char) {
-                                        return altKeys() ? char.toUpperCase() : char
-                                    }
-                                }"
-                            >
+                            <div class="col d-grid gap-4 kbd">
                                 <!-- Start: Caps Key -->
                                 <button
                                     id="kbd-caps"
                                     class="btn kbd-sp"
+                                    :class="capsOn && 'kbd-sp-pressed'"
                                     type="button"
                                     @mousedown="capsOn = !capsOn"
                                     x-text="capsOn ? sp.caps.toUpperCase() : sp.caps"
@@ -213,6 +207,7 @@
                                 <button
                                     id="kbd-shift"
                                     class="btn kbd-sp"
+                                    :class="shiftOn && 'kbd-sp-pressed'"
                                     type="button"
                                     @mousedown="shiftOn = !shiftOn"
                                     x-text="shiftOn ? sp.shift.toUpperCase() : sp.shift"
@@ -260,7 +255,7 @@
                                     id="suggest"
                                     type="button"
                                 >
-                                    Word
+                                    Words
                                 </button>
                                 <input
                                     type="text"

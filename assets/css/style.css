@@ -41,11 +41,13 @@
     --key-transition-duration: 0.15s;
 
     /* colours */
-    --mc-red: #f1aeb5;
+    --mc-red: #e35d6a;
     --mc-red-dark: var(--bs-red);
+    --mc-red-semilight: #f1aeb5;
     --mc-red-light: #f8d7da;
 
-    --mc-blue: #052c65;
+    --mc-blue: #084298;
+    --mc-blue-dark: #052c65;
     --mc-blue-light: #cfe2ff;
 
     --mc-white: antiquewhite;
@@ -88,13 +90,11 @@ textarea {
 
 .btn-save {
     color: var(--btn-black);
-    background-color: var(--mc-red-light);
     border-color: var(--mc-red-dark);
 }
 
 .btn-cancel {
     color: var(--btn-black);
-    background-color: var(--btn-yellow-light);
     border-color: var(--btn-yellow-dark);
 }
 
@@ -104,11 +104,21 @@ textarea {
 }
 
 .btn-save:hover {
-    background-color: var(--mc-red);
+    background-color: var(--mc-red-semilight);
 }
 
 .btn-cancel:hover {
     background-color: var(--btn-yellow);
+}
+
+.btn-save,
+.btn-save:active {
+    background-color: var(--mc-red-light);
+}
+
+.btn-cancel,
+.btn-cancel:active {
+    background-color: var(--btn-yellow-light);
 }
 
 /* ----------------------------- Blog List -----------------------------
@@ -142,10 +152,15 @@ textarea {
 }
 
 /* Keys */
+
+.kbd-sp,
+.kbd button.kbd-char {
+    color: var(--btn-black);
+}
+
 .kbd button.kbd-char {
     width: var(--key-size);
     height: var(--key-size);
-    color: var(--btn-black);
     background-color: var(--mc-white);
 }
 
@@ -154,17 +169,28 @@ textarea {
     background-color: var(--mc-red-dark);
 }
 
+.kbd button.kbd-char:active {
+    background-color: var(--mc-red);
+}
+
 .kbd-sp {
-    color: var(--btn-black);
-    border-color: var(--mc-blue);
+    border-color: var(--mc-blue-dark);
     background-color: var(--mc-blue-light);
     grid-column: 11 / var(--key-sp-width);
 }
 
-.kbd-sp:hover {
+.kbd-sp:hover,
+.kbd-sp-pressed {
     color: var(--btn-white);
-    background-color: var(--mc-blue);
+    background-color: var(--mc-blue-dark);
+}
+
+.kbd-sp:hover {
     transform: scale(1.5, var(--key-size-popup));
+}
+
+.kbd-sp:active {
+    background-color: var(--mc-blue);
 }
 
 #kbd-caps {

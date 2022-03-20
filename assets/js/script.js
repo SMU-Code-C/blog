@@ -13,7 +13,8 @@
 const PORT = 49151, // port to connect to server on
     SERVER_IPA = "http://140.184.230.209", // ip address of the UGDEV server
     SERVER_URL = `${SERVER_IPA}:${PORT}`, // complete URL of the server
-    endpoints = { publish: "/publish", contentUpdate: "/blogPost" }; // list of endpoints
+    endpoints = { publish: "/publish", contentUpdate: "/blogPost" }, // list of endpoints
+    stopping_punctuation = ",;:.?!"; // punctuation symbols to put spaces after
 
 /**
  * Aliases to create DOM objects using $() like in JQuery
@@ -197,8 +198,23 @@ const staticData = {
     capsOn: false, // state of the caps key
     shiftOn: false, // state of the shift key
 
+    /**
+     * Checks whether the keyboard is currently in shift or caps mode
+     *
+     * @returns whether the caps or shift (but not both) keys are in effect
+     */
     altKeys() {
         return (this.shiftOn || this.capsOn) && !(this.shiftOn && this.capsOn);
+    },
+
+    /**
+     * Character of the key pressed
+     *
+     * @param {String} char character or string to convert
+     * @returns uppercase of char if keyboard is in caps/shift mode
+     */
+    key(char) {
+        return this.altKeys() ? char.toUpperCase() : char;
     },
 
     /**
@@ -220,7 +236,9 @@ const staticData = {
         } else {
             // Set the id'ed field to the longer string
             words.value = currChars.concat(
-                ",;:.?!".includes(selection) ? selection + " " : selection
+                stopping_punctuation.includes(selection)
+                    ? selection + " "
+                    : selection
             );
 
             // toggle shift key off if it's on
