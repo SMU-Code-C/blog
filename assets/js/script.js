@@ -38,7 +38,7 @@ const $ = (selector) => {
  * @param {String} endpoint address to send request to
  * @returns response from the server
  */
-const get = (endpoint) => {
+$.get = (endpoint) => {
     let response = null;
     fetch(endpoint, {
         method: "GET",
@@ -64,7 +64,7 @@ const get = (endpoint) => {
  * @param {Object} data data to send to the server
  * @returns response from the server
  */
-const post = (endpoint, data) => {
+$.post = (endpoint, data) => {
     let response = null;
     fetch(endpoint, {
         method: "POST",
