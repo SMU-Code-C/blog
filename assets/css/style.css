@@ -70,6 +70,10 @@
     display: none !important;
 }
 
+body {
+    overflow: hidden; /* Hide scrollbars */
+}
+
 .btn {
     font-weight: bold;
     font-size: var(--key-font-size);
