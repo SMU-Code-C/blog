@@ -164,23 +164,202 @@
                                 <div class="row my-4">
                                     <div class="col text-center">
                                         <div class="btn-group" role="group">
-                                            <button
+                                            <a
                                                 class="btn btn-save"
-                                                type="button"
-                                                @mousedown="save"
-                                            >
-                                                Save</button
-                                            ><button
+                                                data-bs-toggle="modal"
+                                                href="#save-confirm"
+                                                role="button"
+                                                >Save
+                                            </a>
+                                            <a
                                                 class="btn btn-cancel"
-                                                type="button"
-                                                @mousedown="cancel"
-                                            >
-                                                Cancel
-                                            </button>
+                                                data-bs-toggle="modal"
+                                                href="#cancel-confirm"
+                                                role="button"
+                                                >Cancel
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- End: Buttons -->
+                                <!-- Start: Save Modals -->
+                                <div
+                                    class="modal fade"
+                                    id="save-confirm"
+                                    aria-hidden="true"
+                                    aria-labelledby="save-confirm-label"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="save-confirm-label"
+                                                >
+                                                    Confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to SAVE?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-success"
+                                                    data-bs-target="#save-reconfirm"
+                                                    data-bs-toggle="modal"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="modal fade"
+                                    id="save-reconfirm"
+                                    aria-hidden="true"
+                                    aria-labelledby="save-reconfirm-label"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="save-reconfirm-label"
+                                                >
+                                                    Re-confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you REALLY sure you want to
+                                                SAVE?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-success"
+                                                    data-bs-toggle="modal"
+                                                    @mousedown="save"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End: Save Modals -->
+                                <!-- Start: Cancel Modals -->
+                                <div
+                                    class="modal fade"
+                                    id="cancel-confirm"
+                                    aria-hidden="true"
+                                    aria-labelledby="cancel-confirm-label"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="cancel-confirm-label"
+                                                >
+                                                    Confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to CANCEL?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-success"
+                                                    data-bs-target="#cancel-reconfirm"
+                                                    data-bs-toggle="modal"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="modal fade"
+                                    id="cancel-reconfirm"
+                                    aria-hidden="true"
+                                    aria-labelledby="cancel-reconfirm-label"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="cancel-reconfirm-label"
+                                                >
+                                                    Re-confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you REALLY sure you want to
+                                                CANCEL?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-success"
+                                                    data-bs-toggle="modal"
+                                                    @mousedown="cancel"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End: Cancel Modals -->
                             </div>
                         </div>
                         <!-- End: Edit Area -->
