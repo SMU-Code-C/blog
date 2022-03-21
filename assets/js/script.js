@@ -24,16 +24,9 @@ const PORT = 49151, // port to connect to server on
  * @returns DOM Object for specified element
  */
 const $ = (selector) => {
-    try {
-        if (selector[0] === "#") {
-            return document.querySelector(selector);
-        } else {
-            return document.querySelectorAll(selector);
-        }
-    } catch (error) {
-        console.log(error);
-        return null;
-    }
+    return selector[0] === "#"
+        ? document.querySelector(selector)
+        : document.querySelectorAll(selector);
 };
 
 /**
