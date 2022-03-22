@@ -108,7 +108,7 @@ const staticData = {
     currentlyEditing: -1, // index of the blog being edited
 
     /**
-     * Saves the blog post content to the database
+     * Save the blog post content to the database
      *
      * @author Nayem Imtiaz (A00448982)
      * @author Sheikh Saad Abdullah (A00447871)
@@ -126,7 +126,7 @@ const staticData = {
     },
 
     /**
-     * Gets the blog post content from the database
+     * Get the blog post content from the database
      *
      * @author Nayem Imtiaz (A00448982)
      * @author Sheikh Saad Abdullah (A00447871)
@@ -139,7 +139,19 @@ const staticData = {
     },
 
     /**
-     * Gets all blogs from the database and populates a local list
+     * Remove the last word from the text area
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     */
+    undo() {
+        const editbox = $("#editbox");
+        editbox.value =
+            editbox.value.substring(0, editbox.value.trim().lastIndexOf(" ")) +
+            " ";
+    },
+
+    /**
+     * Get all blogs from the database and populates a local list
      *
      * @author Sheikh Saad Abdullah (A00447871)
      * @returns string to populate text area with
