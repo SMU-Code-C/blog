@@ -45,9 +45,8 @@ $.get = (endpoint) => {
             "Content-Type": "application/json",
         },
     })
-        .then((res) => {
-            response = res.json();
-        })
+        .then((res) => res.json())
+        .then((data) => (response = data))
         .catch((err) => {
             console.log(err);
         });
@@ -72,9 +71,8 @@ $.post = (endpoint, data) => {
         },
         body: JSON.stringify(data),
     })
-        .then((res) => {
-            response = res.json();
-        })
+        .then((res) => res.json())
+        .then((data) => (response = data))
         .catch((err) => {
             console.log(err);
         });
