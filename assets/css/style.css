@@ -106,7 +106,8 @@ textarea {
 }
 
 .btn-save:hover,
-.btn-cancel:hover {
+.btn-cancel:hover,
+.btn-undo:hover {
     transform: scale(var(--btn-grp-size-popup), var(--btn-grp-size-popup));
 }
 
@@ -258,7 +259,6 @@ button.kbd-wb:active,
 }
 
 button.kbd-wb:hover,
-.btn-undo:hover,
 .kbd-sp:hover,
 #fav:hover {
     transform: scale(var(--key-size-popup-sp), var(--key-size-popup));
