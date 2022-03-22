@@ -155,7 +155,7 @@
                                 <textarea
                                     id="editbox"
                                     class="mt-2"
-                                    rows="9"
+                                    rows="8"
                                     cols="80"
                                     :value="getEditText"
                                     @focus="kbdFocus = $el"
@@ -164,20 +164,29 @@
                                 <div class="row my-4">
                                     <div class="col text-center">
                                         <div class="btn-group" role="group">
-                                            <a
+                                            <button
+                                                type="button"
                                                 class="btn btn-save"
+                                                data-bs-target="#save-confirm"
                                                 data-bs-toggle="modal"
-                                                href="#save-confirm"
-                                                role="button"
-                                                >Save
-                                            </a>
-                                            <a
+                                            >
+                                                Save
+                                            </button>
+                                            <button
+                                                type="button"
                                                 class="btn btn-cancel"
+                                                data-bs-target="#cancel-confirm"
                                                 data-bs-toggle="modal"
-                                                href="#cancel-confirm"
-                                                role="button"
-                                                >Cancel
-                                            </a>
+                                            >
+                                                Cancel
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-secondary"
+                                                @mousedown="undo"
+                                            >
+                                                Undo
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

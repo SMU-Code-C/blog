@@ -37,6 +37,8 @@
 
     --key-size: 45px;
     --key-size-popup: 2;
+    --key-size-popup-sp: 1.5;
+    --key-size-popup-spc: 1.1;
     --key-font-size: 1.25em;
     --key-transition-duration: 0.15s;
 
@@ -71,7 +73,7 @@
 }
 
 body {
-    overflow: hidden; /* Hide scrollbars */
+    overflow: hidden; /* disable scrollbars */
 }
 
 .btn {
@@ -190,10 +192,6 @@ textarea {
     background-color: var(--mc-blue-dark);
 }
 
-.kbd-sp:hover {
-    transform: scale(1.5, var(--key-size-popup));
-}
-
 .kbd-sp:active {
     background-color: var(--mc-blue);
 }
@@ -220,24 +218,26 @@ textarea {
 }
 
 #kbd-spc:hover {
-    transform: scale(1.1, var(--key-size-popup));
+    transform: scale(var(--key-size-popup-spc), var(--key-size-popup));
 }
 
 /* Word Suggestions */
 
-button.kbd-wb {
+button.kbd-wb,
+.btn-undo {
     color: var(--btn-black);
     border-color: var(--btn-grey);
     background-color: var(--btn-grey-light);
 }
 
-button.kbd-wb:hover {
+button.kbd-wb:hover,
+.btn-undo:hover {
     color: var(--btn-white);
     background-color: var(--btn-grey);
-    transform: scale(1.5, var(--key-size-popup));
 }
 
-button.kbd-wb:active {
+button.kbd-wb:active,
+.btn-undo:active {
     background-color: var(--btn-grey-semilight);
 }
 
@@ -257,6 +257,9 @@ button.kbd-wb:active {
     grid-column: 10 / span 3;
 }
 
+button.kbd-wb:hover,
+.btn-undo:hover,
+.kbd-sp:hover,
 #fav:hover {
-    transform: scale(1.5, var(--key-size-popup));
+    transform: scale(var(--key-size-popup-sp), var(--key-size-popup));
 }
