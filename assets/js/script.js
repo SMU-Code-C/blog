@@ -58,10 +58,10 @@ $.get = (endpoint) => {
  *
  * @author Sheikh Saad Abdullah (A00447871)
  * @param {String} endpoint address to send request to
- * @param {Object} data data to send to the server
+ * @param {Object} payload data to send to the server
  * @returns response from the server
  */
-$.post = (endpoint, data) => {
+$.post = (endpoint, payload) => {
     let response = null;
     fetch(endpoint, {
         method: "POST",
@@ -69,7 +69,7 @@ $.post = (endpoint, data) => {
             Accept: "application/json",
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
     })
         .then((res) => res.json())
         .then((data) => (response = data))
