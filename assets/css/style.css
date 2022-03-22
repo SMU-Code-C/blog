@@ -45,8 +45,8 @@
     /* colours */
     --mc-red: #e35d6a;
     --mc-red-dark: var(--bs-red);
-    --mc-red-semilight: #f1aeb5;
     --mc-red-light: #f8d7da;
+    --mc-red-semilight: #f1aeb5;
 
     --mc-blue: #084298;
     --mc-blue-dark: #052c65;
@@ -57,8 +57,9 @@
     --btn-black: black;
     --btn-white: white;
     --btn-grey: grey;
-    --btn-grey-semilight: #969696;
+    --btn-grey-dark: darkgrey;
     --btn-grey-light: #ced4da;
+    --btn-grey-semilight: #969696;
 
     --btn-green: #75b798;
     --btn-green-dark: #146c43;
@@ -117,6 +118,10 @@ textarea {
 
 .btn-cancel:hover {
     background-color: var(--btn-yellow);
+}
+
+.btn-undo:hover {
+    border-color: var(--btn-grey-dark);
 }
 
 .btn-save,
