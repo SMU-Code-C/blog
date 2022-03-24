@@ -14,7 +14,7 @@ const PORT = 49151, // port to connect to server on
     SERVER_IPA = "http://140.184.230.209", // ip address of the UGDEV server
     SERVER_URL = `${SERVER_IPA}:${PORT}`, // complete URL of the server
     endpoints = { publish: "/publish", contentUpdate: "/blogPost" }, // list of endpoints
-    stopping_punctuation = ",;:.?!"; // punctuation symbols to put spaces after
+    pausing_punctuation = ",;:.?!"; // punctuation symbols to put spaces after
 
 /**
  * Aliases to create DOM objects using $() like in JQuery
@@ -245,7 +245,7 @@ const staticData = {
         } else {
             // Set the id'ed field to the longer string
             words.value = currChars.concat(
-                stopping_punctuation.includes(selection)
+                pausing_punctuation.includes(selection)
                     ? selection + " "
                     : selection
             );
@@ -267,38 +267,16 @@ const staticData = {
     },
 
     // alphanumeric and punctuation keys
-    nums: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
-
-    keys: [
-        "q",
-        "w",
-        "e",
-        "r",
-        "t",
-        "y",
-        "u",
-        "i",
-        "o",
-        "p",
-        "a",
-        "s",
-        "d",
-        "f",
-        "g",
-        "h",
-        "j",
-        "k",
-        "l",
-        "z",
-        "x",
-        "c",
-        "v",
-        "b",
-        "n",
-        "m",
-    ],
-
-    symbols: ['"', ",", ".", "?", "!", "(", ")"],
+    symbols: {
+        "'": '"',
+        ",": ":",
+        ".": "%",
+        "?": "+",
+        "!": "-",
+        "(": "*",
+        ")": "/",
+        "@": "&",
+    },
 
     glyphs: [
         "1",
