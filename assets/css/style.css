@@ -162,6 +162,41 @@ textarea {
 .kbd {
     grid-template-columns: repeat(var(--kbd-cols), var(--grid-ratio));
     grid-template-rows: repeat(var(--kbd-rows), var(--grid-ratio));
+    grid-template-areas:
+        "num num num num num num num num num num spl spl"
+        "chr chr chr chr chr chr chr chr chr chr spl spl"
+        "chr chr chr chr chr chr chr chr chr pnc spl spl"
+        "chr chr chr chr chr chr chr pnc pnc pnc spl spl"
+        "spl spl spl spl spl spl spl spl spl pnc pnc pnc"
+        "wbk wbk wbt wbt wbt wbt wbt wbt wbt wbf wbf wbf";
+}
+
+.kbd-num {
+    grid-area: "num";
+}
+
+.kbd-chr {
+    grid-area: "chr";
+}
+
+.kbd-spl {
+    grid-area: "spl";
+}
+
+.kbd-pnc {
+    grid-area: "pnc";
+}
+
+.kbd-wbk {
+    grid-area: "wbk";
+}
+
+.kbd-wbt {
+    grid-area: "wbt";
+}
+
+.kbd-wbf {
+    grid-area: "wbf";
 }
 
 /* Keys */
@@ -193,7 +228,7 @@ textarea {
 }
 
 .kbd-sp:hover,
-.kbd-sp-pressed {
+.kbd-sp[data-pressed="true"] {
     color: var(--btn-white);
     background-color: var(--mc-blue-dark);
 }

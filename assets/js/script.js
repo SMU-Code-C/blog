@@ -157,10 +157,9 @@ const staticData = {
      * @returns string to populate text area with
      */
     load() {
+        // TODO: Make it load blog publish state from server
         for (let i = 0; i < 3; i++) {
-            this.blogList[i] = localStorage.getItem(
-                `blog${this.currentlyEditing}`
-            );
+            this.blogList[i].published = gottenData[i];
         }
     },
 
@@ -214,7 +213,7 @@ const staticData = {
      * @returns whether the caps or shift (but not both) keys are in effect
      */
     altKeys() {
-        return (this.shiftOn || this.capsOn) && !(this.shiftOn && this.capsOn);
+        return this.shiftOn || this.capsOn; // && !(this.shiftOn && this.capsOn);
     },
 
     /**
@@ -268,6 +267,39 @@ const staticData = {
     },
 
     // alphanumeric and punctuation keys
+    nums: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"],
+
+    keys: [
+        "q",
+        "w",
+        "e",
+        "r",
+        "t",
+        "y",
+        "u",
+        "i",
+        "o",
+        "p",
+        "a",
+        "s",
+        "d",
+        "f",
+        "g",
+        "h",
+        "j",
+        "k",
+        "l",
+        "z",
+        "x",
+        "c",
+        "v",
+        "b",
+        "n",
+        "m",
+    ],
+
+    symbols: ['"', ",", ".", "?", "!", "(", ")"],
+
     glyphs: [
         "1",
         "2",

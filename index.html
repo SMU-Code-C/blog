@@ -46,7 +46,9 @@
         ></script>
     </head>
     <body x-data="staticData" x-cloak @load="load">
-        <div class="row d-flex justify-content-center my-2">
+        <div
+            class="row justify-content-center d-flex justify-content-center my-2"
+        >
             <div class="col-5">
                 <!-- Blog List:
                         Display list of blogs with options
@@ -56,10 +58,10 @@
                     author: Sheikh Saad Abdullah (A00447871)
                 -->
                 <!-- Start: Blog List -->
-                <div class="row">
+                <div class="row justify-content-center">
                     <div class="col">
                         <!-- Start: Blog Headers -->
-                        <div class="row my-1">
+                        <div class="row justify-content-center my-1">
                             <div class="col">
                                 <h2
                                     class="d-flex justify-content-center bl-header"
@@ -84,11 +86,14 @@
                         </div>
                         <!-- End: Blog Headers -->
                         <!-- Start: Blog Entries -->
-                        <div class="row">
+                        <div class="row justify-content-center">
                             <div class="col">
                                 <!-- Start: Entry Row -->
                                 <template x-for="(blog, index) in blogList">
-                                    <div class="row my-1" :id="$id('bl-entry')">
+                                    <div
+                                        class="row justify-content-center my-1"
+                                        :id="$id('bl-entry')"
+                                    >
                                         <div
                                             class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
                                             :id="$id('bl-name-box')"
@@ -141,7 +146,12 @@
                 </div>
                 <!-- End: Blog List -->
                 <!-- Start: Edit Group -->
-                <div class="row" x-show="editOn" x-transition x-cloak>
+                <div
+                    class="row justify-content-center"
+                    x-show="editOn"
+                    x-transition
+                    x-cloak
+                >
                     <div class="col">
                         <!-- Edit Area:
                                 Text area to edit blog posts in,
@@ -150,20 +160,15 @@
                             author: Nayem Imtiaz (A00448982)
                         -->
                         <!-- Start: Edit Area -->
-                        <div class="row my-1">
+                        <div class="row justify-content-center my-2">
                             <div class="col text-center">
-                                <textarea
-                                    id="editbox"
-                                    class="mt-2"
-                                    rows="8"
-                                    cols="80"
-                                    :value="getEditText"
-                                    @focus="kbdFocus = $el"
-                                ></textarea>
                                 <!-- Start: Buttons -->
-                                <div class="row my-4">
+                                <div class="row justify-content-center my-4">
                                     <div class="col text-center">
-                                        <div class="btn-group" role="group">
+                                        <div
+                                            class="d-flex justify-content-evenly"
+                                            role="group"
+                                        >
                                             <button
                                                 type="button"
                                                 class="btn btn-save"
@@ -369,6 +374,13 @@
                                     </div>
                                 </div>
                                 <!-- End: Cancel Modals -->
+                                <textarea
+                                    id="editbox"
+                                    rows="8"
+                                    cols="80"
+                                    :value="getEditText"
+                                    @focus="kbdFocus = $el"
+                                ></textarea>
                             </div>
                         </div>
                         <!-- End: Edit Area -->
@@ -379,51 +391,51 @@
                             author: Naziya Tasnim (A00447506)
                         -->
                         <!-- Start: Keyboard -->
-                        <div class="row">
+                        <div class="row justify-content-center my-4">
                             <div class="col d-grid gap-4 kbd">
                                 <!-- Start: Caps Key -->
                                 <button
+                                    type="button"
                                     id="kbd-caps"
                                     class="btn kbd-sp"
-                                    :class="capsOn && 'kbd-sp-pressed'"
-                                    type="button"
+                                    :data-pressed="capsOn"
                                     @mousedown="capsOn = !capsOn"
                                     x-text="capsOn ? sp.caps.toUpperCase() : sp.caps"
                                 ></button>
                                 <!-- End: Caps Key -->
                                 <!-- Start: Shift Key -->
                                 <button
+                                    type="button"
                                     id="kbd-shift"
                                     class="btn kbd-sp"
-                                    :class="shiftOn && 'kbd-sp-pressed'"
-                                    type="button"
+                                    :data-pressed="shiftOn"
                                     @mousedown="shiftOn = !shiftOn"
                                     x-text="shiftOn ? sp.shift.toUpperCase() : sp.shift"
                                 ></button>
                                 <!-- End: Shift Key -->
                                 <!-- Start: Delete Key -->
                                 <button
+                                    type="button"
                                     id="kbd-del"
                                     class="btn kbd-sp"
-                                    type="button"
                                     @mousedown="addChar('del')"
                                     x-text="sp.delete"
                                 ></button>
                                 <!-- End: Delete Key -->
                                 <!-- Start: Return Key -->
                                 <button
+                                    type="button"
                                     id="kbd-cr"
                                     class="btn kbd-sp"
-                                    type="button"
                                     @mousedown="addChar('\n')"
                                     x-text="sp.return"
                                 ></button>
                                 <!-- End: Return Key -->
                                 <!-- Start: Space Key -->
                                 <button
+                                    type="button"
                                     id="kbd-spc"
                                     class="btn kbd-sp"
-                                    type="button"
                                     @mousedown="addChar(' ')"
                                     x-text="sp.space"
                                 ></button>
@@ -431,6 +443,7 @@
                                 <!-- Start: Character Keys -->
                                 <template x-for="glyph in glyphs">
                                     <button
+                                        type="button"
                                         class="btn btn-outline-danger kbd-char"
                                         @mousedown="addChar(key(glyph))"
                                         x-text="key(glyph)"
@@ -439,9 +452,9 @@
                                 <!-- End: Character Keys -->
                                 <!-- Start: Word Suggestions -->
                                 <button
-                                    class="btn kbd-wb"
-                                    id="suggest"
                                     type="button"
+                                    id="suggest"
+                                    class="btn kbd-wb"
                                 >
                                     Words
                                 </button>
@@ -452,9 +465,9 @@
                                     @focus="kbdFocus = $el"
                                 />
                                 <button
-                                    class="btn kbd-wb"
-                                    id="fav"
                                     type="button"
+                                    id="fav"
+                                    class="btn kbd-wb"
                                 >
                                     <i class="bi bi-star-fill"></i>
                                 </button>
