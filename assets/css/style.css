@@ -224,7 +224,7 @@ textarea {
 
 #kbd-spc {
     grid-row: 5;
-    grid-column: 1 / calc(var(--kbd-cols) - 3);
+    grid-column: 3 / calc(var(--kbd-cols) - 1);
 }
 
 #kbd-spc:hover {
@@ -260,11 +260,11 @@ button.kbd-wb:active,
 }
 
 #wb {
-    grid-column: 3 / span 7;
+    grid-column: 3 / span 8;
 }
 
 #fav {
-    grid-column: 10 / span 3;
+    grid-column: 11 / span 2;
 }
 
 button.kbd-wb:hover,
