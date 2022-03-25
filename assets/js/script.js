@@ -239,7 +239,7 @@ const staticData = {
      * @author Naziya Tasnim (A00447506)
      * @param {String} selection character to add to text area
      */
-    addChar(selection) {
+    addText(selection) {
         // DOM object of the text area
         let words = this.kbdFocus ? this.kbdFocus : $("#editbox");
 
