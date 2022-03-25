@@ -223,7 +223,14 @@ const staticData = {
      * @returns uppercase of char if keyboard is in caps/shift mode
      */
     key(char) {
-        return this.altKeys() ? char.toUpperCase() : char;
+        if (this.altKeys()) {
+            if (Object.keys(this.symbols).includes(char)) {
+                char = this.symbols[char];
+            } else {
+                return char.toUpperCase();
+            }
+        }
+        return char;
     },
 
     /**
@@ -275,7 +282,7 @@ const staticData = {
         "!": "-",
         "(": "*",
         ")": "/",
-        "@": "&",
+        "&": "@",
     },
 
     glyphs: [
@@ -308,7 +315,7 @@ const staticData = {
         "j",
         "k",
         "l",
-        '"',
+        "&",
         "z",
         "x",
         "c",
@@ -318,6 +325,7 @@ const staticData = {
         "m",
         ",",
         ".",
+        "'",
         "?",
         "!",
         "(",
