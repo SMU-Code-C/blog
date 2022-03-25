@@ -13,7 +13,7 @@
 const PORT = 49151, // port to connect to server on
     SERVER_IPA = "http://140.184.230.209", // ip address of the UGDEV server
     SERVER_URL = `${SERVER_IPA}:${PORT}`, // complete URL of the server
-    endpoints = { publish: "/publish", contentUpdate: "/blogPost" }, // list of endpoints
+    endpoints = { publish: "/publish", content: "/blogPost" }, // list of endpoints
     pausing_punctuation = ",;:.?!"; // punctuation symbols to put spaces after
 
 /**
@@ -88,9 +88,9 @@ const staticData = {
      * -------------------------------------------------------------------- */
 
     blogList: [
-        { name: "Blog 1", content: "", published: false },
-        { name: "Blog 2", content: "", published: false },
-        { name: "Blog 3", content: "", published: false },
+        { id: 1, content: "", published: false },
+        { id: 2, content: "", published: false },
+        { id: 3, content: "", published: false },
     ],
 
     /** ---------------------------- Edit Group ---------------------------
@@ -159,7 +159,7 @@ const staticData = {
     load() {
         // TODO: Make it load blog publish state from server
         for (let i = 0; i < 3; i++) {
-            this.blogList[i].published = gottenData[i];
+            // this.blogList[i].published = gottenData[i];
         }
     },
 

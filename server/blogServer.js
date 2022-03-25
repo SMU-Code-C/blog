@@ -28,7 +28,7 @@ server.listen(PORT, () => {
 // ---------------------- Global data -----------------------------
 
 const blogs = { published: [false, false, false], contents: ["", "", ""] }, // list of blog posts being tracked
-    endpoints = { publish: "/publish", contentUpdate: "/blogPost" }; // list of endpoints
+    endpoints = { publish: "/publish", content: "/blogPost" }; // list of endpoints
 
 // -------------------------- GET ---------------------------------
 
@@ -38,23 +38,19 @@ server.get(endpoints.publish, (req, res) => {
     return res.status(200).send({ data: blogs.published });
 });
 
+for (let i = 0; i < blogs.contents.length; i++) {
+    server.get(`${endpoints.content}-${i + 1}`, (req, res) => {
+        console.log(`Request received at ${req.url}`);
+        return res.status(200).send({ data: blogs.contents[i] });
+    });
+}
+
 // -------------------------- POST --------------------------------
 
 // listen to POST requests to endpoint and invoke the callback function
 for (const endpoint in Object.values(endpoints)) {
-    server.post(endpoint, update);
-}
-
-// ------------------------- helpers ------------------------------
-
-/**
- * Save data received from client to blog array and log it to console
- *
- * @param {Request} req request object received from client
- * @param {Response} res response object to send back to client
- * @returns set response status and send success message
- */
-function update(req, res) {
-    blogs[req.body.data.key][req.body.id] = req.body.data.value; // save data received to contents array
-    return res.status(200).send("Data received.");
+    server.post(endpoint, (req, res) => {
+        blogs[req.body.data.key][req.body.id] = req.body.data.value; // save data received to contents array
+        return res.status(200).send("Data received.");
+    });
 }

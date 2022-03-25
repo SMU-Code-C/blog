@@ -112,7 +112,7 @@
                                             /> -->
                                             <h3
                                                 class="bl-name my-1"
-                                                x-text="`Blog ${index + 1}`"
+                                                x-text="`Blog ${blog.id}`"
                                             ></h3>
                                         </div>
                                         <div
@@ -136,8 +136,7 @@
                                                 type="checkbox"
                                                 role="switch"
                                                 :id="$id('bl-publish')"
-                                                :checked="blog.published"
-                                                @change="blogList[index].published = !blogList[index].published"
+                                                x-model="blog.published"
                                             />
                                         </div>
                                     </div>
@@ -403,7 +402,7 @@
                                     id="kbd-caps"
                                     class="btn kbd-sp"
                                     :data-pressed="capsOn"
-                                    @mousedown="capsOn = !capsOn"
+                                    @mousedown="if (!shiftOn) capsOn = !capsOn"
                                     x-text="capsOn ? sp.caps.toUpperCase() : sp.caps"
                                 ></button>
                                 <!-- End: Caps Key -->
@@ -413,7 +412,7 @@
                                     id="kbd-shift"
                                     class="btn kbd-sp"
                                     :data-pressed="shiftOn"
-                                    @mousedown="shiftOn = !shiftOn"
+                                    @mousedown="if (!capsOn) shiftOn = !shiftOn"
                                     x-text="shiftOn ? sp.shift.toUpperCase() : sp.shift"
                                 ></button>
                                 <!-- End: Shift Key -->
