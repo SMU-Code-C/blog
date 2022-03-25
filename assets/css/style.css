@@ -154,6 +154,10 @@ textarea {
     color: var(--mc-red-dark);
 }
 
+.bl-name {
+    color: var(--mc-blue);
+}
+
 /* --------------------------- Keyboard Grid ---------------------------
     Style rules for the keyboard grid and special keys
 
