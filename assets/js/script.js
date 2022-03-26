@@ -208,27 +208,19 @@ const staticData = {
     shiftOn: false, // state of the shift key
 
     /**
-     * Checks whether the keyboard is currently in shift or caps mode
-     *
-     * @returns whether the caps or shift (but not both) keys are in effect
-     */
-    altKeys() {
-        return this.shiftOn || this.capsOn; // && !(this.shiftOn && this.capsOn);
-    },
-
-    /**
      * Character of the key pressed
      *
      * @param {String} char character or string to convert
      * @returns uppercase of char if keyboard is in caps/shift mode
      */
     key(char) {
-        if (this.altKeys()) {
-            if (Object.keys(this.symbols).includes(char)) {
-                char = this.symbols[char];
-            } else {
-                return char.toUpperCase();
-            }
+        if (
+            this.shiftOn ||
+            this.capsOn /* && !(this.shiftOn && this.capsOn) */
+        ) {
+            char = Object.keys(this.symbols).includes(char)
+                ? this.symbols[char]
+                : char.toUpperCase();
         }
         return char;
     },
