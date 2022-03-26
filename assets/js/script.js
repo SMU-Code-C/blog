@@ -53,6 +53,8 @@ $.get = (endpoint) => {
     return response;
 };
 
+let res = $.get("/publish");
+
 /**
  * Wrapper function around the fetch API to make POST requests
  *
@@ -78,6 +80,8 @@ $.post = (endpoint, payload) => {
         });
     return response;
 };
+
+$.post("/content", { id : 0, data : { key : "example", value : "lipsum" } })
 
 // global data store for Alpine.js
 const staticData = {

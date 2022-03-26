@@ -452,6 +452,8 @@
                                     type="button"
                                     id="suggest"
                                     class="btn kbd-wb"
+                                    data-bs-target="#suggestions-list"
+                                    data-bs-toggle="modal"
                                 >
                                     Words
                                 </button>
@@ -469,6 +471,43 @@
                                     <i class="bi bi-star-fill"></i>
                                 </button>
                                 <!-- End: Word Suggestions -->
+                                <div
+                                    class="modal fade"
+                                    id="suggestions-list"
+                                    aria-hidden="true"
+                                    aria-labelledby="exampleModalToggleLabel"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="exampleModalToggleLabel"
+                                                >
+                                                    Modal 1
+                                                </h5>
+                                                <button
+                                                    type="button"
+                                                    class="btn-close"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                ></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <button
+                                                    class="btn btn-primary"
+                                                    data-bs-target="#exampleModalToggle2"
+                                                    data-bs-toggle="modal"
+                                                >
+                                                    Open second modal
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <!-- End: Keyboard -->
