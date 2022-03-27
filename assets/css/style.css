@@ -32,6 +32,7 @@
 
     /* buttons config */
     --btn-grp-size-popup: 2;
+    --btn-wb-size-popup: 1.2;
 
     --bl-width: 100px;
     --bl-height: 30px;
@@ -172,33 +173,39 @@ textarea {
 /* Keys */
 
 .kbd-sp,
-.kbd button.kbd-char {
+.kbd-char {
     color: var(--btn-black);
 }
 
-.kbd button.kbd-char {
+.kbd-char {
     width: var(--key-size);
     height: var(--key-size);
+    border-color: var(--mc-red-dark);
     background-color: var(--mc-white);
 }
 
-.kbd button.kbd-char:hover {
+.kbd-char:hover {
     color: var(--btn-white);
     background-color: var(--mc-red-dark);
 }
 
-.kbd button.kbd-char:active {
+.kbd-char:active {
     background-color: var(--mc-red);
 }
 
 .kbd-sp {
-    border-color: var(--mc-blue-dark);
-    background-color: var(--mc-blue-light);
     grid-column: 11 / var(--key-sp-width);
 }
 
+.kbd-sp,
+.wb-word {
+    border-color: var(--mc-blue-dark);
+    background-color: var(--mc-blue-light);
+}
+
+.kbd-sp[data-pressed="true"],
 .kbd-sp:hover,
-.kbd-sp[data-pressed="true"] {
+.wb-word:hover {
     color: var(--btn-white);
     background-color: var(--mc-blue-dark);
 }
@@ -266,6 +273,10 @@ button.kbd-wb:active,
 
 #fav {
     grid-column: 11 / span 2;
+}
+
+.wb-word:hover {
+    transform: scale(var(--btn-wb-size-popup), var(--btn-wb-size-popup));
 }
 
 button.kbd-wb:hover,

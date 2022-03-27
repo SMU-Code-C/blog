@@ -441,7 +441,7 @@
                                 <template x-for="glyph in glyphs">
                                     <button
                                         type="button"
-                                        class="btn btn-outline-danger kbd-char"
+                                        class="btn kbd-char"
                                         @mousedown="addText(key(glyph))"
                                         x-text="key(glyph)"
                                     ></button>
@@ -462,11 +462,13 @@
                                     id="wb"
                                     class="kbd-wb"
                                     @focus="kbdFocus = $el"
+                                    value
                                 />
                                 <button
                                     type="button"
                                     id="fav"
                                     class="btn kbd-wb"
+                                    @mousedown="saveWord"
                                 >
                                     <i class="bi bi-star-fill"></i>
                                 </button>
@@ -487,23 +489,36 @@
                                                     class="modal-title"
                                                     id="exampleModalToggleLabel"
                                                 >
-                                                    Modal 1
+                                                    Word Bank
                                                 </h5>
                                                 <button
                                                     type="button"
-                                                    class="btn-close"
+                                                    class="btn btn-outline-danger"
                                                     data-bs-dismiss="modal"
-                                                    aria-label="Close"
-                                                ></button>
+                                                    aria-role="Close"
+                                                >
+                                                    Close
+                                                </button>
                                             </div>
                                             <div class="modal-body">
-                                                <button
-                                                    class="btn btn-primary"
-                                                    data-bs-target="#exampleModalToggle2"
-                                                    data-bs-toggle="modal"
+                                                <template
+                                                    x-if="wordBank.length === 0"
+                                                    ><p>
+                                                        No words added to the
+                                                        word bank yet.
+                                                    </p>
+                                                </template>
+                                                <template
+                                                    x-for="word in wordBank"
                                                 >
-                                                    Open second modal
-                                                </button>
+                                                    <button
+                                                        type="button"
+                                                        class="btn wb-word m-2"
+                                                        @mousedown="putWord(word)"
+                                                        data-bs-dismiss="modal"
+                                                        x-text="word"
+                                                    ></button>
+                                                </template>
                                             </div>
                                         </div>
                                     </div>

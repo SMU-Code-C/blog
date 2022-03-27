@@ -81,7 +81,7 @@ $.post = (endpoint, payload) => {
     return response;
 };
 
-$.post("/content", { id : 0, data : { key : "example", value : "lipsum" } })
+$.post("/content", { id: 0, data: { key: "example", value: "lipsum" } });
 
 // global data store for Alpine.js
 const staticData = {
@@ -210,6 +210,20 @@ const staticData = {
     kbdFocus: null, // text field to focus
     capsOn: false, // state of the caps key
     shiftOn: false, // state of the shift key
+    wordBank: [], // array to store saved words
+
+    saveWord() {
+        let wb = $("#wb");
+        if (wb.value && !this.wordBank.includes(wb.value)) {
+            this.wordBank.push(wb.value);
+        }
+        wb.value = "";
+    },
+
+    putWord(word) {
+        this.kbdFocus = $("#editbox");
+        this.addText(word);
+    },
 
     /**
      * Character of the key pressed
@@ -248,7 +262,8 @@ const staticData = {
         } else {
             // Set the id'ed field to the longer string
             words.value = currChars.concat(
-                pausing_punctuation.includes(selection)
+                pausing_punctuation.includes(selection) ||
+                    this.wordBank.includes(selection)
                     ? selection + " "
                     : selection
             );
