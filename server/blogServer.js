@@ -27,21 +27,29 @@ server.listen(PORT, () => {
 
 // ---------------------- Global data -----------------------------
 
-const blogs = { published: [false, false, false], contents: ["", "", ""] }, // list of blog posts being tracked
-    endpoints = { publish: "/publish", content: "/blogPost" }; // list of endpoints
+const blogs = { publish: [false, false, false], content: ["", "", ""] }, // list of blog posts being tracked
+    endpoints = { publish: "/publish", content: "/content" }; // list of endpoints
+
+// --------------------- Data Structure ---------------------------
+
+const struct = {
+    id: Number, // index of data
+    key: String, // publish || content
+    value: Boolean || String, // value of data
+};
 
 // -------------------------- GET ---------------------------------
 
 // listen to GET requests to endpoint and invoke the callback function
 server.get(endpoints.publish, (req, res) => {
     console.log(`Request received at ${req.url}`);
-    return res.status(200).send({ data: blogs.published });
+    return res.status(200).send({ data: blogs.publish });
 });
 
-for (let i = 0; i < blogs.contents.length; i++) {
+for (let i = 0; i < blogs.content.length; i++) {
     server.get(`${endpoints.content}-${i + 1}`, (req, res) => {
         console.log(`Request received at ${req.url}`);
-        return res.status(200).send({ data: blogs.contents[i] });
+        return res.status(200).send({ data: blogs.content[i] });
     });
 }
 
@@ -50,7 +58,7 @@ for (let i = 0; i < blogs.contents.length; i++) {
 // listen to POST requests to endpoint and invoke the callback function
 for (const endpoint in Object.values(endpoints)) {
     server.post(endpoint, (req, res) => {
-        blogs[req.body.data.key][req.body.id] = req.body.data.value; // save data received to contents array
+        blogs[req.body.key][req.body.id] = req.body.value; // save data received to contents array
         return res.status(200).send("Data received.");
     });
 }
