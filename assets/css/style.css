@@ -239,8 +239,11 @@ textarea {
     transform: scale(var(--key-size-popup-spc), var(--key-size-popup));
 }
 
-/* Word Suggestions */
+/* --------------------------- Word Suggestions ---------------------------
+    Style rules for the Word Bank and Suggestions
 
+    author: Mohak Shrivastava (A00445470)
+------------------------------------------------------------------------ */
 button.kbd-wb,
 .btn-undo {
     color: var(--btn-black);
