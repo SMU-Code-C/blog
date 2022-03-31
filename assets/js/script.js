@@ -10,7 +10,7 @@
  */
 
 // global data (general-purpose)
-const PORT = 49151, // port to connect to server on
+const PORT = 49149, // port to connect to server on
     SERVER_IPA = "http://140.184.230.209", // ip address of the UGDEV server
     SERVER_URL = `${SERVER_IPA}:${PORT}`, // complete URL of the server
     endpoints = { publish: "/publish", content: "/blogPost" }, // list of endpoints
@@ -23,85 +23,67 @@ const PORT = 49151, // port to connect to server on
  * @param {String} selector selector for the element
  * @returns DOM Object for specified element
  */
-const $ = (selector) => {
+const $_ = (selector) => {
     return selector[0] === "#"
         ? document.querySelector(selector)
         : document.querySelectorAll(selector);
 };
-
-/**
- * Wrapper function around the fetch API to make GET requests
- *
- * @author Sheikh Saad Abdullah (A00447871)
- * @param {String} endpoint address to send request to
- * @returns response from the server
- */
-$.get = (endpoint) => {
-    let response = null;
-    fetch(endpoint, {
-        method: "GET",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-    })
-        .then((res) => res.json())
-        .then((data) => (response = data))
-        .catch((err) => {
-            console.log(err);
-        });
-    return response;
-};
-
-let res = $.get("/publish");
-
-/**
- * Wrapper function around the fetch API to make POST requests
- *
- * @author Sheikh Saad Abdullah (A00447871)
- * @param {String} endpoint address to send request to
- * @param {Object} payload data to send to the server
- * @returns response from the server
- */
-$.post = (endpoint, payload) => {
-    let response = null;
-    fetch(endpoint, {
-        method: "POST",
-        headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-    })
-        .then((res) => res.json())
-        .then((data) => (response = data))
-        .catch((err) => {
-            console.log(err);
-        });
-    return response;
-};
-
-$.post("/content", { id: 0, data: { key: "example", value: "lipsum" } });
 
 // global data store for Alpine.js
 const staticData = {
     /** ---------------------------- Blog List ----------------------------
      * Database to store the list of blogs and publication states
      *
+     * @author Mohak Shrivastava (A00445470)
      * @author Sheikh Saad Abdullah (A00447871)
      * -------------------------------------------------------------------- */
 
     blogList: [
-        { id: 1, content: "", published: false },
-        { id: 2, content: "", published: false },
-        { id: 3, content: "", published: false },
+        { id: 1, published: false },
+        { id: 2, published: false },
+        { id: 3, published: false },
     ],
+
+    publish(elem, index) {
+        $.post(
+            SERVER_URL + `/publish-${index}`,
+            { data: elem.checked },
+            (res) => console.log(res)
+        ).fail((err) => console.log(err));
+    },
+
+    /**
+     * Enable or disable the editing of a blog post
+     *
+     * @author Mohak Shrivastava (A00445470)
+     * @param {Object} elem DOM object of the switched edit toggle
+     * @param {Integer} index index of the toggle switch
+     */
+    editText(elem, index) {
+        $_(".bl-name")[index].disabled = this.editOn;
+
+        if (this.editOn) {
+            this.kbdFocus = $_("#editbox");
+        }
+
+        this.editOn = !this.editOn;
+        this.currentlyEditing = index;
+
+        this.cancel();
+
+        $_(".bl-edit").forEach((el) => {
+            if (!el.checked) {
+                el.style.visibility = elem.checked ? "hidden" : "visible";
+            }
+        });
+
+        elem.checked = false;
+    },
 
     /** ---------------------------- Edit Group ---------------------------
      * Variables and functions to control the behaviour
      * of the group of toggle switches and list of blog posts displayed
      *
-     * @author Mohak Shrivastava (A00445470)
      * @author Nayem Imtiaz (A00448982)
      * @author Sheikh Saad Abdullah (A00447871)
      * -------------------------------------------------------------------- */
@@ -117,14 +99,11 @@ const staticData = {
      * @returns string to populate text area with
      */
     save() {
-        if (typeof Storage !== "undefined") {
-            localStorage.setItem(
-                `blog${this.currentlyEditing}`,
-                $("#editbox").value
-            );
-        } else {
-            console.error("Local storage unavailable.");
-        }
+        $.post(
+            SERVER_URL + `/content-${this.currentlyEditing}`,
+            { data: $_("#editbox").value },
+            (res) => console.log(res)
+        ).fail((err) => console.log(err));
     },
 
     /**
@@ -135,9 +114,12 @@ const staticData = {
      * @returns string to populate text area with
      */
     cancel() {
-        $("#editbox").value = localStorage.getItem(
-            `blog${this.currentlyEditing}`
-        );
+        $.get(SERVER_URL + `/content-${this.currentlyEditing}`, (res) => {
+            // set values to each input field from data received
+            $_("#editbox").value = res.data;
+        }).fail((err) => {
+            console.log(err);
+        });
     },
 
     /**
@@ -146,10 +128,7 @@ const staticData = {
      * @author Sheikh Saad Abdullah (A00447871)
      */
     undo() {
-        const editbox = $("#editbox");
-        // editbox.value =
-        //     editbox.value.substring(0, editbox.value.trim().lastIndexOf(" ")) +
-        //     " ";
+        const editbox = $_("#editbox");
         editbox.value =
             editbox.value.substring(0, editbox.value.lastIndexOf(" ")) + " ";
     },
@@ -161,44 +140,18 @@ const staticData = {
      * @returns string to populate text area with
      */
     load() {
-        // TODO: Make it load blog publish state from server
-        for (let i = 0; i < 3; i++) {
-            // this.blogList[i].published = gottenData[i];
-        }
+        $.get(SERVER_URL + "/publish", (res) => {
+            // set values to each input field from data received
+            res.data.forEach((el, i) => {
+                this.blogList[i].published = el;
+            });
+        }).fail((err) => console.log(err));
     },
 
-    /**
-     * Populate the text area with the currently editing blog content
-     *
-     * @author Nayem Imtiaz (A00448982)
-     * @returns string to populate text area with
-     */
-    getEditText() {
-        return localStorage.getItem(`blog${this.currentlyEditing}`) || "";
-    },
-
-    /**
-     * Enable or disable the editing of a blog post
-     *
-     * @author Mohak Shrivastava (A00445470)
-     * @param {Object} elem DOM object of the switched edit toggle
-     * @param {Integer} index index of the toggle switch
-     */
-    editText(elem, index) {
-        $(".bl-name")[index].disabled = this.editOn;
-
-        if (this.editOn) {
-            this.kbdFocus = $("#editbox");
-        }
-
-        this.editOn = !this.editOn;
-        this.currentlyEditing = index;
-
-        $(".bl-edit").forEach((el) => {
-            if (!el.checked) {
-                el.style.visibility = elem.checked ? "hidden" : "visible";
-            }
-        });
+    closeEdit() {
+        $_(`#bl-edit-${this.currentlyEditing + 1}`).dispatchEvent(
+            new Event("change")
+        );
     },
 
     /** ----------------------------- Keyboard ----------------------------
@@ -210,10 +163,11 @@ const staticData = {
     kbdFocus: null, // text field to focus
     capsOn: false, // state of the caps key
     shiftOn: false, // state of the shift key
+    deleteOn: false,
     wordBank: [], // array to store saved words
 
     saveWord() {
-        let wb = $("#wb");
+        let wb = $_("#wb");
         if (wb.value && !this.wordBank.includes(wb.value)) {
             this.wordBank.push(wb.value);
         }
@@ -221,8 +175,12 @@ const staticData = {
     },
 
     putWord(word) {
-        this.kbdFocus = $("#editbox");
-        this.addText(word);
+        if (this.deleteOn) {
+            this.wordBank.splice(this.wordBank.indexOf(word), 1);
+        } else {
+            this.kbdFocus = $_("#editbox");
+            this.addText(word);
+        }
     },
 
     /**
@@ -251,7 +209,7 @@ const staticData = {
      */
     addText(selection) {
         // DOM object of the text area
-        let words = this.kbdFocus ? this.kbdFocus : $("#editbox");
+        let words = this.kbdFocus ? this.kbdFocus : $_("#editbox");
 
         // Get the value from the id'ed field
         let currChars = words.value;

@@ -30,6 +30,13 @@
         <!-- Custom CSS -->
         <link rel="stylesheet" href="assets/css/style.css" />
 
+        <!-- JQuery JS -->
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"
+        ></script>
+
         <!-- Custom JS -->
         <script src="assets/js/script.js"></script>
 
@@ -39,9 +46,9 @@
             src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
         ></script>
     </head>
-    <body x-data="staticData" x-cloak @load="load">
+    <body x-data="staticData" x-init="load" x-cloak>
         <div
-            class="row justify-content-center d-flex justify-content-center my-2"
+            class="row justify-content-center d-flex justify-content-center m-5"
         >
             <div class="col-5">
                 <!-- Blog List:
@@ -52,10 +59,14 @@
                     author: Sheikh Saad Abdullah (A00447871)
                 -->
                 <!-- Start: Blog List -->
-                <div class="row justify-content-center">
+                <div
+                    class="row justify-content-center"
+                    x-show="!editOn"
+                    x-transition
+                >
                     <div class="col">
                         <!-- Start: Blog Headers -->
-                        <div class="row justify-content-center my-1">
+                        <div class="row justify-content-center mt-5">
                             <div class="col">
                                 <h2
                                     class="d-flex justify-content-center bl-header"
@@ -79,6 +90,7 @@
                             </div>
                         </div>
                         <!-- End: Blog Headers -->
+                        <hr class="my-2" />
                         <!-- Start: Blog Entries -->
                         <div class="row justify-content-center">
                             <div class="col">
@@ -130,7 +142,8 @@
                                                 type="checkbox"
                                                 role="switch"
                                                 :id="$id('bl-publish')"
-                                                x-model="blog.published"
+                                                @change="publish($el, index)"
+                                                :checked="blog.published"
                                             />
                                         </div>
                                     </div>
@@ -180,7 +193,7 @@
                                                 data-bs-target="#cancel-confirm"
                                                 data-bs-toggle="modal"
                                             >
-                                                Cancel
+                                                Undo All
                                             </button>
                                             <button
                                                 type="button"
@@ -188,6 +201,13 @@
                                                 @mousedown="undo"
                                             >
                                                 Undo
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-danger"
+                                                @mousedown="closeEdit"
+                                            >
+                                                Close
                                             </button>
                                         </div>
                                     </div>
@@ -303,7 +323,8 @@
                                                 </h5>
                                             </div>
                                             <div class="modal-body">
-                                                Are you sure you want to CANCEL?
+                                                Are you sure you want to UNDO
+                                                ALL?
                                             </div>
                                             <div class="modal-footer">
                                                 <button
@@ -347,7 +368,7 @@
                                             </div>
                                             <div class="modal-body">
                                                 Are you REALLY sure you want to
-                                                CANCEL?
+                                                UNDO ALL?
                                             </div>
                                             <div class="modal-footer">
                                                 <button
@@ -374,8 +395,7 @@
                                 <textarea
                                     id="editbox"
                                     rows="8"
-                                    cols="80"
-                                    :value="getEditText"
+                                    cols="93"
                                     @focus="kbdFocus = $el"
                                 ></textarea>
                             </div>
@@ -491,11 +511,24 @@
                                                 >
                                                     Word Bank
                                                 </h5>
+                                                <input
+                                                    type="checkbox"
+                                                    class="btn-check"
+                                                    id="wb-del"
+                                                    autocomplete="off"
+                                                    x-model="deleteOn"
+                                                />
+                                                <label
+                                                    class="btn btn-outline-dark"
+                                                    for="wb-del"
+                                                    >Delete
+                                                </label>
                                                 <button
                                                     type="button"
                                                     class="btn btn-outline-danger"
                                                     data-bs-dismiss="modal"
                                                     aria-role="Close"
+                                                    @mousedown="deleteOn = false"
                                                 >
                                                     Close
                                                 </button>
