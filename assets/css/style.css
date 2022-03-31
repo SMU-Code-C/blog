@@ -9,7 +9,8 @@
     author: Sheikh Saad Abdullah (A00447871)
 */
 
-/* -------------------------- Bootstrap Icons -------------------------- */
+/* ----------------------------- Bootstrap ----------------------------- */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css");
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css");
 
 /* --------------------------- Global Styles ---------------------------
@@ -31,29 +32,36 @@
 
     /* buttons config */
     --btn-grp-size-popup: 2;
+    --btn-wb-size-popup: 1.2;
 
     --bl-width: 100px;
     --bl-height: 30px;
 
     --key-size: 45px;
     --key-size-popup: 2;
+    --key-size-popup-sp: 1.5;
+    --key-size-popup-spc: 1.1;
     --key-font-size: 1.25em;
     --key-transition-duration: 0.15s;
 
     /* colours */
-    --mc-red: #f1aeb5;
+    --mc-red: #e35d6a;
     --mc-red-dark: var(--bs-red);
     --mc-red-light: #f8d7da;
+    --mc-red-semilight: #f1aeb5;
 
-    --mc-blue: #052c65;
+    --mc-blue: #084298;
+    --mc-blue-dark: #052c65;
     --mc-blue-light: #cfe2ff;
 
     --mc-white: antiquewhite;
 
-    --btn-black: var(--bs-black);
-    --btn-white: var(--bs-white);
-    --btn-grey: var(--bs-gray);
+    --btn-black: black;
+    --btn-white: white;
+    --btn-grey: grey;
+    --btn-grey-dark: darkgrey;
     --btn-grey-light: #ced4da;
+    --btn-grey-semilight: #969696;
 
     --btn-green: #75b798;
     --btn-green-dark: #146c43;
@@ -65,6 +73,10 @@
 
 [x-cloak] {
     display: none !important;
+}
+
+body {
+    overflow: hidden; /* disable scrollbars */
 }
 
 .btn {
@@ -88,27 +100,40 @@ textarea {
 
 .btn-save {
     color: var(--btn-black);
-    background-color: var(--mc-red-light);
     border-color: var(--mc-red-dark);
 }
 
 .btn-cancel {
     color: var(--btn-black);
-    background-color: var(--btn-yellow-light);
     border-color: var(--btn-yellow-dark);
 }
 
 .btn-save:hover,
-.btn-cancel:hover {
+.btn-cancel:hover,
+.btn-undo:hover {
     transform: scale(var(--btn-grp-size-popup), var(--btn-grp-size-popup));
 }
 
 .btn-save:hover {
-    background-color: var(--mc-red);
+    background-color: var(--mc-red-semilight);
 }
 
 .btn-cancel:hover {
     background-color: var(--btn-yellow);
+}
+
+.btn-undo:hover {
+    border-color: var(--btn-grey-dark);
+}
+
+.btn-save,
+.btn-save:active {
+    background-color: var(--mc-red-light);
+}
+
+.btn-cancel,
+.btn-cancel:active {
+    background-color: var(--btn-yellow-light);
 }
 
 /* ----------------------------- Blog List -----------------------------
@@ -131,6 +156,10 @@ textarea {
     color: var(--mc-red-dark);
 }
 
+.bl-name {
+    color: var(--mc-blue);
+}
+
 /* --------------------------- Keyboard Grid ---------------------------
     Style rules for the keyboard grid and special keys
 
@@ -142,29 +171,47 @@ textarea {
 }
 
 /* Keys */
-.kbd button.kbd-char {
+
+.kbd-sp,
+.kbd-char {
+    color: var(--btn-black);
+}
+
+.kbd-char {
     width: var(--key-size);
     height: var(--key-size);
-    color: var(--btn-black);
+    border-color: var(--mc-red-dark);
     background-color: var(--mc-white);
 }
 
-.kbd button.kbd-char:hover {
+.kbd-char:hover {
     color: var(--btn-white);
     background-color: var(--mc-red-dark);
 }
 
+.kbd-char:active {
+    background-color: var(--mc-red);
+}
+
 .kbd-sp {
-    color: var(--btn-black);
-    border-color: var(--mc-blue);
-    background-color: var(--mc-blue-light);
     grid-column: 11 / var(--key-sp-width);
 }
 
-.kbd-sp:hover {
+.kbd-sp,
+.wb-word {
+    border-color: var(--mc-blue-dark);
+    background-color: var(--mc-blue-light);
+}
+
+.kbd-sp[data-pressed="true"],
+.kbd-sp:hover,
+.wb-word:hover {
     color: var(--btn-white);
+    background-color: var(--mc-blue-dark);
+}
+
+.kbd-sp:active {
     background-color: var(--mc-blue);
-    transform: scale(1.5, var(--key-size-popup));
 }
 
 #kbd-caps {
@@ -185,55 +232,58 @@ textarea {
 
 #kbd-spc {
     grid-row: 5;
-    grid-column: 1 / calc(var(--kbd-cols) - 2);
+    grid-column: 3 / calc(var(--kbd-cols) - 1);
 }
 
 #kbd-spc:hover {
-    transform: scale(1.1, var(--key-size-popup));
+    transform: scale(var(--key-size-popup-spc), var(--key-size-popup));
 }
 
-/* Word Suggestions */
-button.kbd-wb {
+/* --------------------------- Word Suggestions ---------------------------
+    Style rules for the Word Bank and Suggestions
+
+    author: Mohak Shrivastava (A00445470)
+------------------------------------------------------------------------ */
+button.kbd-wb,
+.btn-undo {
     color: var(--btn-black);
     border-color: var(--btn-grey);
     background-color: var(--btn-grey-light);
 }
 
-button.kbd-wb:hover {
+button.kbd-wb:hover,
+.btn-undo:hover {
     color: var(--btn-white);
     background-color: var(--btn-grey);
-    transform: scale(1.5, var(--key-size-popup));
+}
+
+button.kbd-wb:active,
+.btn-undo:active {
+    background-color: var(--btn-grey-semilight);
 }
 
 .kbd-wb {
     grid-row: var(--kbd-rows);
 }
 
-#suggest-l {
+#suggest {
     grid-column: 1 / span 2;
 }
 
-#suggest-r {
-    grid-column: 7 / span 2;
+#wb {
+    grid-column: 3 / span 8;
 }
 
-#fav-r {
-    grid-column: 12 / span 1;
+#fav {
+    grid-column: 11 / span 2;
 }
 
-#fav-l {
-    grid-column: 6 / span 1;
+.wb-word:hover {
+    transform: scale(var(--btn-wb-size-popup), var(--btn-wb-size-popup));
 }
 
-#fav-l:hover,
-#fav-r:hover {
-    transform: scale(var(--key-size-popup), var(--key-size-popup));
-}
-
-#wb-l {
-    grid-column: 3 / span 3;
-}
-
-#wb-r {
-    grid-column: 9 / span 3;
+button.kbd-wb:hover,
+.kbd-sp:hover,
+#fav:hover {
+    transform: scale(var(--key-size-popup-sp), var(--key-size-popup));
 }
