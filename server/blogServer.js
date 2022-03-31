@@ -52,7 +52,7 @@ for (let i = 0; i < NUM_BLOGS; i++) {
 // -------------------------- POST --------------------------------
 
 // listen to POST requests to endpoint and invoke the callback function
-for (let endpoint in endpoints) {
+endpoints.forEach((endpoint) => {
     for (let i = 0; i < NUM_BLOGS; i++) {
         server.post(`${endpoint}-${i}`, (req, res) => {
             console.log(`POST request received at ${req.url}`);
@@ -60,4 +60,4 @@ for (let endpoint in endpoints) {
             return res.status(200).send("Data received.");
         });
     }
-}
+});
