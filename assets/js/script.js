@@ -14,7 +14,8 @@ const PORT = 49149, // port to connect to server on
     SERVER_IPA = "http://140.184.230.209", // ip address of the UGDEV server
     SERVER_URL = `${SERVER_IPA}:${PORT}`, // complete URL of the server
     endpoints = { publish: "/publish", content: "/blogPost" }, // list of endpoints
-    pausing_punctuation = ",;:.?!"; // punctuation symbols to put spaces after
+    pausing_punctuation = ",;:.?!", // punctuation symbols to put spaces after
+    NUM_BLOGS = 3; // number of blogs
 
 /**
  * Aliases to create DOM objects using $() like in JQuery
@@ -39,11 +40,7 @@ const staticData = {
      * @author Sheikh Saad Abdullah (A00447871)
      * -------------------------------------------------------------------- */
 
-    blogList: [
-        { id: 1, published: false },
-        { id: 2, published: false },
-        { id: 3, published: false },
-    ],
+    publishStates: Array(NUM_BLOGS).fill(false), // publish states of the blogs
 
     /**
      * Get all blogs from the database and set the toggle states
@@ -57,7 +54,7 @@ const staticData = {
         $.get(SERVER_URL + "/publish", (res) => {
             // set values to each input field from data received
             res.data.forEach((el, i) => {
-                this.blogList[i].published = el === "true";
+                this.publishStates[i] = el;
             });
         }).fail((err) => console.log(err));
     },
@@ -155,11 +152,9 @@ const staticData = {
      */
     undo() {
         const editbox = $_("#editbox");
-        // editbox.value =
-        //     editbox.value.substring(0, editbox.value.trim().lastIndexOf(" ")) +
-        //     " ";
         editbox.value =
-            editbox.value.substring(0, editbox.value.lastIndexOf(" ")) + " ";
+            editbox.value.substring(0, editbox.value.trim().lastIndexOf(" ")) +
+            " ";
     },
 
     /**
@@ -173,23 +168,18 @@ const staticData = {
         );
     },
 
-    /** ----------------------------- Keyboard ----------------------------
-     * Variables and functions to control behaviour of the Keyboard
+    /** ----------------------------- Word Bank ---------------------------
+     * Variables and functions to control behaviour of the Word Bank
      *
-     * @author Naziya Tasnim (A00447506)
-     * @author Sheikh Saad Abdullah (A00447871)
+     * @author Mohak Shrivastava (A00445470)
      * -------------------------------------------------------------------- */
-
-    kbdFocus: null, // text field to focus
-    capsOn: false, // state of the caps key
-    shiftOn: false, // state of the shift key
-    deleteOn: false,
+    deleteOn: false, // state of the delete key
     wordBank: [], // array to store saved words
 
     /**
      * Save a word to the word bank
      *
-     * @author Sheikh Saad Abdullah (A00447871)
+     * @author Mohak Shrivastava (A00445470)
      */
     saveWord() {
         let wb = $_("#wb");
@@ -204,7 +194,7 @@ const staticData = {
      * and if delete mode is toggled ON, remove word from word bank
      * else append the word to the text being edited
      *
-     * @author Sheikh Saad Abdullah (A00447871)
+     * @author Mohak Shrivastava (A00445470)
      * @param {String} word text from the word bank
      */
     putWord(word) {
@@ -217,6 +207,16 @@ const staticData = {
             this.addText(word);
         }
     },
+
+    /** ----------------------------- Keyboard ----------------------------
+     * Variables and functions to control behaviour of the Keyboard
+     *
+     * @author Naziya Tasnim (A00447506)
+     * -------------------------------------------------------------------- */
+
+    kbdFocus: null, // text field to focus
+    capsOn: false, // state of the caps key
+    shiftOn: false, // state of the shift key
 
     /**
      * Character of the key pressed

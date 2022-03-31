@@ -95,7 +95,9 @@
                         <div class="row justify-content-center">
                             <div class="col">
                                 <!-- Start: Entry Row -->
-                                <template x-for="(blog, index) in blogList">
+                                <template
+                                    x-for="(publishState, index) in publishStates"
+                                >
                                     <div
                                         class="row justify-content-center my-1"
                                         :id="$id('bl-entry')"
@@ -104,22 +106,9 @@
                                             class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
                                             :id="$id('bl-name-box')"
                                         >
-                                            <!-- commented in preparation for phase-3 -->
-                                            <!-- <input
-                                                x-id="['bl-name']"
-                                                class="bl-name my-1"
-                                                type="text"
-                                                :name="$id('bl-name')"
-                                                :id="$id('bl-name')"
-                                                placeholder="&lt;type name&gt;"
-                                                :value="blog.name"
-                                                x-model="blog.name"
-                                                @focus="kbdFocus = $el"
-                                                disabled
-                                            /> -->
                                             <h3
                                                 class="bl-name my-1"
-                                                x-text="`Blog ${blog.id}`"
+                                                x-text="index + 1"
                                             ></h3>
                                         </div>
                                         <div
@@ -144,7 +133,7 @@
                                                 role="switch"
                                                 :id="$id('bl-publish')"
                                                 @change="publish($el, index)"
-                                                :checked="blog.published"
+                                                :checked="publishState"
                                             />
                                         </div>
                                     </div>
