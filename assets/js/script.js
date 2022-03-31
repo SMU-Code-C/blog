@@ -44,6 +44,21 @@ const staticData = {
         { id: 3, published: false },
     ],
 
+    /**
+     * Get all blogs from the database and populates a local list
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     * @returns string to populate text area with
+     */
+    load() {
+        $.get(SERVER_URL + "/publish", (res) => {
+            // set values to each input field from data received
+            res.data.forEach((el, i) => {
+                this.blogList[i].published = el;
+            });
+        }).fail((err) => console.log(err));
+    },
+
     publish(elem, index) {
         $.post(
             SERVER_URL + `/publish-${index}`,
@@ -134,21 +149,6 @@ const staticData = {
         //     " ";
         editbox.value =
             editbox.value.substring(0, editbox.value.lastIndexOf(" ")) + " ";
-    },
-
-    /**
-     * Get all blogs from the database and populates a local list
-     *
-     * @author Sheikh Saad Abdullah (A00447871)
-     * @returns string to populate text area with
-     */
-    load() {
-        $.get(SERVER_URL + "/publish", (res) => {
-            // set values to each input field from data received
-            res.data.forEach((el, i) => {
-                this.blogList[i].published = el;
-            });
-        }).fail((err) => console.log(err));
     },
 
     closeEdit() {
