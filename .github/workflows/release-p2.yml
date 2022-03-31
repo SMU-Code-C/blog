@@ -1,5 +1,5 @@
 ---
-name: "release"
+name: "release-p2"
 
 on:
     push:
@@ -18,7 +18,7 @@ jobs:
             - name: "Compress and Release"
               run: |
                   echo "Compressing files..."
-                  zip phase-2 *.html *.js *.css
+                  zip -r phase-2 *.html assets server tally.*
             - uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
