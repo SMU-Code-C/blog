@@ -27,20 +27,23 @@ server.listen(PORT, () => {
 
 // ---------------------- Global data -----------------------------
 
-const blogs = { publish: [false, false, false], content: ["", "", ""] }, // list of blog posts being tracked
-    endpoints = { publish: "/publish", content: "/content" }, // list of endpoints
-    NUM_BLOGS = 3;
+const NUM_BLOGS = 3,
+    blogs = {
+        publish: Array(NUM_BLOGS).fill(false),
+        content: Array(NUM_BLOGS).fill(""),
+    }, // list of blog posts being tracked
+    endpoints = ["/publish", "/content"]; // list of endpoints
 
 // -------------------------- GET ---------------------------------
 
 // listen to GET requests to endpoint and invoke the callback function
-server.get(endpoints.publish, (req, res) => {
+server.get(endpoints[0], (req, res) => {
     console.log(`GET request received at ${req.url}`);
     return res.status(200).send({ data: blogs.publish });
 });
 
 for (let i = 0; i < NUM_BLOGS; i++) {
-    server.get(`${endpoints.content}-${i}`, (req, res) => {
+    server.get(`${endpoints[1]}-${i}`, (req, res) => {
         console.log(`GET request received at ${req.url}`);
         return res.status(200).send({ data: blogs.content[i] });
     });
@@ -49,18 +52,12 @@ for (let i = 0; i < NUM_BLOGS; i++) {
 // -------------------------- POST --------------------------------
 
 // listen to POST requests to endpoint and invoke the callback function
-for (let i = 0; i < NUM_BLOGS; i++) {
-    // publish state
-    server.post(`${endpoints.publish}-${i}`, (req, res) => {
-        console.log(`POST request received at ${req.url}`);
-        blogs.publish[i] = req.body.data === "true"; // save data received to publish array
-        return res.status(200).send("Data received.");
-    });
-
-    // blog content
-    server.post(`${endpoints.content}-${i}`, (req, res) => {
-        console.log(`POST request received at ${req.url}`);
-        blogs.content[i] = req.body.data; // save data received to publish array
-        return res.status(200).send("Data received.");
-    });
+for (let endpoint in endpoints) {
+    for (let i = 0; i < NUM_BLOGS; i++) {
+        server.post(`${endpoint}-${i}`, (req, res) => {
+            console.log(`POST request received at ${req.url}`);
+            blogs[endpoint.substring(1)][i] = req.body.data; // save data received array
+            return res.status(200).send("Data received.");
+        });
+    }
 }
