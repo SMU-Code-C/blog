@@ -54,7 +54,7 @@ const staticData = {
         $.get(SERVER_URL + "/publish", (res) => {
             // set values to each input field from data received
             res.data.forEach((el, i) => {
-                this.publishStates[i] = el;
+                this.publishStates[i] = el === "true";
             });
         }).fail((err) => console.log(err));
     },
