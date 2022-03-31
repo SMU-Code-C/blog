@@ -1,0 +1,559 @@
+<!--
+    Blog tools for client to edit and publish posts to webserver
+
+    CSCI-2356 Project: Phase 1
+
+    author: Mohak Shrivastava (A00445470)
+    author: Nayem Imtiaz (A00448982)
+    author: Naziya Tasnim (A00447506)
+    author: Sheikh Saad Abdullah (A00447871)
+ -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- HEAD:
+                Header information for the HTML document,
+                specifying stylesheets, scripts, and metadata
+
+            author: Sheikh Saad Abdullah (A00447871)
+         -->
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+        />
+        <meta name="description" content="Blog tools for Northwood Project" />
+
+        <title>Blog Tools</title>
+
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="assets/css/style.css" />
+
+        <!-- JQuery JS -->
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"
+        ></script>
+
+        <!-- Custom JS -->
+        <script src="assets/js/script.js"></script>
+
+        <!-- Alpine.js -->
+        <script
+            defer
+            src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
+    </head>
+    <body x-data="staticData" x-init="load" x-cloak>
+        <div
+            class="row justify-content-center d-flex justify-content-center m-5"
+        >
+            <div class="col-5">
+                <!-- Blog List:
+                        Display list of blogs with options
+                        to edit and publish via toggle switches
+
+                    author: Mohak Shrivastava (A00445470)
+                    author: Sheikh Saad Abdullah (A00447871)
+                -->
+                <!-- Start: Blog List -->
+                <div
+                    class="row justify-content-center"
+                    x-show="!editOn"
+                    x-transition
+                >
+                    <div class="col">
+                        <!-- Start: Blog Headers -->
+                        <div class="row justify-content-center mt-5">
+                            <div class="col">
+                                <h2
+                                    class="d-flex justify-content-center bl-header"
+                                >
+                                    Blog
+                                </h2>
+                            </div>
+                            <div class="col">
+                                <h2
+                                    class="d-flex justify-content-center bl-header"
+                                >
+                                    Edit
+                                </h2>
+                            </div>
+                            <div class="col">
+                                <h2
+                                    class="d-flex justify-content-center bl-header"
+                                >
+                                    Publish
+                                </h2>
+                            </div>
+                        </div>
+                        <!-- End: Blog Headers -->
+                        <hr class="my-2" />
+                        <!-- Start: Blog Entries -->
+                        <div class="row justify-content-center">
+                            <div class="col">
+                                <!-- Start: Entry Row -->
+                                <template
+                                    x-for="(publishState, index) in publishStates"
+                                >
+                                    <div
+                                        class="row justify-content-center my-1"
+                                        :id="$id('bl-entry')"
+                                    >
+                                        <div
+                                            class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
+                                            :id="$id('bl-name-box')"
+                                        >
+                                            <h3
+                                                class="bl-name my-1"
+                                                x-text="index + 1"
+                                            ></h3>
+                                        </div>
+                                        <div
+                                            class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
+                                            :id="$id('bl-edit-box')"
+                                        >
+                                            <input
+                                                class="bl-edit form-check-input my-1"
+                                                type="checkbox"
+                                                role="switch"
+                                                :id="$id('bl-edit')"
+                                                @change="editText($el, index)"
+                                            />
+                                        </div>
+                                        <div
+                                            class="col-4 d-flex justify-content-center align-items-center form-check form-switch"
+                                            :id="$id('bl-publish-box')"
+                                        >
+                                            <input
+                                                class="bl-publish form-check-input my-1"
+                                                type="checkbox"
+                                                role="switch"
+                                                :id="$id('bl-publish')"
+                                                @change="publish($el, index)"
+                                                :checked="publishState"
+                                            />
+                                        </div>
+                                    </div>
+                                </template>
+                                <!-- End: Entry Row -->
+                            </div>
+                        </div>
+                        <!-- End: Blog Entries -->
+                    </div>
+                </div>
+                <!-- End: Blog List -->
+                <!-- Start: Edit Group -->
+                <div
+                    class="row justify-content-center"
+                    x-show="editOn"
+                    x-transition
+                    x-cloak
+                >
+                    <div class="col">
+                        <!-- Edit Area:
+                                Text area to edit blog posts in,
+                                with Save and Cancel functionality
+
+                            author: Nayem Imtiaz (A00448982)
+                        -->
+                        <!-- Start: Edit Area -->
+                        <div class="row justify-content-center my-2">
+                            <div class="col text-center">
+                                <!-- Start: Buttons -->
+                                <div class="row justify-content-center my-4">
+                                    <div class="col text-center">
+                                        <div
+                                            class="d-flex justify-content-evenly"
+                                            role="group"
+                                        >
+                                            <button
+                                                type="button"
+                                                class="btn btn-save"
+                                                data-bs-target="#save-confirm"
+                                                data-bs-toggle="modal"
+                                            >
+                                                Save
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-cancel"
+                                                data-bs-target="#cancel-confirm"
+                                                data-bs-toggle="modal"
+                                            >
+                                                Undo All
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-undo"
+                                                @mousedown="undo"
+                                            >
+                                                Undo
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-outline-danger"
+                                                @mousedown="closeEdit"
+                                            >
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End: Buttons -->
+                                <!-- Start: Save Modals -->
+                                <div
+                                    class="modal fade"
+                                    id="save-confirm"
+                                    aria-hidden="true"
+                                    aria-labelledby="save-confirm-label"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="save-confirm-label"
+                                                >
+                                                    Confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to SAVE?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-success"
+                                                    data-bs-target="#save-reconfirm"
+                                                    data-bs-toggle="modal"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="modal fade"
+                                    id="save-reconfirm"
+                                    aria-hidden="true"
+                                    aria-labelledby="save-reconfirm-label"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="save-reconfirm-label"
+                                                >
+                                                    Re-confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you REALLY sure you want to
+                                                SAVE?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-success"
+                                                    data-bs-toggle="modal"
+                                                    @mousedown="save"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End: Save Modals -->
+                                <!-- Start: Cancel Modals -->
+                                <div
+                                    class="modal fade"
+                                    id="cancel-confirm"
+                                    aria-hidden="true"
+                                    aria-labelledby="cancel-confirm-label"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="cancel-confirm-label"
+                                                >
+                                                    Confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to UNDO
+                                                ALL?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-success"
+                                                    data-bs-target="#cancel-reconfirm"
+                                                    data-bs-toggle="modal"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="modal fade"
+                                    id="cancel-reconfirm"
+                                    aria-hidden="true"
+                                    aria-labelledby="cancel-reconfirm-label"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="cancel-reconfirm-label"
+                                                >
+                                                    Re-confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you REALLY sure you want to
+                                                UNDO ALL?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-success"
+                                                    data-bs-toggle="modal"
+                                                    @mousedown="cancel"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End: Cancel Modals -->
+                                <textarea
+                                    id="editbox"
+                                    rows="8"
+                                    cols="93"
+                                    @focus="kbdFocus = $el"
+                                ></textarea>
+                            </div>
+                        </div>
+                        <!-- End: Edit Area -->
+                        <!-- Keyboard:
+                                Accessible on-screen keyboard
+                                for client to operate using mouse
+
+                            author: Naziya Tasnim (A00447506)
+                        -->
+                        <!-- Start: Keyboard -->
+                        <div class="row justify-content-center my-4">
+                            <div class="col d-grid gap-4 kbd">
+                                <!-- Start: Caps Key -->
+                                <button
+                                    type="button"
+                                    id="kbd-caps"
+                                    class="btn kbd-sp"
+                                    :data-pressed="capsOn"
+                                    @mousedown="if (!shiftOn) capsOn = !capsOn"
+                                    x-text="capsOn ? sp.caps.toUpperCase() : sp.caps"
+                                ></button>
+                                <!-- End: Caps Key -->
+                                <!-- Start: Shift Key -->
+                                <button
+                                    type="button"
+                                    id="kbd-shift"
+                                    class="btn kbd-sp"
+                                    :data-pressed="shiftOn"
+                                    @mousedown="if (!capsOn) shiftOn = !shiftOn"
+                                    x-text="shiftOn ? sp.shift.toUpperCase() : sp.shift"
+                                ></button>
+                                <!-- End: Shift Key -->
+                                <!-- Start: Delete Key -->
+                                <button
+                                    type="button"
+                                    id="kbd-del"
+                                    class="btn kbd-sp"
+                                    @mousedown="addText('del')"
+                                    x-text="sp.delete"
+                                ></button>
+                                <!-- End: Delete Key -->
+                                <!-- Start: Return Key -->
+                                <button
+                                    type="button"
+                                    id="kbd-cr"
+                                    class="btn kbd-sp"
+                                    @mousedown="addText('\n')"
+                                    x-text="sp.return"
+                                ></button>
+                                <!-- End: Return Key -->
+                                <!-- Start: Space Key -->
+                                <button
+                                    type="button"
+                                    id="kbd-spc"
+                                    class="btn kbd-sp"
+                                    @mousedown="addText(' ')"
+                                    x-text="sp.space"
+                                ></button>
+                                <!-- End: Space Key -->
+                                <!-- Start: Character Keys -->
+                                <template x-for="glyph in glyphs">
+                                    <button
+                                        type="button"
+                                        class="btn kbd-char"
+                                        @mousedown="addText(key(glyph))"
+                                        x-text="key(glyph)"
+                                    ></button>
+                                </template>
+                                <!-- End: Character Keys -->
+                                <!-- Start: Word Suggestions -->
+                                <button
+                                    type="button"
+                                    id="suggest"
+                                    class="btn kbd-wb"
+                                    data-bs-target="#suggestions-list"
+                                    data-bs-toggle="modal"
+                                >
+                                    Words
+                                </button>
+                                <input
+                                    type="text"
+                                    id="wb"
+                                    class="kbd-wb"
+                                    @focus="kbdFocus = $el"
+                                    value
+                                />
+                                <button
+                                    type="button"
+                                    id="fav"
+                                    class="btn kbd-wb"
+                                    @mousedown="saveWord"
+                                >
+                                    <i class="bi bi-star-fill"></i>
+                                </button>
+                                <!-- End: Word Suggestions -->
+                                <div
+                                    class="modal fade"
+                                    id="suggestions-list"
+                                    aria-hidden="true"
+                                    aria-labelledby="exampleModalToggleLabel"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="exampleModalToggleLabel"
+                                                >
+                                                    Word Bank
+                                                </h5>
+                                                <input
+                                                    type="checkbox"
+                                                    class="btn-check"
+                                                    id="wb-del"
+                                                    autocomplete="off"
+                                                    x-model="deleteOn"
+                                                />
+                                                <label
+                                                    class="btn btn-outline-dark"
+                                                    for="wb-del"
+                                                    >Delete
+                                                </label>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-role="Close"
+                                                    @mousedown="deleteOn = false"
+                                                >
+                                                    Close
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <template
+                                                    x-if="wordBank.length === 0"
+                                                    ><p>
+                                                        No words added to the
+                                                        word bank yet.
+                                                    </p>
+                                                </template>
+                                                <template
+                                                    x-for="word in wordBank"
+                                                >
+                                                    <button
+                                                        type="button"
+                                                        class="btn wb-word m-2"
+                                                        @mousedown="putWord(word)"
+                                                        x-text="word"
+                                                    ></button>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End: Keyboard -->
+                    </div>
+                </div>
+                <!-- End: Edit Group -->
+            </div>
+        </div>
+        <!-- Bootstrap JS -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>
