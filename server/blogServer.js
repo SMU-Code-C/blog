@@ -1,5 +1,5 @@
 /**
- * Contains functions to handle the behavior of A2.html
+ * Contains functions to handle the behavior of phase-2 of the project
  * to POST data to the server and GET data from the server.
  *
  * [server-side script]

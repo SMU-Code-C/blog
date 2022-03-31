@@ -1,7 +1,7 @@
 /**
- * Script to control the functionality of the Blog tool
+ * Script to control the functionality of the Blog interface
  *
- * CSCI-2356 Project: Phase 1
+ * CSCI-2356 Project: Phase 2
  *
  * @author Mohak Shrivastava (A00445470)
  * @author Nayem Imtiaz (A00448982)
@@ -35,6 +35,7 @@ const staticData = {
      * Database to store the list of blogs and publication states
      *
      * @author Mohak Shrivastava (A00445470)
+     * @author Nayem Imtiaz (A00448982)
      * @author Sheikh Saad Abdullah (A00447871)
      * -------------------------------------------------------------------- */
 
@@ -45,8 +46,10 @@ const staticData = {
     ],
 
     /**
-     * Get all blogs from the database and populates a local list
+     * Get all blogs from the database and set the toggle states
+     * of the Published column switches in the blog list
      *
+     * @author Nayem Imtiaz (A00448982)
      * @author Sheikh Saad Abdullah (A00447871)
      * @returns string to populate text area with
      */
@@ -59,6 +62,14 @@ const staticData = {
         }).fail((err) => console.log(err));
     },
 
+    /**
+     * Handle publish toggle and send the publish state to server
+     *
+     * @author Nayem Imtiaz (A00448982)
+     * @author Sheikh Saad Abdullah (A00447871)
+     * @param {Object} elem DOM Object of the caller element
+     * @param {Number} index index of the caller element
+     */
     publish(elem, index) {
         $.post(
             SERVER_URL + `/publish-${index}`,
@@ -151,6 +162,11 @@ const staticData = {
             editbox.value.substring(0, editbox.value.lastIndexOf(" ")) + " ";
     },
 
+    /**
+     * Close the edit interface and drop back to the blog list
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     */
     closeEdit() {
         $_(`#bl-edit-${this.currentlyEditing + 1}`).dispatchEvent(
             new Event("change")
@@ -161,6 +177,7 @@ const staticData = {
      * Variables and functions to control behaviour of the Keyboard
      *
      * @author Naziya Tasnim (A00447506)
+     * @author Sheikh Saad Abdullah (A00447871)
      * -------------------------------------------------------------------- */
 
     kbdFocus: null, // text field to focus
@@ -169,6 +186,11 @@ const staticData = {
     deleteOn: false,
     wordBank: [], // array to store saved words
 
+    /**
+     * Save a word to the word bank
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     */
     saveWord() {
         let wb = $_("#wb");
         if (wb.value && !this.wordBank.includes(wb.value)) {
@@ -177,10 +199,20 @@ const staticData = {
         wb.value = "";
     },
 
+    /**
+     * Select word from the word bank
+     * and if delete mode is toggled ON, remove word from word bank
+     * else append the word to the text being edited
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     * @param {String} word text from the word bank
+     */
     putWord(word) {
         if (this.deleteOn) {
+            // remove word from word bank
             this.wordBank.splice(this.wordBank.indexOf(word), 1);
         } else {
+            // add text to text area
             this.kbdFocus = $_("#editbox");
             this.addText(word);
         }
@@ -189,10 +221,12 @@ const staticData = {
     /**
      * Character of the key pressed
      *
+     * @author Naziya Tasnim (A00447506)
      * @param {String} char character or string to convert
      * @returns uppercase of char if keyboard is in caps/shift mode
      */
     key(char) {
+        // change to uppercase or alternate symbol in shift mode
         if (
             this.shiftOn ||
             this.capsOn /* && !(this.shiftOn && this.capsOn) */
@@ -245,7 +279,7 @@ const staticData = {
         space: "space",
     },
 
-    // alphanumeric and punctuation keys
+    // punctuation keys with alternative characters in shift mode
     symbols: {
         "'": '"',
         ",": ":",
@@ -257,6 +291,7 @@ const staticData = {
         "&": "@",
     },
 
+    // alphanumeric characters and symbols on the keyboard
     glyphs: [
         "1",
         "2",
