@@ -129,6 +129,9 @@ const staticData = {
      */
     undo() {
         const editbox = $_("#editbox");
+        // editbox.value =
+        //     editbox.value.substring(0, editbox.value.trim().lastIndexOf(" ")) +
+        //     " ";
         editbox.value =
             editbox.value.substring(0, editbox.value.lastIndexOf(" ")) + " ";
     },
