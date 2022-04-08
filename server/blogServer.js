@@ -9,9 +9,31 @@
 
 // ----------------------- Server Setup ---------------------------
 
+"use strict";
 const express = require("express"), // start express application
     server = express(), // define top level function
-    PORT = 49149; // port to listen for connections on
+    PORT = 49149, // port to listen for connections on
+    mongodb = require("mongodb").MongoClient; // load mongodb DBMS
+
+// credential string elements
+const head = "mongodb://",
+    user = "s_saad",
+    password = encodeURIComponent("A00447871"),
+    localHost = "127.0.0.1",
+    localPort = 27017,
+    extPort = 49151, // external port
+    database = user.toString(),
+    connectionString =
+        head +
+        user +
+        ":" +
+        password +
+        "@" +
+        localHost +
+        ":" +
+        localPort +
+        "/" +
+        user;
 
 server.use(express.json()); // implement JSON recognition
 server.use(express.urlencoded({ extended: true })); // implement incoming key:value pairs to be any type
@@ -25,6 +47,11 @@ server.listen(PORT, () => {
     console.log(`Listening on port ${PORT}`); // listen for incoming connections
 });
 
+// Used within functions (which are not present in this file).
+// The global scope simplifies the implementation of callbacks.
+// That's why we are using a global variable here.
+let globalDB;
+
 // ---------------------- Global data -----------------------------
 
 const NUM_BLOGS = 3,
@@ -36,16 +63,26 @@ const NUM_BLOGS = 3,
 
 // -------------------------- GET ---------------------------------
 
-// listen to GET requests to endpoint and invoke the callback function
+// return published states for the blogs
 server.get(endpoints[0], (req, res) => {
     console.log(`GET request received at ${req.url}`);
     return res.status(200).send({ data: blogs.publish });
 });
 
+// return blog content
 for (let i = 0; i < NUM_BLOGS; i++) {
-    server.get(`${endpoints[1]}-${i}`, (req, res) => {
+    // admin access
+    server.get(`${endpoints[1]}${i + 1}`, (req, res) => {
         console.log(`GET request received at ${req.url}`);
         return res.status(200).send({ data: blogs.content[i] });
+    });
+
+    // visitor access (only if blog is published)
+    server.get(`/blog${i + 1}`, (req, res) => {
+        console.log(`GET request received at ${req.url}`);
+        return res.status(200).send({
+            data: blogs.publish[i] === "true" ? blogs.content[i] : null,
+        });
     });
 }
 
@@ -54,10 +91,44 @@ for (let i = 0; i < NUM_BLOGS; i++) {
 // listen to POST requests to endpoint and invoke the callback function
 endpoints.forEach((endpoint) => {
     for (let i = 0; i < NUM_BLOGS; i++) {
-        server.post(`${endpoint}-${i}`, (req, res) => {
+        server.post(`${endpoint}${i + 1}`, (req, res) => {
             console.log(`POST request received at ${req.url}`);
             blogs[endpoint.substring(1)][i] = req.body.data; // save data received array
             return res.status(200).send("Data received.");
         });
     }
+});
+
+// ------------------------ DATABASE ------------------------------
+
+// Create the connection to a mongoDB database instance
+//
+// Parameter 1: see connectionString above
+// Parameter 2: Anonymous callback function that either:
+//                (1) throws an error, or
+//                (2) continues regular processing
+mongodb.connect(connectionString, (error, client) => {
+    if (error) {
+        throw error;
+    }
+
+    // This version of mongodb returns a client object
+    // which contains the database object
+    globalDB = client.db(database);
+
+    // "process" is an already available global variable with information
+    // about this particular Node.js application.
+    //
+    // If the SIGTERM event occurs, use the anonymous function to
+    // close the database and server in a controlled way.
+    process.on("SIGTERM", () => {
+        console.log("Shutting server down.");
+        client.close();
+        server.close();
+    });
+
+    // Start server listening on specified port
+    let serverside = server.listen(extPort, () => {
+        console.log(`Listening on port ${serverside.address().port}`);
+    });
 });

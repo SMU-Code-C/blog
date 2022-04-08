@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Blog 2 description" />
+        <title>Blog 2</title>
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="style.css" />
+        <!-- JQuery JS -->
+        <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"
+        ></script>
+        <!-- Custom JS -->
+        <script src="script.js"></script>
+        <!-- Alpine.js -->
+        <script
+            defer
+            src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+        ></script>
+    </head>
+    <body x-data="staticData" x-init="load(2)" class="d-flex flex-column h-100">
+        <main class="d-flex flex-column align-items-center">
+            <header class="w-100 p-3 border-bottom border-primary">
+                <h1 class="text-center">Blog 2</h1>
+            </header>
+            <article
+                class="bg-white w-75 p-3 rounded-bottom shadow"
+                x-html="content"
+            ></article>
+        </main>
+        <footer class="footer mt-auto bg-dark text-white text-center p-3">
+            <p><strong>Michael's Blog</strong></p>
+            <p>Copyright, 2022</p>
+        </footer>
+    </body>
+</html>

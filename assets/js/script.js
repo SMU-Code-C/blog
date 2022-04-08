@@ -13,7 +13,7 @@
 const PORT = 49149, // port to connect to server on
     SERVER_IPA = "http://140.184.230.209", // ip address of the UGDEV server
     SERVER_URL = `${SERVER_IPA}:${PORT}`, // complete URL of the server
-    endpoints = { publish: "/publish", content: "/blogPost" }, // list of endpoints
+    endpoints = { publish: "/publish", content: "/content" }, // list of endpoints
     pausing_punctuation = ",;:.?!", // punctuation symbols to put spaces after
     NUM_BLOGS = 3; // number of blogs
 
@@ -51,7 +51,7 @@ const staticData = {
      * @returns string to populate text area with
      */
     load() {
-        $.get(SERVER_URL + "/publish", (res) => {
+        $.get(SERVER_URL + endpoints.publish, (res) => {
             // set values to each input field from data received
             res.data.forEach((el, i) => {
                 this.publishStates[i] = el === "true";
@@ -69,7 +69,7 @@ const staticData = {
      */
     publish(elem, index) {
         $.post(
-            SERVER_URL + `/publish-${index}`,
+            SERVER_URL + `${endpoints.publish}${index + 1}`,
             { data: elem.checked },
             (res) => console.log(res)
         ).fail((err) => console.log(err));
@@ -123,7 +123,7 @@ const staticData = {
      */
     save() {
         $.post(
-            SERVER_URL + `/content-${this.currentlyEditing}`,
+            SERVER_URL + `${endpoints.content}${this.currentlyEditing + 1}`,
             { data: $_("#editbox").value },
             (res) => console.log(res)
         ).fail((err) => console.log(err));
@@ -137,10 +137,13 @@ const staticData = {
      * @returns string to populate text area with
      */
     cancel() {
-        $.get(SERVER_URL + `/content-${this.currentlyEditing}`, (res) => {
-            // set values to each input field from data received
-            $_("#editbox").value = res.data;
-        }).fail((err) => {
+        $.get(
+            SERVER_URL + `${endpoints.content}${this.currentlyEditing + 1}`,
+            (res) => {
+                // set values to each input field from data received
+                $_("#editbox").value = res.data;
+            }
+        ).fail((err) => {
             console.log(err);
         });
     },
@@ -163,6 +166,12 @@ const staticData = {
      * @author Sheikh Saad Abdullah (A00447871)
      */
     closeEdit() {
+        // Bootstrap Modal bug fix
+        $(".modal").modal("hide");
+        $("body").removeClass("modal-open");
+        $(".modal-backdrop").remove();
+
+        // toggle edit button
         $_(`#bl-edit-${this.currentlyEditing + 1}`).dispatchEvent(
             new Event("change")
         );

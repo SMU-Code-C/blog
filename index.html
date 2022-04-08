@@ -48,9 +48,9 @@
     </head>
     <body x-data="staticData" x-init="load" x-cloak>
         <div
-            class="row justify-content-center d-flex justify-content-center m-5"
+            class="row justify-content-center d-flex justify-content-center m-1"
         >
-            <div class="col-5">
+            <div class="col-8">
                 <!-- Blog List:
                         Display list of blogs with options
                         to edit and publish via toggle switches
@@ -166,7 +166,7 @@
                                 <div class="row justify-content-center my-4">
                                     <div class="col text-center">
                                         <div
-                                            class="d-flex justify-content-evenly"
+                                            class="d-flex justify-content-between"
                                             role="group"
                                         >
                                             <button
@@ -195,7 +195,8 @@
                                             <button
                                                 type="button"
                                                 class="btn btn-outline-danger"
-                                                @mousedown="closeEdit"
+                                                data-bs-target="#close-confirm"
+                                                data-bs-toggle="modal"
                                             >
                                                 Close
                                             </button>
@@ -203,6 +204,14 @@
                                     </div>
                                 </div>
                                 <!-- End: Buttons -->
+                                <!-- Start: Text Area -->
+                                <textarea
+                                    id="editbox"
+                                    rows="8"
+                                    cols="100"
+                                    @focus="kbdFocus = $el"
+                                ></textarea>
+                                <!-- End: Text Area -->
                                 <!-- Start: Save Modals -->
                                 <div
                                     class="modal fade"
@@ -382,12 +391,95 @@
                                     </div>
                                 </div>
                                 <!-- End: Cancel Modals -->
-                                <textarea
-                                    id="editbox"
-                                    rows="8"
-                                    cols="93"
-                                    @focus="kbdFocus = $el"
-                                ></textarea>
+                                <!-- Start: Close Modals -->
+                                <div
+                                    class="modal fade"
+                                    id="close-confirm"
+                                    aria-hidden="true"
+                                    aria-labelledby="close-confirm-label"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="close-confirm-label"
+                                                >
+                                                    Confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to CLOSE?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-success"
+                                                    data-bs-target="#close-reconfirm"
+                                                    data-bs-toggle="modal"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="modal fade"
+                                    id="close-reconfirm"
+                                    aria-hidden="true"
+                                    aria-labelledby="close-reconfirm-label"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="close-reconfirm-label"
+                                                >
+                                                    Re-confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you REALLY sure you want to
+                                                CLOSE?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-success"
+                                                    data-bs-toggle="modal"
+                                                    @mousedown="closeEdit"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End: Close Modals -->
                             </div>
                         </div>
                         <!-- End: Edit Area -->
@@ -480,7 +572,7 @@
                                     class="btn kbd-wb"
                                     @mousedown="saveWord"
                                 >
-                                    <i class="bi bi-star-fill"></i>
+                                    Add
                                 </button>
                                 <!-- End: Word Suggestions -->
                                 <div
@@ -491,7 +583,7 @@
                                     tabindex="-1"
                                 >
                                     <div
-                                        class="modal-dialog modal-dialog-centered"
+                                        class="modal-dialog modal-dialog-centered modal-lg"
                                     >
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -523,7 +615,9 @@
                                                     Close
                                                 </button>
                                             </div>
-                                            <div class="modal-body">
+                                            <div
+                                                class="modal-body d-flex justify-content-center flex-wrap"
+                                            >
                                                 <template
                                                     x-if="wordBank.length === 0"
                                                     ><p>
