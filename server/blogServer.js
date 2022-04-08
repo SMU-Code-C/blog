@@ -80,11 +80,12 @@ for (let i = 0; i < NUM_BLOGS; i++) {
     // visitor access (only if blog is published)
     server.get(`/blog${i + 1}`, (req, res) => {
         console.log(`GET request received at ${req.url}`);
+        let payload =
+            blogs.publish[i] === "true"
+                ? toParagraphs(blogs.content[i])
+                : "Sorry. This blog is currently not available.";
         return res.status(200).send({
-            data:
-                blogs.publish[i] === "true"
-                    ? blogs.content[i]
-                    : "Sorry. This blog is currently not available.",
+            data: payload,
         });
     });
 }
@@ -101,6 +102,18 @@ endpoints.forEach((endpoint) => {
         });
     }
 });
+
+// ------------------------- Helpers ------------------------------
+
+function toParagraphs(text) {
+    let paragraphs = text.split("\n\n");
+    paragraphs.forEach((elem, index) => {
+        if (elem) {
+            paragraphs[index] = `<p>${elem}</p>`;
+        }
+    });
+    return paragraphs.join("");
+}
 
 // ------------------------ DATABASE ------------------------------
 

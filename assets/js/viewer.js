@@ -5,11 +5,10 @@ const PORT = 49149, // port to connect to server on
 
 const staticData = {
     content: "Disconnected from server.",
+
     load(blogNum) {
         $.get(SERVER_URL + "/blog" + blogNum, (res) => {
-            if (res.data) {
-                this.content = res.data;
-            }
+            this.content = res.data ? res.data : "No content available.";
         }).fail((err) => {
             console.log(err);
         });

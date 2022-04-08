@@ -10,3 +10,7 @@ body {
 header {
     background-color: #cfe2ff;
 }
+
+article {
+    font-size: 1.25rem;
+}
