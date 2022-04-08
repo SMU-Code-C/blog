@@ -1,4 +1,4 @@
-# Phase 2 Tally
+# Phase 3 Tally
 
 -   [25%] Mohak (A00445470)
 -   [25%] Nayem (A00448982)
