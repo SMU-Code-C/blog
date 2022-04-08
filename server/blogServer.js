@@ -81,7 +81,10 @@ for (let i = 0; i < NUM_BLOGS; i++) {
     server.get(`/blog${i + 1}`, (req, res) => {
         console.log(`GET request received at ${req.url}`);
         return res.status(200).send({
-            data: blogs.publish[i] === "true" ? blogs.content[i] : null,
+            data:
+                blogs.publish[i] === "true"
+                    ? blogs.content[i]
+                    : "Sorry. This blog is currently not available.",
         });
     });
 }

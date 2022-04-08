@@ -4,7 +4,7 @@ const PORT = 49149, // port to connect to server on
     SERVER_URL = `${SERVER_IPA}:${PORT}`; // complete URL of the server
 
 const staticData = {
-    content: "Sorry. This blog is currently not available.",
+    content: "Disconnected from server.",
     load(blogNum) {
         $.get(SERVER_URL + "/blog" + blogNum, (res) => {
             if (res.data) {
