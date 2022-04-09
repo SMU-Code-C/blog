@@ -556,6 +556,7 @@
                                     class="btn kbd-wb"
                                     data-bs-target="#suggestions-list"
                                     data-bs-toggle="modal"
+                                    @mousedown="loadWB"
                                 >
                                     Words
                                 </button>
@@ -610,7 +611,7 @@
                                                     class="btn btn-outline-danger"
                                                     data-bs-dismiss="modal"
                                                     aria-role="Close"
-                                                    @mousedown="deleteOn = false"
+                                                    @mousedown="closeWB"
                                                 >
                                                     Close
                                                 </button>

@@ -59,17 +59,18 @@ const NUM_BLOGS = 3,
         publish: Array(NUM_BLOGS).fill(false),
         content: Array(NUM_BLOGS).fill(""),
     }, // list of blog posts being tracked
+    wordBank = { endpoint: "/wordbank", words: [] }, // words saved for convenience
     endpoints = ["/publish", "/content"]; // list of endpoints
 
 // -------------------------- GET ---------------------------------
 
-// return published states for the blogs
+// send published states for the blogs
 server.get(endpoints[0], (req, res) => {
     console.log(`GET request received at ${req.url}`);
     return res.status(200).send({ data: blogs.publish });
 });
 
-// return blog content
+// send blog content
 for (let i = 0; i < NUM_BLOGS; i++) {
     // admin access
     server.get(`${endpoints[1]}${i + 1}`, (req, res) => {
@@ -80,27 +81,39 @@ for (let i = 0; i < NUM_BLOGS; i++) {
     // visitor access (only if blog is published)
     server.get(`/blog${i + 1}`, (req, res) => {
         console.log(`GET request received at ${req.url}`);
-        let payload =
-            blogs.publish[i] === "true"
-                ? toParagraphs(blogs.content[i])
-                : "Sorry. This blog is currently not available.";
         return res.status(200).send({
-            data: payload,
+            data:
+                blogs.publish[i] === "true"
+                    ? toParagraphs(blogs.content[i])
+                    : "Sorry. This blog is currently not available.",
         });
     });
 }
 
+// send word bank words to client
+server.get(wordBank.endpoint, (req, res) => {
+    console.log(`GET request received at ${req.url}`);
+    return res.status(200).send({ data: wordBank.words });
+});
+
 // -------------------------- POST --------------------------------
 
-// listen to POST requests to endpoint and invoke the callback function
+// listen to POST requests to endpoints and save data to database
 endpoints.forEach((endpoint) => {
     for (let i = 0; i < NUM_BLOGS; i++) {
         server.post(`${endpoint}${i + 1}`, (req, res) => {
             console.log(`POST request received at ${req.url}`);
             blogs[endpoint.substring(1)][i] = req.body.data; // save data received array
-            return res.status(200).send("Data received.");
+            return res.status(200).send("Data received by server.");
         });
     }
+});
+
+// save word bank words received via POST request
+server.post(wordBank.endpoint, (req, res) => {
+    console.log(`POST request received at ${req.url}`);
+    wordBank.words = req.body.data;
+    return res.status(200).send("Data received by server.");
 });
 
 // ------------------------- Helpers ------------------------------

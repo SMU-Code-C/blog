@@ -13,7 +13,11 @@
 const PORT = 49149, // port to connect to server on
     SERVER_IPA = "http://140.184.230.209", // ip address of the UGDEV server
     SERVER_URL = `${SERVER_IPA}:${PORT}`, // complete URL of the server
-    endpoints = { publish: "/publish", content: "/content" }, // list of endpoints
+    endpoints = {
+        publish: "/publish",
+        content: "/content",
+        wordBank: "/wordbank",
+    }, // list of endpoints
     pausing_punctuation = ",;:.?!", // punctuation symbols to put spaces after
     NUM_BLOGS = 3; // number of blogs
 
@@ -28,6 +32,18 @@ const $_ = (selector) => {
     return selector[0] === "#"
         ? document.querySelector(selector)
         : document.querySelectorAll(selector);
+};
+
+// wrapper around JQuery Ajax methods for GET request
+$_.get = (endpoint, callback) => {
+    $.get(SERVER_URL + endpoint, callback).fail((err) => console.log(err));
+};
+
+// wrapper around JQuery Ajax methods for POST request
+$_.post = (endpoint, payload) => {
+    $.post(SERVER_URL + endpoint, payload, (res) => console.log(res)).fail(
+        (err) => console.log(err)
+    );
 };
 
 // global data store for Alpine.js
@@ -51,12 +67,12 @@ const staticData = {
      * @returns string to populate text area with
      */
     load() {
-        $.get(SERVER_URL + endpoints.publish, (res) => {
+        $_.get(endpoints.publish, (res) => {
             // set values to each input field from data received
             res.data.forEach((el, i) => {
                 this.publishStates[i] = el === "true";
             });
-        }).fail((err) => console.log(err));
+        });
     },
 
     /**
@@ -68,11 +84,7 @@ const staticData = {
      * @param {Number} index index of the caller element
      */
     publish(elem, index) {
-        $.post(
-            SERVER_URL + `${endpoints.publish}${index + 1}`,
-            { data: elem.checked },
-            (res) => console.log(res)
-        ).fail((err) => console.log(err));
+        $_.post(`${endpoints.publish}${index + 1}`, { data: elem.checked });
     },
 
     /**
@@ -122,11 +134,9 @@ const staticData = {
      * @returns string to populate text area with
      */
     save() {
-        $.post(
-            SERVER_URL + `${endpoints.content}${this.currentlyEditing + 1}`,
-            { data: $_("#editbox").value },
-            (res) => console.log(res)
-        ).fail((err) => console.log(err));
+        $_.post(`${endpoints.content}${this.currentlyEditing + 1}`, {
+            data: $_("#editbox").value,
+        });
     },
 
     /**
@@ -137,14 +147,9 @@ const staticData = {
      * @returns string to populate text area with
      */
     cancel() {
-        $.get(
-            SERVER_URL + `${endpoints.content}${this.currentlyEditing + 1}`,
-            (res) => {
-                // set values to each input field from data received
-                $_("#editbox").value = res.data;
-            }
-        ).fail((err) => {
-            console.log(err);
+        $_.get(`${endpoints.content}${this.currentlyEditing + 1}`, (res) => {
+            // set values to each input field from data received
+            $_("#editbox").value = res.data;
         });
     },
 
@@ -194,6 +199,7 @@ const staticData = {
         let wb = $_("#wb");
         if (wb.value && !this.wordBank.includes(wb.value)) {
             this.wordBank.push(wb.value);
+            this.sendWB();
         }
         wb.value = "";
     },
@@ -215,6 +221,21 @@ const staticData = {
             this.kbdFocus = $_("#editbox");
             this.addText(word);
         }
+    },
+
+    closeWB() {
+        deleteOn = false;
+        this.sendWB();
+    },
+
+    loadWB() {
+        $_.get(endpoints.wordBank, (res) => {
+            this.wordBank = res.data;
+        });
+    },
+
+    sendWB() {
+        $_.post(endpoints.wordBank, { data: this.wordBank });
     },
 
     /** ----------------------------- Keyboard ----------------------------
