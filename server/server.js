@@ -7,7 +7,7 @@
  * @author Sheikh Saad Abdullah (A00447871)
  */
 
-// ----------------------- Server Setup ---------------------------
+// ----------------------- Express Setup --------------------------
 
 "use strict";
 const express = require("express"), // start express application
@@ -44,13 +44,48 @@ server.use((req, res, next) => {
     next(); // middleware callback function required for processing
 }); // implement allowable domain characteristics
 server.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`); // listen for incoming connections
+    listenMsg("EXPRESS", PORT); // listen for incoming connections
+});
+
+// ----------------------- MongoDB Setup --------------------------
+
+// Create the connection to a mongoDB database instance
+//
+// Parameter 1: see connectionString above
+// Parameter 2: Anonymous callback function that either:
+//                (1) throws an error, or
+//                (2) continues regular processing
+mongodb.connect(connectionString, (error, client) => {
+    if (error) {
+        throw error;
+    }
+
+    // This version of mongodb returns a client object
+    // which contains the database object
+    globalDB = client.db(database);
+
+    // "process" is an already available global variable with information
+    // about this particular Node.js application.
+    //
+    // If the SIGTERM event occurs, use the anonymous function to
+    // close the database and server in a controlled way.
+    process.on("SIGTERM", () => {
+        console.log("Shutting server down.");
+        client.close();
+        server.close();
+    });
+
+    // Start server listening on specified port
+    let serverside = server.listen(extPort, () => {
+        listenMsg("MONGO", serverside.address().port);
+    });
 });
 
 // Used within functions (which are not present in this file).
 // The global scope simplifies the implementation of callbacks.
 // That's why we are using a global variable here.
 let globalDB;
+let db = globalDB.collection("blogDB");
 
 // ---------------------- Global data -----------------------------
 
@@ -122,50 +157,34 @@ server.post(wordBank.endpoint, (req, res) => {
 
 // ------------------------- Helpers ------------------------------
 
-function toParagraphs(text) {
-    let paragraphs = text.split("\n\n");
-    paragraphs.forEach((elem, index) => {
-        if (elem) {
-            paragraphs[index] = `<p>${elem}</p>`;
-        }
+function dbQuery(queryKey) {
+    db.findOne({ key: queryKey }, (err, data) => {
+        if (!err) {
+            return data.value;
+        } else throw err;
     });
-    return paragraphs.join("").replace(/\n/g, "<br />");
+}
+
+function dbUpdate(queryKey, newValue) {
+    db.updateOne(
+        { key: queryKey },
+        { $set: { value: newValue } },
+        (err, mods, status) => {
+            if (err) throw err;
+        }
+    );
+}
+
+function toParagraphs(text) {
+    return text
+        ? `<p>${text.replace(/\n\n/g, "</p><p>").replace(/\n/g, "<br />")}</p>`
+        : "No content.";
 }
 
 function reqNotify(type, url) {
     console.log(`${type} request received at ${url}`);
 }
 
-// ------------------------ DATABASE ------------------------------
-
-// Create the connection to a mongoDB database instance
-//
-// Parameter 1: see connectionString above
-// Parameter 2: Anonymous callback function that either:
-//                (1) throws an error, or
-//                (2) continues regular processing
-mongodb.connect(connectionString, (error, client) => {
-    if (error) {
-        throw error;
-    }
-
-    // This version of mongodb returns a client object
-    // which contains the database object
-    globalDB = client.db(database);
-
-    // "process" is an already available global variable with information
-    // about this particular Node.js application.
-    //
-    // If the SIGTERM event occurs, use the anonymous function to
-    // close the database and server in a controlled way.
-    process.on("SIGTERM", () => {
-        console.log("Shutting server down.");
-        client.close();
-        server.close();
-    });
-
-    // Start server listening on specified port
-    let serverside = server.listen(extPort, () => {
-        console.log(`Listening on port ${serverside.address().port}`);
-    });
-});
+function listenMsg(initiator, port) {
+    console.log(`${initiator}: Listening on port ${port}`);
+}

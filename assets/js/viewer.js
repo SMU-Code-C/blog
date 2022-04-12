@@ -8,7 +8,7 @@ const staticData = {
 
     load(blogNum) {
         $.get(SERVER_URL + "/blog" + blogNum, (res) => {
-            this.content = res.data ? res.data : "No content.";
+            this.content = res.data;
         }).fail((err) => {
             console.log(err);
         });
