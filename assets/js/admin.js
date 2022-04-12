@@ -1,7 +1,7 @@
 /**
  * Script to control the functionality of the Blog interface
  *
- * CSCI-2356 Project: Phase 2
+ * CSCI-2356 Project: Phase 3
  *
  * @author Mohak Shrivastava (A00445470)
  * @author Nayem Imtiaz (A00448982)
@@ -18,32 +18,34 @@ const PORT = 49149, // port to connect to server on
         content: "/content",
         wordBank: "/wordbank",
     }, // list of endpoints
+    maxCharsWB = 120, // maximum number of characters in the word bank
     pausing_punctuation = ",;:.?!", // punctuation symbols to put spaces after
     NUM_BLOGS = 3; // number of blogs
 
-/**
- * Aliases to create DOM objects using $() like in JQuery
- *
- * @author Sheikh Saad Abdullah (A00447871)
- * @param {String} selector selector for the element
- * @returns DOM Object for specified element
- */
-const $_ = (selector) => {
-    return selector[0] === "#"
-        ? document.querySelector(selector)
-        : document.querySelectorAll(selector);
-};
+const query = {
+    /**
+     * Alias to create DOM objects from given selector
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     * @param {String} selector selector for the element
+     * @returns DOM Object for specified element
+     */
+    el(selector) {
+        let elements = document.querySelectorAll(selector);
+        return elements.length === 1 ? elements[0] : elements;
+    },
 
-// wrapper around JQuery Ajax methods for GET request
-$_.get = (endpoint, callback) => {
-    $.get(SERVER_URL + endpoint, callback).fail((err) => console.log(err));
-};
+    // wrapper around JQuery Ajax methods for GET request
+    get(endpoint, callback) {
+        $.get(SERVER_URL + endpoint, callback).fail((err) => console.log(err));
+    },
 
-// wrapper around JQuery Ajax methods for POST request
-$_.post = (endpoint, payload) => {
-    $.post(SERVER_URL + endpoint, payload, (res) => console.log(res)).fail(
-        (err) => console.log(err)
-    );
+    // wrapper around JQuery Ajax methods for POST request
+    post(endpoint, payload) {
+        $.post(SERVER_URL + endpoint, payload, (res) => console.log(res)).fail(
+            (err) => console.log(err)
+        );
+    },
 };
 
 // global data store for Alpine.js
@@ -67,7 +69,7 @@ const staticData = {
      * @returns string to populate text area with
      */
     load() {
-        $_.get(endpoints.publish, (res) => {
+        query.get(endpoints.publish, (res) => {
             // set values to each input field from data received
             res.data.forEach((el, i) => {
                 this.publishStates[i] = el === "true";
@@ -84,7 +86,9 @@ const staticData = {
      * @param {Number} index index of the caller element
      */
     publish(elem, index) {
-        $_.post(`${endpoints.publish}${index + 1}`, { data: elem.checked });
+        query.post(`${endpoints.publish}${index + 1}`, {
+            data: elem.checked,
+        });
     },
 
     /**
@@ -95,10 +99,10 @@ const staticData = {
      * @param {Integer} index index of the toggle switch
      */
     editText(elem, index) {
-        $_(".bl-name")[index].disabled = this.editOn;
+        query.el(".bl-name")[index].disabled = this.editOn;
 
         if (this.editOn) {
-            this.kbdFocus = $_("#editbox");
+            this.kbdFocus = query.el("#editbox");
         }
 
         this.editOn = !this.editOn;
@@ -106,7 +110,7 @@ const staticData = {
 
         this.cancel();
 
-        $_(".bl-edit").forEach((el) => {
+        query.el(".bl-edit").forEach((el) => {
             if (!el.checked) {
                 el.style.visibility = elem.checked ? "hidden" : "visible";
             }
@@ -134,8 +138,8 @@ const staticData = {
      * @returns string to populate text area with
      */
     save() {
-        $_.post(`${endpoints.content}${this.currentlyEditing + 1}`, {
-            data: $_("#editbox").value,
+        query.post(`${endpoints.content}${this.currentlyEditing + 1}`, {
+            data: query.el("#editbox").value,
         });
     },
 
@@ -147,9 +151,9 @@ const staticData = {
      * @returns string to populate text area with
      */
     cancel() {
-        $_.get(`${endpoints.content}${this.currentlyEditing + 1}`, (res) => {
+        query.get(`${endpoints.content}${this.currentlyEditing + 1}`, (res) => {
             // set values to each input field from data received
-            $_("#editbox").value = res.data;
+            query.el("#editbox").value = res.data;
         });
     },
 
@@ -159,7 +163,7 @@ const staticData = {
      * @author Sheikh Saad Abdullah (A00447871)
      */
     undo() {
-        const editbox = $_("#editbox");
+        const editbox = query.el("#editbox");
         editbox.value =
             editbox.value.substring(0, editbox.value.trim().lastIndexOf(" ")) +
             " ";
@@ -177,9 +181,9 @@ const staticData = {
         $(".modal-backdrop").remove();
 
         // toggle edit button
-        $_(`#bl-edit-${this.currentlyEditing + 1}`).dispatchEvent(
-            new Event("change")
-        );
+        query
+            .el(`#bl-edit-${this.currentlyEditing + 1}`)
+            .dispatchEvent(new Event("change"));
     },
 
     /** ----------------------------- Word Bank ---------------------------
@@ -196,12 +200,21 @@ const staticData = {
      * @author Mohak Shrivastava (A00445470)
      */
     saveWord() {
-        let wb = $_("#wb");
-        if (wb.value && !this.wordBank.includes(wb.value)) {
+        let wb = query.el("#wb");
+        const hasSpace =
+            this.wordBank.join("").length + wb.value.length <= maxCharsWB;
+        if (
+            wb.value && // check if word is not empty
+            !this.wordBank.includes(wb.value) && // check if word bank does not already contain the word
+            hasSpace // check if word bank has space for the word
+        ) {
             this.wordBank.push(wb.value);
             this.sendWB();
+            wb.value = "";
+        } else if (!hasSpace) {
+            let toast = new bootstrap.Toast(query.el("#add-word-toast"));
+            toast.show();
         }
-        wb.value = "";
     },
 
     /**
@@ -218,24 +231,26 @@ const staticData = {
             this.wordBank.splice(this.wordBank.indexOf(word), 1);
         } else {
             // add text to text area
-            this.kbdFocus = $_("#editbox");
+            this.kbdFocus = query.el("#editbox");
             this.addText(word);
         }
     },
 
     closeWB() {
-        deleteOn = false;
+        this.deleteOn = false;
         this.sendWB();
     },
 
     loadWB() {
-        $_.get(endpoints.wordBank, (res) => {
-            this.wordBank = res.data;
+        query.get(endpoints.wordBank, (res) => {
+            if (res.data) {
+                this.wordBank = res.data;
+            }
         });
     },
 
     sendWB() {
-        $_.post(endpoints.wordBank, { data: this.wordBank });
+        query.post(endpoints.wordBank, { data: this.wordBank });
     },
 
     /** ----------------------------- Keyboard ----------------------------
@@ -276,7 +291,7 @@ const staticData = {
      */
     addText(selection) {
         // DOM object of the text area
-        let words = this.kbdFocus ? this.kbdFocus : $_("#editbox");
+        let words = this.kbdFocus ? this.kbdFocus : query.el("#editbox");
 
         // Get the value from the id'ed field
         let currChars = words.value;
