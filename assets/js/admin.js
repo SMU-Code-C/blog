@@ -22,7 +22,7 @@ const PORT = 49149, // port to connect to server on
     pausing_punctuation = ",;:.?!", // punctuation symbols to put spaces after
     NUM_BLOGS = 3; // number of blogs
 
-const query = {
+const $ = {
     /**
      * Alias to create DOM objects from given selector
      *
@@ -37,14 +37,16 @@ const query = {
 
     // wrapper around JQuery Ajax methods for GET request
     get(endpoint, callback) {
-        $.get(SERVER_URL + endpoint, callback).fail((err) => console.log(err));
+        jQuery
+            .get(SERVER_URL + endpoint, callback)
+            .fail((err) => console.log(err));
     },
 
     // wrapper around JQuery Ajax methods for POST request
     post(endpoint, payload) {
-        $.post(SERVER_URL + endpoint, payload, (res) => console.log(res)).fail(
-            (err) => console.log(err)
-        );
+        jQuery
+            .post(SERVER_URL + endpoint, payload, (res) => console.log(res))
+            .fail((err) => console.log(err));
     },
 };
 
@@ -69,7 +71,7 @@ const staticData = {
      * @returns string to populate text area with
      */
     load() {
-        query.get(endpoints.publish, (res) => {
+        $.get(endpoints.publish, (res) => {
             // set values to each input field from data received
             res.data.forEach((el, i) => {
                 this.publishStates[i] = el === "true";
@@ -86,7 +88,7 @@ const staticData = {
      * @param {Number} index index of the caller element
      */
     publish(elem, index) {
-        query.post(`${endpoints.publish}${index + 1}`, {
+        $.post(`${endpoints.publish}${index + 1}`, {
             data: elem.checked,
         });
     },
@@ -99,10 +101,10 @@ const staticData = {
      * @param {Integer} index index of the toggle switch
      */
     editText(elem, index) {
-        query.el(".bl-name")[index].disabled = this.editOn;
+        $.el(".bl-name")[index].disabled = this.editOn;
 
         if (this.editOn) {
-            this.kbdFocus = query.el("#editbox");
+            this.kbdFocus = $.el("#editbox");
         }
 
         this.editOn = !this.editOn;
@@ -110,7 +112,7 @@ const staticData = {
 
         this.cancel();
 
-        query.el(".bl-edit").forEach((el) => {
+        $.el(".bl-edit").forEach((el) => {
             if (!el.checked) {
                 el.style.visibility = elem.checked ? "hidden" : "visible";
             }
@@ -138,8 +140,8 @@ const staticData = {
      * @returns string to populate text area with
      */
     save() {
-        query.post(`${endpoints.content}${this.currentlyEditing + 1}`, {
-            data: query.el("#editbox").value,
+        $.post(`${endpoints.content}${this.currentlyEditing + 1}`, {
+            data: $.el("#editbox").value,
         });
     },
 
@@ -151,9 +153,9 @@ const staticData = {
      * @returns string to populate text area with
      */
     cancel() {
-        query.get(`${endpoints.content}${this.currentlyEditing + 1}`, (res) => {
+        $.get(`${endpoints.content}${this.currentlyEditing + 1}`, (res) => {
             // set values to each input field from data received
-            query.el("#editbox").value = res.data;
+            $.el("#editbox").value = res.data;
         });
     },
 
@@ -163,7 +165,7 @@ const staticData = {
      * @author Sheikh Saad Abdullah (A00447871)
      */
     undo() {
-        const editbox = query.el("#editbox");
+        const editbox = $.el("#editbox");
         editbox.value =
             editbox.value.substring(0, editbox.value.trim().lastIndexOf(" ")) +
             " ";
@@ -176,14 +178,14 @@ const staticData = {
      */
     closeEdit() {
         // Bootstrap Modal bug fix
-        $(".modal").modal("hide");
-        $("body").removeClass("modal-open");
-        $(".modal-backdrop").remove();
+        jQuery(".modal").modal("hide");
+        $.el("body").classList.remove("modal-open");
+        jQuery(".modal-backdrop").remove();
 
         // toggle edit button
-        query
-            .el(`#bl-edit-${this.currentlyEditing + 1}`)
-            .dispatchEvent(new Event("change"));
+        $.el(`#bl-edit-${this.currentlyEditing + 1}`).dispatchEvent(
+            new Event("change")
+        );
     },
 
     /** ----------------------------- Word Bank ---------------------------
@@ -200,7 +202,7 @@ const staticData = {
      * @author Mohak Shrivastava (A00445470)
      */
     saveWord() {
-        let wb = query.el("#wb");
+        let wb = $.el("#wb");
         const hasSpace =
             this.wordBank.join("").length + wb.value.length <= maxCharsWB;
         if (
@@ -212,7 +214,7 @@ const staticData = {
             this.sendWB();
             wb.value = "";
         } else if (!hasSpace) {
-            let toast = new bootstrap.Toast(query.el("#add-word-toast"));
+            let toast = new bootstrap.Toast($.el("#add-word-toast"));
             toast.show();
         }
     },
@@ -231,7 +233,7 @@ const staticData = {
             this.wordBank.splice(this.wordBank.indexOf(word), 1);
         } else {
             // add text to text area
-            this.kbdFocus = query.el("#editbox");
+            this.kbdFocus = $.el("#editbox");
             this.addText(word);
         }
     },
@@ -242,7 +244,7 @@ const staticData = {
     },
 
     loadWB() {
-        query.get(endpoints.wordBank, (res) => {
+        $.get(endpoints.wordBank, (res) => {
             if (res.data) {
                 this.wordBank = res.data;
             }
@@ -250,7 +252,7 @@ const staticData = {
     },
 
     sendWB() {
-        query.post(endpoints.wordBank, { data: this.wordBank });
+        $.post(endpoints.wordBank, { data: this.wordBank });
     },
 
     /** ----------------------------- Keyboard ----------------------------
@@ -291,7 +293,7 @@ const staticData = {
      */
     addText(selection) {
         // DOM object of the text area
-        let words = this.kbdFocus ? this.kbdFocus : query.el("#editbox");
+        let words = this.kbdFocus ? this.kbdFocus : $.el("#editbox");
 
         // Get the value from the id'ed field
         let currChars = words.value;

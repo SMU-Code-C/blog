@@ -22,7 +22,7 @@ const head = "mongodb://",
     localHost = "127.0.0.1",
     localPort = 27017,
     extPort = 49151, // external port
-    database = user.toString(),
+    database = `${user}`,
     connectionString =
         head +
         user +
@@ -48,6 +48,11 @@ server.listen(PORT, () => {
 });
 
 // ----------------------- MongoDB Setup --------------------------
+
+// Used within functions (which are not present in this file).
+// The global scope simplifies the implementation of callbacks.
+// That's why we are using a global variable here.
+let globalDB;
 
 // Create the connection to a mongoDB database instance
 //
@@ -81,19 +86,9 @@ mongodb.connect(connectionString, (error, client) => {
     });
 });
 
-// Used within functions (which are not present in this file).
-// The global scope simplifies the implementation of callbacks.
-// That's why we are using a global variable here.
-let globalDB;
-let db = globalDB.collection("blogDB");
-
 // ---------------------- Global data -----------------------------
 
 const NUM_BLOGS = 3,
-    blogs = {
-        publish: Array(NUM_BLOGS).fill(false),
-        content: Array(NUM_BLOGS).fill(""),
-    }, // list of blog posts being tracked
     wordBank = { endpoint: "/wordbank", words: [] }, // words saved for convenience
     visitor = {
         endpoint: "/blog",
@@ -106,7 +101,7 @@ const NUM_BLOGS = 3,
 // send published states for the blogs
 server.get(endpoints[0], (req, res) => {
     reqNotify("GET", req.url);
-    return res.status(200).send({ data: blogs.publish });
+    return res.status(200).send({ data: dbQuery("publish") });
 });
 
 // send blog content
@@ -114,7 +109,7 @@ for (let i = 0; i < NUM_BLOGS; i++) {
     // admin access
     server.get(`${endpoints[1]}${i + 1}`, (req, res) => {
         reqNotify("GET", req.url);
-        return res.status(200).send({ data: blogs.content[i] });
+        return res.status(200).send({ data: dbQuery("content")[i] });
     });
 
     // visitor access (only if blog is published)
@@ -122,8 +117,8 @@ for (let i = 0; i < NUM_BLOGS; i++) {
         reqNotify("GET", req.url);
         return res.status(200).send({
             data:
-                blogs.publish[i] === "true"
-                    ? toParagraphs(blogs.content[i])
+                dbQuery("publish")[i] === "true"
+                    ? toParagraphs(dbQuery("content")[i])
                     : visitor.defaultText,
         });
     });
@@ -132,7 +127,7 @@ for (let i = 0; i < NUM_BLOGS; i++) {
 // send word bank words to client
 server.get(wordBank.endpoint, (req, res) => {
     reqNotify("GET", req.url);
-    return res.status(200).send({ data: wordBank.words });
+    return res.status(200).send({ data: dbQuery("wordbank") });
 });
 
 // -------------------------- POST --------------------------------
@@ -142,7 +137,10 @@ endpoints.forEach((endpoint) => {
     for (let i = 0; i < NUM_BLOGS; i++) {
         server.post(`${endpoint}${i + 1}`, (req, res) => {
             reqNotify("POST", req.url);
-            blogs[endpoint.substring(1)][i] = req.body.data; // save data received array
+            let target = endpoint.substring(1),
+                payload = dbQuery(target);
+            payload[i] = req.body.data; // save data received array
+            dbUpdate(target, payload);
             return res.status(200).send("Data received by server.");
         });
     }
@@ -151,28 +149,32 @@ endpoints.forEach((endpoint) => {
 // save word bank words received via POST request
 server.post(wordBank.endpoint, (req, res) => {
     reqNotify("POST", req.url);
-    wordBank.words = req.body.data;
+    dbUpdate("wordbank", req.body.data);
     return res.status(200).send("Data received by server.");
 });
 
 // ------------------------- Helpers ------------------------------
 
 function dbQuery(queryKey) {
-    db.findOne({ key: queryKey }, (err, data) => {
+    let record;
+    globalDB.collection("blogDB").findOne({ key: queryKey }, (err, data) => {
         if (!err) {
-            return data.value;
+            record = data.value;
         } else throw err;
     });
+    return record;
 }
 
 function dbUpdate(queryKey, newValue) {
-    db.updateOne(
-        { key: queryKey },
-        { $set: { value: newValue } },
-        (err, mods, status) => {
-            if (err) throw err;
-        }
-    );
+    globalDB
+        .collection("blogDB")
+        .updateOne(
+            { key: queryKey },
+            { $set: { value: newValue } },
+            (err, mods, status) => {
+                if (err) throw err;
+            }
+        );
 }
 
 function toParagraphs(text) {
