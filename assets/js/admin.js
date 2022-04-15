@@ -22,6 +22,8 @@ const PORT = 49149, // port to connect to server on
     pausing_punctuation = ",;:.?!", // punctuation symbols to put spaces after
     NUM_BLOGS = 3; // number of blogs
 
+// ----- Helpers -----
+
 const $ = {
     /**
      * Alias to create DOM objects from given selector
@@ -74,7 +76,7 @@ const staticData = {
         $.get(endpoints.publish, (res) => {
             // set values to each input field from data received
             res.data.forEach((el, i) => {
-                this.publishStates[i] = el === "true";
+                this.publishStates[i] = el;
             });
         });
     },
@@ -88,7 +90,7 @@ const staticData = {
      * @param {Number} index index of the caller element
      */
     publish(elem, index) {
-        $.post(`${endpoints.publish}${index + 1}`, {
+        $.post(`${endpoints.publish}/${index + 1}`, {
             data: elem.checked,
         });
     },
@@ -140,7 +142,7 @@ const staticData = {
      * @returns string to populate text area with
      */
     save() {
-        $.post(`${endpoints.content}${this.currentlyEditing + 1}`, {
+        $.post(`${endpoints.content}/${this.currentlyEditing + 1}`, {
             data: $.el("#editbox").value,
         });
     },
@@ -153,7 +155,7 @@ const staticData = {
      * @returns string to populate text area with
      */
     cancel() {
-        $.get(`${endpoints.content}${this.currentlyEditing + 1}`, (res) => {
+        $.get(`${endpoints.content}/${this.currentlyEditing + 1}`, (res) => {
             // set values to each input field from data received
             $.el("#editbox").value = res.data;
         });
@@ -166,9 +168,7 @@ const staticData = {
      */
     undo() {
         const editbox = $.el("#editbox");
-        editbox.value =
-            editbox.value.substring(0, editbox.value.trim().lastIndexOf(" ")) +
-            " ";
+        editbox.value = editbox.value.trim().replace(/\s+\S*$/, "") + " ";
     },
 
     /**
@@ -179,10 +179,9 @@ const staticData = {
     closeEdit() {
         // Bootstrap Modal bug fix
         jQuery(".modal").modal("hide");
-        $.el("body").classList.remove("modal-open");
+        // jQuery("body").removeClass("modal-open");
         jQuery(".modal-backdrop").remove();
 
-        // toggle edit button
         $.el(`#bl-edit-${this.currentlyEditing + 1}`).dispatchEvent(
             new Event("change")
         );

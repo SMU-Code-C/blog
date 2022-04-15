@@ -22,7 +22,8 @@ const head = "mongodb://",
     localHost = "127.0.0.1",
     localPort = 27017,
     extPort = 49151, // external port
-    database = `${user}`,
+    databaseName = `${user}`,
+    collectionName = "blogDB",
     connectionString =
         head +
         user +
@@ -52,7 +53,7 @@ server.listen(PORT, () => {
 // Used within functions (which are not present in this file).
 // The global scope simplifies the implementation of callbacks.
 // That's why we are using a global variable here.
-let globalDB;
+let db;
 
 // Create the connection to a mongoDB database instance
 //
@@ -67,7 +68,8 @@ mongodb.connect(connectionString, (error, client) => {
 
     // This version of mongodb returns a client object
     // which contains the database object
-    globalDB = client.db(database);
+    const database = client.db(databaseName);
+    db = database.collection(collectionName);
 
     // "process" is an already available global variable with information
     // about this particular Node.js application.
@@ -86,10 +88,9 @@ mongodb.connect(connectionString, (error, client) => {
     });
 });
 
-// ---------------------- Global data -----------------------------
+// ----------------------- Global data ----------------------------
 
-const NUM_BLOGS = 3,
-    wordBank = { endpoint: "/wordbank", words: [] }, // words saved for convenience
+const wordBank = { endpoint: "/wordbank" }, // words saved for convenience
     visitor = {
         endpoint: "/blog",
         defaultText: "Sorry. This blog is currently unavailable.",
@@ -98,89 +99,101 @@ const NUM_BLOGS = 3,
 
 // -------------------------- GET ---------------------------------
 
-// send published states for the blogs
-server.get(endpoints[0], (req, res) => {
+server.get(wordBank.endpoint, getAdmin);
+server.get(endpoints[0], getAdmin);
+server.get(endpoints[1] + "/:index", getAdmin);
+server.get(visitor.endpoint + "/:index", getContent);
+
+// send blog data to CMS admin panel
+function getAdmin(req, res) {
     reqNotify("GET", req.url);
-    return res.status(200).send({ data: dbQuery("publish") });
-});
-
-// send blog content
-for (let i = 0; i < NUM_BLOGS; i++) {
-    // admin access
-    server.get(`${endpoints[1]}${i + 1}`, (req, res) => {
-        reqNotify("GET", req.url);
-        return res.status(200).send({ data: dbQuery("content")[i] });
-    });
-
-    // visitor access (only if blog is published)
-    server.get(`${visitor.endpoint}${i + 1}`, (req, res) => {
-        reqNotify("GET", req.url);
-        return res.status(200).send({
-            data:
-                dbQuery("publish")[i] === "true"
-                    ? toParagraphs(dbQuery("content")[i])
-                    : visitor.defaultText,
-        });
+    const queryKey = getURL(req);
+    db.findOne({ key: queryKey }, (err, record) => {
+        if (!err) {
+            if (queryKey === endpoints[1].substring(1)) {
+                return res
+                    .status(200)
+                    .send({ data: record.value[getIndex(req)] });
+            } else {
+                return res.status(200).send({ data: record.value });
+            }
+        } else throw err;
     });
 }
 
-// send word bank words to client
-server.get(wordBank.endpoint, (req, res) => {
+// send blog content for visitors (only if published)
+function getContent(req, res) {
     reqNotify("GET", req.url);
-    return res.status(200).send({ data: dbQuery("wordbank") });
-});
+    const index = getIndex(req);
+    db.findOne({ key: endpoints[0].substring(1) }, (err, publishStates) => {
+        if (!err && publishStates.value[index]) {
+            db.findOne({ key: endpoints[1].substring(1) }, (err, content) => {
+                if (!err) {
+                    return res
+                        .status(200)
+                        .send({ data: toParagraphs(content.value[index]) });
+                } else throw err;
+            });
+        } else throw err;
+    });
+}
 
 // -------------------------- POST --------------------------------
 
 // listen to POST requests to endpoints and save data to database
-endpoints.forEach((endpoint) => {
-    for (let i = 0; i < NUM_BLOGS; i++) {
-        server.post(`${endpoint}${i + 1}`, (req, res) => {
-            reqNotify("POST", req.url);
-            let target = endpoint.substring(1),
-                payload = dbQuery(target);
-            payload[i] = req.body.data; // save data received array
-            dbUpdate(target, payload);
-            return res.status(200).send("Data received by server.");
-        });
-    }
-});
+server.post(`${endpoints[0]}/:index`, postUpdate);
+server.post(`${endpoints[1]}/:index`, postUpdate);
+server.post(wordBank.endpoint, postWords);
 
-// save word bank words received via POST request
-server.post(wordBank.endpoint, (req, res) => {
+// update word bank array
+function postWords(req, res) {
     reqNotify("POST", req.url);
-    dbUpdate("wordbank", req.body.data);
+    const queryKey = getURL(req);
+    db.updateOne(
+        { key: queryKey },
+        { $set: { value: req.body.data || [] } },
+        (err, mods, status) => {
+            if (err) throw err;
+        }
+    );
     return res.status(200).send("Data received by server.");
-});
+}
+
+// update publish state or blog content
+function postUpdate(req, res) {
+    reqNotify("POST", req.url);
+    const queryKey = getURL(req);
+    db.updateOne(
+        { key: queryKey },
+        {
+            $set: {
+                [`value.${getIndex(req)}`]:
+                    queryKey === endpoints[0].substring(1)
+                        ? req.body.data === "true"
+                        : req.body.data,
+            },
+        },
+        (err, mods, status) => {
+            if (err) throw err;
+        }
+    );
+    return res.status(200).send("Data received by server.");
+}
 
 // ------------------------- Helpers ------------------------------
-
-function dbQuery(queryKey) {
-    let record;
-    globalDB.collection("blogDB").findOne({ key: queryKey }, (err, data) => {
-        if (!err) {
-            record = data.value;
-        } else throw err;
-    });
-    return record;
-}
-
-function dbUpdate(queryKey, newValue) {
-    globalDB
-        .collection("blogDB")
-        .updateOne(
-            { key: queryKey },
-            { $set: { value: newValue } },
-            (err, mods, status) => {
-                if (err) throw err;
-            }
-        );
-}
 
 function toParagraphs(text) {
     return text
         ? `<p>${text.replace(/\n\n/g, "</p><p>").replace(/\n/g, "<br />")}</p>`
         : "No content.";
+}
+
+function getIndex(req) {
+    return parseInt(req.params.index) - 1;
+}
+
+function getURL(req) {
+    return req.url.split("/").filter((x) => x)[0];
 }
 
 function reqNotify(type, url) {

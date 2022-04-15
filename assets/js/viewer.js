@@ -7,7 +7,7 @@ const staticData = {
     content: "Disconnected from server.",
 
     load(blogNum) {
-        $.get(SERVER_URL + "/blog" + blogNum, (res) => {
+        $.get(SERVER_URL + "/blog/" + blogNum, (res) => {
             this.content = res.data;
         }).fail((err) => {
             console.log(err);
