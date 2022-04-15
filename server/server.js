@@ -143,35 +143,24 @@ function getContent(req, res) {
 // listen to POST requests to endpoints and save data to database
 server.post(`${endpoints[0]}/:index`, postUpdate);
 server.post(`${endpoints[1]}/:index`, postUpdate);
-server.post(wordBank.endpoint, postWords);
+server.post(wordBank.endpoint, postUpdate);
 
-// update word bank array
-function postWords(req, res) {
-    reqNotify("POST", req.url);
-    const queryKey = getURL(req);
-    db.updateOne(
-        { key: queryKey },
-        { $set: { value: req.body.data || [] } },
-        (err, mods, status) => {
-            if (err) throw err;
-        }
-    );
-    return res.status(200).send("Data received by server.");
-}
-
-// update publish state or blog content
+// update database records with data received
 function postUpdate(req, res) {
     reqNotify("POST", req.url);
     const queryKey = getURL(req);
     db.updateOne(
         { key: queryKey },
         {
-            $set: {
-                [`value.${getIndex(req)}`]:
-                    queryKey === endpoints[0].substring(1)
-                        ? req.body.data === "true"
-                        : req.body.data,
-            },
+            $set:
+                queryKey === wordBank.endpoint.substring(1)
+                    ? { value: req.body.data || [] }
+                    : {
+                          [`value.${getIndex(req)}`]:
+                              queryKey === endpoints[0].substring(1)
+                                  ? req.body.data === "true"
+                                  : req.body.data,
+                      },
         },
         (err, mods, status) => {
             if (err) throw err;
