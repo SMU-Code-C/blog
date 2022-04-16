@@ -44,7 +44,7 @@ Download the latest `.zip` archive from the [Releases][release] page.
 
 <!-- Links -->
 
-[release]: https://github.com/SMU-Code-C/blog/releases
+[release]: https://github.com/SMU-Code-C/blog/releases/tag/latest
 [mohak]: https://github.com/mohak75
 [nayem]: https://github.com/nayem11147
 [naziya]: https://github.com/nazy00
