@@ -96,7 +96,6 @@ body {
 ------------------------------------------------------------------------ */
 textarea {
     resize: none;
-    scroll-behavior: smooth;
     cursor: pointer;
 }
 
