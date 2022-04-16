@@ -103,22 +103,25 @@ textarea::-webkit-scrollbar {
     width: 3em;
 }
 
-textarea::-webkit-scrollbar-track {
-    background: var(--mc-blue-light);
-    border: 3px solid var(--mc-blue);
+textarea::-webkit-scrollbar-track,
+textarea::-webkit-scrollbar-thumb {
     border-radius: 100vw;
 }
 
+textarea::-webkit-scrollbar-track {
+    background: var(--mc-blue-light);
+    border: 3px solid var(--mc-blue);
+}
+
 textarea::-webkit-scrollbar-thumb {
-    background: var(--mc-red-semilight);
     border: 3px solid var(--mc-red);
-    border-radius: 100vw;
 }
 
 textarea::-webkit-scrollbar-thumb:hover {
     background: var(--mc-red-light);
 }
 
+textarea::-webkit-scrollbar-thumb,
 textarea::-webkit-scrollbar-thumb:active {
     background: var(--mc-red-semilight);
 }
