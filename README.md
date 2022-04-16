@@ -38,7 +38,7 @@ Download the latest `.zip` archive from the [Releases][release] page.
 
 ## Credits
 
--   Professor Terence Goldsmith (our professor)
+-   Professor Terence Goldsmith
 -   [Northwood][northwood] (community partner)
 -   [Saint Mary's University][smu]
 
