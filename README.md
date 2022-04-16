@@ -6,7 +6,7 @@ Accessible Blog Project for CSCI-2356: Mobile App Development (in reality, the c
 
 ## Installation
 
-Download the latest `.zip` archive from the [Releases](https://github.com/SMU-Code-C/blog/releases) page.
+Download the latest `.zip` archive from the [Releases][release] page.
 
 ---
 
@@ -29,15 +29,25 @@ Download the latest `.zip` archive from the [Releases](https://github.com/SMU-Co
 
 ## Authors
 
--   [Mohak Shrivastava](https://github.com/mohak75)
--   [Nayem Imtiaz](https://github.com/nayem11147)
--   [Naziya Tasnim](https://github.com/nazy00)
--   [Sheikh Saad Abdullah](https://github.com/cybardev)
+-   [Mohak Shrivastava][mohak]
+-   [Nayem Imtiaz][nayem]
+-   [Naziya Tasnim][naziya]
+-   [Sheikh Saad Abdullah][sheikh]
 
 ---
 
 ## Credits
 
 -   Professor Terence Goldsmith (our professor)
--   [Northwood](https://northwood.care/) (community partner)
--   [Saint Mary's University](https://www.smu.ca/)
+-   [Northwood][northwood] (community partner)
+-   [Saint Mary's University][smu]
+
+<!-- Links -->
+
+[release]: https://github.com/SMU-Code-C/blog/releases
+[mohak]: https://github.com/mohak75
+[nayem]: https://github.com/nayem11147
+[naziya]: https://github.com/nazy00
+[sheikh]: https://github.com/cybardev
+[northwood]: https://northwood.care/
+[smu]: https://www.smu.ca/
