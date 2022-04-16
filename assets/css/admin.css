@@ -95,6 +95,34 @@ body {
 ------------------------------------------------------------------------ */
 textarea {
     resize: none;
+    scroll-behavior: smooth;
+}
+
+textarea::-webkit-scrollbar {
+    width: 3em;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: var(--mc-blue-light);
+    border: 3px solid var(--mc-blue);
+    border-radius: 100vw;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: var(--mc-red-semilight);
+    border: 3px solid var(--mc-red);
+    border-radius: 100vw;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: var(--mc-red-light);
+}
+
+/* non-webkit browser fallback */
+@supports (scrollbar-color: black) {
+    textarea {
+        scrollbar-color: var(--mc-red-semilight) var(--mc-blue-light);
+    }
 }
 
 .btn-save {
