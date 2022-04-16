@@ -4,6 +4,9 @@
  *
  * [server-side script]
  *
+ * @author Mohak Shrivastava (A00445470)
+ * @author Nayem Imtiaz (A00448982)
+ * @author Naziya Tasnim (A00447506)
  * @author Sheikh Saad Abdullah (A00447871)
  */
 
@@ -90,19 +93,15 @@ mongodb.connect(connectionString, (error, client) => {
 
 // ----------------------- Global data ----------------------------
 
-const wordBank = { endpoint: "/wordbank" }, // words saved for convenience
-    visitor = {
-        endpoint: "/blog",
-        defaultText: "Sorry. This blog is currently unavailable.",
-    }, // for visitors to the blog site
-    endpoints = ["/publish", "/content"]; // list of endpoints
+const endpoints = ["/wordbank", "/publish", "/content", "/blog"]; // list of endpoints
 
 // -------------------------- GET ---------------------------------
 
-server.get(wordBank.endpoint, getAdmin);
+// listen to GET requests to endpoints and send data to client
 server.get(endpoints[0], getAdmin);
-server.get(endpoints[1] + "/:index", getAdmin);
-server.get(visitor.endpoint + "/:index", getContent);
+server.get(endpoints[1], getAdmin);
+server.get(endpoints[2] + "/:index", getAdmin);
+server.get(endpoints[3] + "/:index", getVisitor);
 
 // send blog data to CMS admin panel
 function getAdmin(req, res) {
@@ -110,7 +109,7 @@ function getAdmin(req, res) {
     const queryKey = getURL(req);
     db.findOne({ key: queryKey }, (err, record) => {
         if (!err) {
-            if (queryKey === endpoints[1].substring(1)) {
+            if (queryKey === endpoints[2].substring(1)) {
                 return res
                     .status(200)
                     .send({ data: record.value[getIndex(req)] });
@@ -122,18 +121,29 @@ function getAdmin(req, res) {
 }
 
 // send blog content for visitors (only if published)
-function getContent(req, res) {
+function getVisitor(req, res) {
     reqNotify("GET", req.url);
     const index = getIndex(req);
-    db.findOne({ key: endpoints[0].substring(1) }, (err, publishStates) => {
-        if (!err && publishStates.value[index]) {
-            db.findOne({ key: endpoints[1].substring(1) }, (err, content) => {
-                if (!err) {
-                    return res
-                        .status(200)
-                        .send({ data: toParagraphs(content.value[index]) });
-                } else throw err;
-            });
+    db.findOne({ key: endpoints[1].substring(1) }, (err, publishStates) => {
+        if (!err) {
+            if (publishStates.value[index]) {
+                db.findOne(
+                    { key: endpoints[2].substring(1) },
+                    (err, content) => {
+                        if (!err) {
+                            return res.status(200).send({
+                                data: toParagraphs(content.value[index]),
+                            });
+                        } else throw err;
+                    }
+                );
+            } else {
+                return res.status(200).send({
+                    data: toParagraphs(
+                        "Sorry. This blog is currently unavailable."
+                    ),
+                });
+            }
         } else throw err;
     });
 }
@@ -141,9 +151,9 @@ function getContent(req, res) {
 // -------------------------- POST --------------------------------
 
 // listen to POST requests to endpoints and save data to database
-server.post(`${endpoints[0]}/:index`, postUpdate);
-server.post(`${endpoints[1]}/:index`, postUpdate);
-server.post(wordBank.endpoint, postUpdate);
+server.post(endpoints[0], postUpdate);
+server.post(endpoints[1] + "/:index", postUpdate);
+server.post(endpoints[2] + "/:index", postUpdate);
 
 // update database records with data received
 function postUpdate(req, res) {
@@ -153,11 +163,11 @@ function postUpdate(req, res) {
         { key: queryKey },
         {
             $set:
-                queryKey === wordBank.endpoint.substring(1)
+                queryKey === endpoints[0].substring(1)
                     ? { value: req.body.data || [] }
                     : {
                           [`value.${getIndex(req)}`]:
-                              queryKey === endpoints[0].substring(1)
+                              queryKey === endpoints[1].substring(1)
                                   ? req.body.data === "true"
                                   : req.body.data,
                       },

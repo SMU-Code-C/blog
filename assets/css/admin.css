@@ -97,6 +97,7 @@ body {
 textarea {
     resize: none;
     scroll-behavior: smooth;
+    cursor: pointer;
 }
 
 textarea::-webkit-scrollbar {
@@ -119,8 +120,12 @@ textarea::-webkit-scrollbar-thumb:hover {
     background: var(--mc-red-light);
 }
 
+textarea::-webkit-scrollbar-thumb:active {
+    background: var(--mc-red-semilight);
+}
+
 /* non-webkit browser fallback */
-@supports (scrollbar-color: black) {
+@supports (scrollbar-color: red blue) {
     textarea {
         scrollbar-color: var(--mc-red-semilight) var(--mc-blue-light);
     }
