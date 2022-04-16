@@ -23,7 +23,7 @@ jobs:
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
                   automatic_release_tag: "phase-3"
-                  prerelease: false
+                  prerelease: true
                   title: "Phase 3"
                   files: |
                       phase-3.zip
