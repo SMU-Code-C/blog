@@ -2,11 +2,11 @@
  * Contains functions to handle the behavior of phase-3 of the project
  * to POST data to the server and GET data from the server.
  *
+ * Data is stored to and retrieved from MongoDB.
+ *
  * [server-side script]
  *
  * @author Mohak Shrivastava (A00445470)
- * @author Nayem Imtiaz (A00448982)
- * @author Naziya Tasnim (A00447506)
  * @author Sheikh Saad Abdullah (A00447871)
  */
 
@@ -103,13 +103,21 @@ server.get(endpoints[1], getAdmin);
 server.get(endpoints[2] + "/:index", getAdmin);
 server.get(endpoints[3] + "/:index", getVisitor);
 
-// send blog data to CMS admin panel
+/**
+ * Send blog data to CMS admin panel
+ *
+ * @author Mohak Shrivastava (A00445470)
+ * @author Sheikh Saad Abdullah (A00447871)
+ * @param {Request} req request received
+ * @param {Response} res response to send
+ * @returns response status and data
+ */
 function getAdmin(req, res) {
     reqNotify("GET", req.url);
-    const queryKey = getURL(req);
+    const queryKey = baseURL(req.url);
     db.findOne({ key: queryKey }, (err, record) => {
         if (!err) {
-            if (queryKey === endpoints[2].substring(1)) {
+            if (queryKey === baseURL(endpoints[2])) {
                 return res
                     .status(200)
                     .send({ data: record.value[getIndex(req)] });
@@ -120,23 +128,28 @@ function getAdmin(req, res) {
     });
 }
 
-// send blog content for visitors (only if published)
+/**
+ * Send blog content for visitors (only if published)
+ *
+ * @author Mohak Shrivastava (A00445470)
+ * @author Sheikh Saad Abdullah (A00447871)
+ * @param {Request} req request received
+ * @param {Response} res response to send
+ * @returns response status and data
+ */
 function getVisitor(req, res) {
     reqNotify("GET", req.url);
     const index = getIndex(req);
-    db.findOne({ key: endpoints[1].substring(1) }, (err, publishStates) => {
+    db.findOne({ key: baseURL(endpoints[1]) }, (err, publishStates) => {
         if (!err) {
             if (publishStates.value[index]) {
-                db.findOne(
-                    { key: endpoints[2].substring(1) },
-                    (err, content) => {
-                        if (!err) {
-                            return res.status(200).send({
-                                data: toParagraphs(content.value[index]),
-                            });
-                        } else throw err;
-                    }
-                );
+                db.findOne({ key: baseURL(endpoints[2]) }, (err, content) => {
+                    if (!err) {
+                        return res.status(200).send({
+                            data: toParagraphs(content.value[index]),
+                        });
+                    } else throw err;
+                });
             } else {
                 return res.status(200).send({
                     data: toParagraphs(
@@ -155,19 +168,27 @@ server.post(endpoints[0], postUpdate);
 server.post(endpoints[1] + "/:index", postUpdate);
 server.post(endpoints[2] + "/:index", postUpdate);
 
-// update database records with data received
+/**
+ * Update database records with data received
+ *
+ * @author Mohak Shrivastava (A00445470)
+ * @author Sheikh Saad Abdullah (A00447871)
+ * @param {Request} req request received
+ * @param {Response} res response to send
+ * @returns response status and data
+ */
 function postUpdate(req, res) {
     reqNotify("POST", req.url);
-    const queryKey = getURL(req);
+    const queryKey = baseURL(req.url);
     db.updateOne(
         { key: queryKey },
         {
             $set:
-                queryKey === endpoints[0].substring(1)
+                queryKey === baseURL(endpoints[0])
                     ? { value: req.body.data || [] }
                     : {
                           [`value.${getIndex(req)}`]:
-                              queryKey === endpoints[1].substring(1)
+                              queryKey === baseURL(endpoints[1])
                                   ? req.body.data === "true"
                                   : req.body.data,
                       },
@@ -181,24 +202,59 @@ function postUpdate(req, res) {
 
 // ------------------------- Helpers ------------------------------
 
+/**
+ * Split given text into paragraphs with line breaks
+ *
+ * @author Sheikh Saad Abdullah (A00447871)
+ * @param {String} text text to convert
+ * @returns text split into HTML paragraphs
+ */
 function toParagraphs(text) {
     return text
         ? `<p>${text.replace(/\n\n/g, "</p><p>").replace(/\n/g, "<br />")}</p>`
         : "No content.";
 }
 
+/**
+ * Get index of endpoint where request was received
+ *
+ * @author Sheikh Saad Abdullah (A00447871)
+ * @param {Request} req request object received
+ * @returns index of endpoint
+ */
 function getIndex(req) {
     return parseInt(req.params.index) - 1;
 }
 
-function getURL(req) {
-    return req.url.split("/").filter((x) => x)[0];
+/**
+ * Get base of endpoint from given request
+ *
+ * @author Sheikh Saad Abdullah (A00447871)
+ * @param {String} url endpoint where request was received
+ * @returns base of endpoint where request was received
+ */
+function baseURL(url) {
+    return url.split("/").filter((x) => x)[0];
 }
 
+/**
+ * Log the handling of requests
+ *
+ * @author Sheikh Saad Abdullah (A00447871)
+ * @param {String} type request being handled
+ * @param {String} url URL where request was received
+ */
 function reqNotify(type, url) {
     console.log(`${type} request received at ${url}`);
 }
 
+/**
+ * Log the ports being connected to and by which modules
+ *
+ * @author Sheikh Saad Abdullah (A00447871)
+ * @param {String} initiator the caller
+ * @param {Number} port connection port
+ */
 function listenMsg(initiator, port) {
     console.log(`${initiator}: Listening on port ${port}`);
 }

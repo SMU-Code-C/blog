@@ -211,6 +211,12 @@
                                     @focus="kbdFocus = $el"
                                 ></textarea>
                                 <!-- End: Text Area -->
+                                <!-- Modal Group:
+                                        Modals to confirm important actions
+                                        with potentially irreversible consequences
+
+                                    author: Sheikh Saad Abdullah (A00447871)
+                                -->
                                 <!-- Start: Save Modals -->
                                 <div
                                     class="modal fade"
@@ -479,6 +485,7 @@
                                     </div>
                                 </div>
                                 <!-- End: Close Modals -->
+                                <!-- End: Modal Group -->
                             </div>
                         </div>
                         <!-- End: Edit Area -->
@@ -548,6 +555,13 @@
                                     ></button>
                                 </template>
                                 <!-- End: Character Keys -->
+                                <!-- Word Bank:
+                                        Storage of repetitive words
+                                        for convenient re-entering
+
+                                    author: Mohak Shrivastava (A00445470)
+                                    author: Sheikh Saad Abdullah (A00447871)
+                                -->
                                 <!-- Start: Word Suggestions -->
                                 <button
                                     type="button"
@@ -639,13 +653,19 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- End: Word Bank -->
                             </div>
                         </div>
                         <!-- End: Keyboard -->
                     </div>
                 </div>
                 <!-- End: Edit Group -->
-                <!-- Start: Toast - appears when word bank runs out of space -->
+                <!-- Toast:
+                        Alert that appears when
+                        word bank runs out of space
+
+                    author: Sheikh Saad Abdullah (A00447871)
+                -->
                 <div
                     id="add-word-toast"
                     class="toast align-items-center position-fixed bottom-0 end-0 p-3 m-2"

@@ -9,7 +9,11 @@
  * @author Sheikh Saad Abdullah (A00447871)
  */
 
-// global data (general-purpose)
+/**
+ * Global data (general-purpose)
+ *
+ * @author Sheikh Saad Abdullah (A00447871)
+ */
 const PORT = 49149, // port to connect to server on
     SERVER_IPA = "http://140.184.230.209", // ip address of the UGDEV server
     SERVER_URL = `${SERVER_IPA}:${PORT}`, // complete URL of the server
@@ -22,8 +26,11 @@ const PORT = 49149, // port to connect to server on
     pausing_punctuation = ",;:.?!", // punctuation symbols to put spaces after
     NUM_BLOGS = 3; // number of blogs
 
-// ----- Helpers -----
-
+/**
+ * Object to hold convenient helper methods
+ *
+ * @author Sheikh Saad Abdullah (A00447871)
+ */
 const $ = {
     /**
      * Alias to create DOM objects from given selector
@@ -128,6 +135,7 @@ const staticData = {
      * of the group of toggle switches and list of blog posts displayed
      *
      * @author Nayem Imtiaz (A00448982)
+     * @author Naziya Tasnim (A00447506)
      * @author Sheikh Saad Abdullah (A00447871)
      * -------------------------------------------------------------------- */
 
@@ -164,6 +172,8 @@ const staticData = {
     /**
      * Remove the last word from the text area
      *
+     * @author Nayem Imtiaz (A00448982)
+     * @author Naziya Tasnim (A00447506)
      * @author Sheikh Saad Abdullah (A00447871)
      */
     undo() {
@@ -191,6 +201,7 @@ const staticData = {
      * Variables and functions to control behaviour of the Word Bank
      *
      * @author Mohak Shrivastava (A00445470)
+     * @author Sheikh Saad Abdullah (A00447871)
      * -------------------------------------------------------------------- */
     deleteOn: false, // state of the delete key
     wordBank: [], // array to store saved words
@@ -237,11 +248,21 @@ const staticData = {
         }
     },
 
+    /**
+     * Close the word bank modal
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     */
     closeWB() {
         this.deleteOn = false;
         this.sendWB();
     },
 
+    /**
+     * Retrieve word bank array from database via requesting the server
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     */
     loadWB() {
         $.get(endpoints.wordBank, (res) => {
             if (res.data) {
@@ -250,6 +271,11 @@ const staticData = {
         });
     },
 
+    /**
+     * Send word bank array to server to be saved to the database
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     */
     sendWB() {
         $.post(endpoints.wordBank, { data: this.wordBank });
     },
@@ -331,10 +357,10 @@ const staticData = {
         ",": ":",
         ".": "-",
         "?": "+",
+        "&": "@",
         "!": "%",
         "(": "*",
         ")": "/",
-        "&": "@",
     },
 
     // alphanumeric characters and symbols on the keyboard

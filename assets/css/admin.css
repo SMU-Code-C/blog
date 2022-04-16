@@ -199,6 +199,7 @@ textarea::-webkit-scrollbar-thumb:active {
     Style rules for the keyboard grid and special keys
 
     author: Naziya Tasnim (A00447506)
+    author: Sheikh Saad Abdullah (A00447871)
 ------------------------------------------------------------------------ */
 .kbd {
     grid-template-columns: repeat(var(--kbd-cols), var(--grid-ratio));
