@@ -1,7 +1,7 @@
 /**
  * Script to control the functionality of the Blog interface
  *
- * CSCI-2356 Project: Phase 2
+ * CSCI-2356 Project: Phase 3
  *
  * @author Mohak Shrivastava (A00445470)
  * @author Nayem Imtiaz (A00448982)
@@ -9,25 +9,54 @@
  * @author Sheikh Saad Abdullah (A00447871)
  */
 
-// global data (general-purpose)
+/**
+ * Global data (general-purpose)
+ *
+ * @author Sheikh Saad Abdullah (A00447871)
+ */
 const PORT = 49149, // port to connect to server on
     SERVER_IPA = "http://140.184.230.209", // ip address of the UGDEV server
     SERVER_URL = `${SERVER_IPA}:${PORT}`, // complete URL of the server
-    endpoints = { publish: "/publish", content: "/blogPost" }, // list of endpoints
+    endpoints = {
+        publish: "/publish",
+        content: "/content",
+        wordBank: "/wordbank",
+    }, // list of endpoints
+    maxCharsWB = 120, // maximum number of characters in the word bank
     pausing_punctuation = ",;:.?!", // punctuation symbols to put spaces after
     NUM_BLOGS = 3; // number of blogs
 
 /**
- * Aliases to create DOM objects using $() like in JQuery
+ * Object to hold convenient helper methods
  *
  * @author Sheikh Saad Abdullah (A00447871)
- * @param {String} selector selector for the element
- * @returns DOM Object for specified element
  */
-const $_ = (selector) => {
-    return selector[0] === "#"
-        ? document.querySelector(selector)
-        : document.querySelectorAll(selector);
+const $ = {
+    /**
+     * Alias to create DOM objects from given selector
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     * @param {String} selector selector for the element
+     * @returns DOM Object for specified element
+     */
+    el(selector) {
+        let elements = document.querySelectorAll(selector);
+        return elements.length === 1 ? elements[0] : elements;
+    },
+
+    // wrapper around JQuery Ajax methods for GET request
+    get(endpoint, callback) {
+        jQuery
+            .get(SERVER_URL + endpoint, callback)
+            .fail((err) => console.log(err));
+    },
+
+    // wrapper around JQuery Ajax methods for POST request
+    post(endpoint, payload) {
+        jQuery
+            .post(SERVER_URL + endpoint, payload, (res) => console.log(res))
+            .fail((err) => console.log(err));
+    },
 };
 
 // global data store for Alpine.js
@@ -51,12 +80,12 @@ const staticData = {
      * @returns string to populate text area with
      */
     load() {
-        $.get(SERVER_URL + "/publish", (res) => {
+        $.get(endpoints.publish, (res) => {
             // set values to each input field from data received
             res.data.forEach((el, i) => {
-                this.publishStates[i] = el === "true";
+                this.publishStates[i] = el;
             });
-        }).fail((err) => console.log(err));
+        });
     },
 
     /**
@@ -68,11 +97,9 @@ const staticData = {
      * @param {Number} index index of the caller element
      */
     publish(elem, index) {
-        $.post(
-            SERVER_URL + `/publish-${index}`,
-            { data: elem.checked },
-            (res) => console.log(res)
-        ).fail((err) => console.log(err));
+        $.post(`${endpoints.publish}/${index + 1}`, {
+            data: elem.checked,
+        });
     },
 
     /**
@@ -83,10 +110,10 @@ const staticData = {
      * @param {Integer} index index of the toggle switch
      */
     editText(elem, index) {
-        $_(".bl-name")[index].disabled = this.editOn;
+        $.el(".bl-name")[index].disabled = this.editOn;
 
         if (this.editOn) {
-            this.kbdFocus = $_("#editbox");
+            this.kbdFocus = $.el("#editbox");
         }
 
         this.editOn = !this.editOn;
@@ -94,7 +121,7 @@ const staticData = {
 
         this.cancel();
 
-        $_(".bl-edit").forEach((el) => {
+        $.el(".bl-edit").forEach((el) => {
             if (!el.checked) {
                 el.style.visibility = elem.checked ? "hidden" : "visible";
             }
@@ -108,6 +135,7 @@ const staticData = {
      * of the group of toggle switches and list of blog posts displayed
      *
      * @author Nayem Imtiaz (A00448982)
+     * @author Naziya Tasnim (A00447506)
      * @author Sheikh Saad Abdullah (A00447871)
      * -------------------------------------------------------------------- */
 
@@ -122,11 +150,9 @@ const staticData = {
      * @returns string to populate text area with
      */
     save() {
-        $.post(
-            SERVER_URL + `/content-${this.currentlyEditing}`,
-            { data: $_("#editbox").value },
-            (res) => console.log(res)
-        ).fail((err) => console.log(err));
+        $.post(`${endpoints.content}/${this.currentlyEditing + 1}`, {
+            data: $.el("#editbox").value,
+        });
     },
 
     /**
@@ -137,24 +163,22 @@ const staticData = {
      * @returns string to populate text area with
      */
     cancel() {
-        $.get(SERVER_URL + `/content-${this.currentlyEditing}`, (res) => {
+        $.get(`${endpoints.content}/${this.currentlyEditing + 1}`, (res) => {
             // set values to each input field from data received
-            $_("#editbox").value = res.data;
-        }).fail((err) => {
-            console.log(err);
+            $.el("#editbox").value = res.data;
         });
     },
 
     /**
      * Remove the last word from the text area
      *
+     * @author Nayem Imtiaz (A00448982)
+     * @author Naziya Tasnim (A00447506)
      * @author Sheikh Saad Abdullah (A00447871)
      */
     undo() {
-        const editbox = $_("#editbox");
-        editbox.value =
-            editbox.value.substring(0, editbox.value.trim().lastIndexOf(" ")) +
-            " ";
+        const editbox = $.el("#editbox");
+        editbox.value = editbox.value.trim().replace(/\s+\S*$/, " ");
     },
 
     /**
@@ -163,7 +187,12 @@ const staticData = {
      * @author Sheikh Saad Abdullah (A00447871)
      */
     closeEdit() {
-        $_(`#bl-edit-${this.currentlyEditing + 1}`).dispatchEvent(
+        // Bootstrap Modal bug fix
+        jQuery(".modal").modal("hide");
+        // jQuery("body").removeClass("modal-open");
+        jQuery(".modal-backdrop").remove();
+
+        $.el(`#bl-edit-${this.currentlyEditing + 1}`).dispatchEvent(
             new Event("change")
         );
     },
@@ -172,6 +201,7 @@ const staticData = {
      * Variables and functions to control behaviour of the Word Bank
      *
      * @author Mohak Shrivastava (A00445470)
+     * @author Sheikh Saad Abdullah (A00447871)
      * -------------------------------------------------------------------- */
     deleteOn: false, // state of the delete key
     wordBank: [], // array to store saved words
@@ -182,11 +212,21 @@ const staticData = {
      * @author Mohak Shrivastava (A00445470)
      */
     saveWord() {
-        let wb = $_("#wb");
-        if (wb.value && !this.wordBank.includes(wb.value)) {
+        let wb = $.el("#wb");
+        const hasSpace =
+            this.wordBank.join("").length + wb.value.length <= maxCharsWB;
+        if (
+            wb.value && // check if word is not empty
+            !this.wordBank.includes(wb.value) && // check if word bank does not already contain the word
+            hasSpace // check if word bank has space for the word
+        ) {
             this.wordBank.push(wb.value);
+            this.sendWB();
+            wb.value = "";
+        } else if (!hasSpace) {
+            let toast = new bootstrap.Toast($.el("#add-word-toast"));
+            toast.show();
         }
-        wb.value = "";
     },
 
     /**
@@ -203,9 +243,41 @@ const staticData = {
             this.wordBank.splice(this.wordBank.indexOf(word), 1);
         } else {
             // add text to text area
-            this.kbdFocus = $_("#editbox");
+            this.kbdFocus = $.el("#editbox");
             this.addText(word);
         }
+    },
+
+    /**
+     * Close the word bank modal
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     */
+    closeWB() {
+        this.deleteOn = false;
+        this.sendWB();
+    },
+
+    /**
+     * Retrieve word bank array from database via requesting the server
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     */
+    loadWB() {
+        $.get(endpoints.wordBank, (res) => {
+            if (res.data) {
+                this.wordBank = res.data;
+            }
+        });
+    },
+
+    /**
+     * Send word bank array to server to be saved to the database
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     */
+    sendWB() {
+        $.post(endpoints.wordBank, { data: this.wordBank });
     },
 
     /** ----------------------------- Keyboard ----------------------------
@@ -246,7 +318,7 @@ const staticData = {
      */
     addText(selection) {
         // DOM object of the text area
-        let words = this.kbdFocus ? this.kbdFocus : $_("#editbox");
+        let words = this.kbdFocus ? this.kbdFocus : $.el("#editbox");
 
         // Get the value from the id'ed field
         let currChars = words.value;
@@ -285,10 +357,10 @@ const staticData = {
         ",": ":",
         ".": "-",
         "?": "+",
+        "&": "@",
         "!": "%",
         "(": "*",
         ")": "/",
-        "&": "@",
     },
 
     // alphanumeric characters and symbols on the keyboard

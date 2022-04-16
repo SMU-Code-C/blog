@@ -1,14 +1,13 @@
 <!--
     Blog tools for client to edit and publish posts to webserver
 
-    CSCI-2356 Project: Phase 2
+    CSCI-2356 Project: Phase 3
 
     author: Mohak Shrivastava (A00445470)
     author: Nayem Imtiaz (A00448982)
     author: Naziya Tasnim (A00447506)
     author: Sheikh Saad Abdullah (A00447871)
  -->
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -28,7 +27,7 @@
         <title>Blog Tools</title>
 
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="assets/css/style.css" />
+        <link rel="stylesheet" href="assets/css/admin.css" />
 
         <!-- JQuery JS -->
         <script
@@ -38,7 +37,7 @@
         ></script>
 
         <!-- Custom JS -->
-        <script src="assets/js/script.js"></script>
+        <script src="assets/js/admin.js"></script>
 
         <!-- Alpine.js -->
         <script
@@ -48,9 +47,9 @@
     </head>
     <body x-data="staticData" x-init="load" x-cloak>
         <div
-            class="row justify-content-center d-flex justify-content-center m-5"
+            class="row justify-content-center d-flex justify-content-center m-1"
         >
-            <div class="col-5">
+            <div class="col-8">
                 <!-- Blog List:
                         Display list of blogs with options
                         to edit and publish via toggle switches
@@ -166,7 +165,7 @@
                                 <div class="row justify-content-center my-4">
                                     <div class="col text-center">
                                         <div
-                                            class="d-flex justify-content-evenly"
+                                            class="d-flex justify-content-between"
                                             role="group"
                                         >
                                             <button
@@ -195,7 +194,8 @@
                                             <button
                                                 type="button"
                                                 class="btn btn-outline-danger"
-                                                @mousedown="closeEdit"
+                                                data-bs-target="#close-confirm"
+                                                data-bs-toggle="modal"
                                             >
                                                 Close
                                             </button>
@@ -203,6 +203,20 @@
                                     </div>
                                 </div>
                                 <!-- End: Buttons -->
+                                <!-- Start: Text Area -->
+                                <textarea
+                                    id="editbox"
+                                    rows="8"
+                                    cols="100"
+                                    @focus="kbdFocus = $el"
+                                ></textarea>
+                                <!-- End: Text Area -->
+                                <!-- Modal Group:
+                                        Modals to confirm important actions
+                                        with potentially irreversible consequences
+
+                                    author: Sheikh Saad Abdullah (A00447871)
+                                -->
                                 <!-- Start: Save Modals -->
                                 <div
                                     class="modal fade"
@@ -274,7 +288,7 @@
                                                 <button
                                                     type="button"
                                                     class="btn btn-outline-success"
-                                                    data-bs-toggle="modal"
+                                                    data-bs-dismiss="modal"
                                                     @mousedown="save"
                                                 >
                                                     Yes
@@ -364,7 +378,7 @@
                                                 <button
                                                     type="button"
                                                     class="btn btn-outline-success"
-                                                    data-bs-toggle="modal"
+                                                    data-bs-dismiss="modal"
                                                     @mousedown="cancel"
                                                 >
                                                     Yes
@@ -382,12 +396,96 @@
                                     </div>
                                 </div>
                                 <!-- End: Cancel Modals -->
-                                <textarea
-                                    id="editbox"
-                                    rows="8"
-                                    cols="93"
-                                    @focus="kbdFocus = $el"
-                                ></textarea>
+                                <!-- Start: Close Modals -->
+                                <div
+                                    class="modal fade"
+                                    id="close-confirm"
+                                    aria-hidden="true"
+                                    aria-labelledby="close-confirm-label"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="close-confirm-label"
+                                                >
+                                                    Confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you sure you want to CLOSE?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-success"
+                                                    data-bs-target="#close-reconfirm"
+                                                    data-bs-toggle="modal"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    class="modal fade"
+                                    id="close-reconfirm"
+                                    aria-hidden="true"
+                                    aria-labelledby="close-reconfirm-label"
+                                    tabindex="-1"
+                                >
+                                    <div
+                                        class="modal-dialog modal-dialog-centered"
+                                    >
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5
+                                                    class="modal-title"
+                                                    id="close-reconfirm-label"
+                                                >
+                                                    Re-confirmation
+                                                </h5>
+                                            </div>
+                                            <div class="modal-body">
+                                                Are you REALLY sure you want to
+                                                CLOSE?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-success"
+                                                    data-bs-dismiss="modal"
+                                                    @mousedown="closeEdit"
+                                                >
+                                                    Yes
+                                                </button>
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-outline-danger"
+                                                    data-bs-dismiss="modal"
+                                                    aria-label="Close"
+                                                >
+                                                    No
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- End: Close Modals -->
+                                <!-- End: Modal Group -->
                             </div>
                         </div>
                         <!-- End: Edit Area -->
@@ -457,6 +555,13 @@
                                     ></button>
                                 </template>
                                 <!-- End: Character Keys -->
+                                <!-- Word Bank:
+                                        Storage of repetitive words
+                                        for convenient re-entering
+
+                                    author: Mohak Shrivastava (A00445470)
+                                    author: Sheikh Saad Abdullah (A00447871)
+                                -->
                                 <!-- Start: Word Suggestions -->
                                 <button
                                     type="button"
@@ -464,6 +569,7 @@
                                     class="btn kbd-wb"
                                     data-bs-target="#suggestions-list"
                                     data-bs-toggle="modal"
+                                    @mousedown="loadWB"
                                 >
                                     Words
                                 </button>
@@ -480,7 +586,7 @@
                                     class="btn kbd-wb"
                                     @mousedown="saveWord"
                                 >
-                                    <i class="bi bi-star-fill"></i>
+                                    Add
                                 </button>
                                 <!-- End: Word Suggestions -->
                                 <div
@@ -491,7 +597,7 @@
                                     tabindex="-1"
                                 >
                                     <div
-                                        class="modal-dialog modal-dialog-centered"
+                                        class="modal-dialog modal-dialog-centered modal-lg"
                                     >
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -518,12 +624,14 @@
                                                     class="btn btn-outline-danger"
                                                     data-bs-dismiss="modal"
                                                     aria-role="Close"
-                                                    @mousedown="deleteOn = false"
+                                                    @mousedown="closeWB"
                                                 >
                                                     Close
                                                 </button>
                                             </div>
-                                            <div class="modal-body">
+                                            <div
+                                                class="modal-body d-flex justify-content-center flex-wrap"
+                                            >
                                                 <template
                                                     x-if="wordBank.length === 0"
                                                     ><p>
@@ -545,12 +653,31 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- End: Word Bank -->
                             </div>
                         </div>
                         <!-- End: Keyboard -->
                     </div>
                 </div>
                 <!-- End: Edit Group -->
+                <!-- Toast:
+                        Alert that appears when
+                        word bank runs out of space
+
+                    author: Sheikh Saad Abdullah (A00447871)
+                -->
+                <div
+                    id="add-word-toast"
+                    class="toast align-items-center position-fixed bottom-0 end-0 p-3 m-2"
+                    style="z-index: 11"
+                    role="alert"
+                    aria-live="assertive"
+                    aria-atomic="true"
+                    data-bs-delay="3000"
+                >
+                    No more space in word bank.
+                </div>
+                <!-- End: Toast -->
             </div>
         </div>
         <!-- Bootstrap JS -->

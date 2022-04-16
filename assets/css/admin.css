@@ -1,7 +1,7 @@
 /*
     Stylesheet for the blog tools
 
-    CSCI-2356 Project: Phase 1
+    CSCI-2356 Project: Phase 3
 
     author: Mohak Shrivastava (A00445470)
     author: Nayem Imtiaz (A00448982)
@@ -11,7 +11,6 @@
 
 /* ----------------------------- Bootstrap ----------------------------- */
 @import url("https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css");
-@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css");
 
 /* --------------------------- Global Styles ---------------------------
     Variables to DRY styles and other global style initializations
@@ -93,9 +92,45 @@ body {
     Style rules for the list of blogs and toggle buttons
 
     author: Nayem Imtiaz (A00448982)
+    author: Sheikh Saad Abdullah (A00447871)
 ------------------------------------------------------------------------ */
 textarea {
     resize: none;
+    cursor: pointer;
+}
+
+textarea::-webkit-scrollbar {
+    width: 3em;
+}
+
+textarea::-webkit-scrollbar-track,
+textarea::-webkit-scrollbar-thumb {
+    border-radius: 100vw;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: var(--mc-blue-light);
+    border: 3px solid var(--mc-blue);
+}
+
+textarea::-webkit-scrollbar-thumb {
+    border: 3px solid var(--mc-red);
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+    background: var(--mc-red-light);
+}
+
+textarea::-webkit-scrollbar-thumb,
+textarea::-webkit-scrollbar-thumb:active {
+    background: var(--mc-red-semilight);
+}
+
+/* non-webkit browser fallback */
+@supports (scrollbar-color: red blue) {
+    textarea {
+        scrollbar-color: var(--mc-red-semilight) var(--mc-blue-light);
+    }
 }
 
 .btn-save {
@@ -164,6 +199,7 @@ textarea {
     Style rules for the keyboard grid and special keys
 
     author: Naziya Tasnim (A00447506)
+    author: Sheikh Saad Abdullah (A00447871)
 ------------------------------------------------------------------------ */
 .kbd {
     grid-template-columns: repeat(var(--kbd-cols), var(--grid-ratio));
