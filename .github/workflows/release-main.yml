@@ -18,7 +18,7 @@ jobs:
             - name: "Compress and Release"
               run: |
                   echo "Compressing files..."
-                  zip -r project *.html assets
+                  zip -r project *.html assets server tally.* CREDITS.md LICENSE README.md
             - uses: "marvinpinto/action-automatic-releases@latest"
               with:
                   repo_token: "${{ secrets.GITHUB_TOKEN }}"
