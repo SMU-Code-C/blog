@@ -19,11 +19,11 @@ Download the latest `.zip` archive from the [Releases][release] page.
     1. Run `node server.js`
 -   Client
     1. Open the browser
-    1. Navigate to this URL for the CMS admin panel: http://ugdev.cs.smu.ca/~s_saad/admin.html
+    1. Navigate to this URL for the CMS admin panel: http://ugdev.cs.smu.ca/~s_saad/blog/admin.html
     1. Navigate to the following URLs to view the corresponding blog posts:
-        1. http://ugdev.cs.smu.ca/~s_saad/blog1.html
-        1. http://ugdev.cs.smu.ca/~s_saad/blog2.html
-        1. http://ugdev.cs.smu.ca/~s_saad/blog3.html
+        1. http://ugdev.cs.smu.ca/~s_saad/blog/blog1.html
+        1. http://ugdev.cs.smu.ca/~s_saad/blog/blog2.html
+        1. http://ugdev.cs.smu.ca/~s_saad/blog/blog3.html
 
 ---
 
