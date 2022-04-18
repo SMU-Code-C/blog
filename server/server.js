@@ -186,7 +186,7 @@ function postUpdate(req, res) {
         {
             $set:
                 queryKey === baseURL(endpoints[0])
-                    ? { value: req.body.data || [] }
+                    ? { value: req.body.data ?? [] }
                     : {
                           [`value.${getIndex(req)}`]:
                               queryKey === baseURL(endpoints[1])
