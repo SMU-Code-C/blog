@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Script to control the functionality of the Blog interface
  *
@@ -107,7 +108,7 @@ const staticData = {
      *
      * @author Mohak Shrivastava (A00445470)
      * @param {Object} elem DOM object of the switched edit toggle
-     * @param {Integer} index index of the toggle switch
+     * @param {Number} index index of the toggle switch
      */
     editText(elem, index) {
         $.el(".bl-name")[index].disabled = this.editOn;

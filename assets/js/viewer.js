@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Script to control the functionality
  * of the Blog interface for viewers

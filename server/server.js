@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * Contains functions to handle the behavior of phase-3 of the project
  * to POST data to the server and GET data from the server.
