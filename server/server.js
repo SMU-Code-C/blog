@@ -18,6 +18,20 @@ const express = require("express"), // start express application
     PORT = 49149, // port to listen for connections on
     mongodb = require("mongodb").MongoClient; // load mongodb DBMS
 
+server.use(express.json()); // implement JSON recognition
+server.use(express.urlencoded({ extended: true })); // implement incoming key:value pairs to be any type
+server.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*"); // allow any origin
+    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE"); // allow any method
+    res.header("Access-Control-Allow-Headers", "Content-Type"); // accept only headers with this type
+    next(); // middleware callback function required for processing
+}); // implement allowable domain characteristics
+server.listen(PORT, () => {
+    listenMsg("EXPRESS", PORT); // listen for incoming connections
+});
+
+// ----------------------- MongoDB Setup --------------------------
+
 // credential string elements
 const head = "mongodb://",
     user = "s_saad",
@@ -38,20 +52,6 @@ const head = "mongodb://",
         localPort +
         "/" +
         user;
-
-server.use(express.json()); // implement JSON recognition
-server.use(express.urlencoded({ extended: true })); // implement incoming key:value pairs to be any type
-server.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*"); // allow any origin
-    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE"); // allow any method
-    res.header("Access-Control-Allow-Headers", "Content-Type"); // accept only headers with this type
-    next(); // middleware callback function required for processing
-}); // implement allowable domain characteristics
-server.listen(PORT, () => {
-    listenMsg("EXPRESS", PORT); // listen for incoming connections
-});
-
-// ----------------------- MongoDB Setup --------------------------
 
 // Used within functions (which are not present in this file).
 // The global scope simplifies the implementation of callbacks.
@@ -143,10 +143,10 @@ function getVisitor(req, res) {
     db.findOne({ key: baseURL(endpoints[1]) }, (err, publishStates) => {
         if (!err) {
             if (publishStates.value[index]) {
-                db.findOne({ key: baseURL(endpoints[2]) }, (err, content) => {
+                db.findOne({ key: baseURL(endpoints[2]) }, (err, record) => {
                     if (!err) {
                         return res.status(200).send({
-                            data: toParagraphs(content.value[index]),
+                            data: toParagraphs(record.value[index]),
                         });
                     } else throw err;
                 });
@@ -163,7 +163,7 @@ function getVisitor(req, res) {
 
 // -------------------------- POST --------------------------------
 
-// listen to POST requests to endpoints and save data to database
+// listen to POST requests to endpoints and save received data to database
 server.post(endpoints[0], postUpdate);
 server.post(endpoints[1] + "/:index", postUpdate);
 server.post(endpoints[2] + "/:index", postUpdate);
