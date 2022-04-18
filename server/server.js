@@ -211,9 +211,16 @@ function postUpdate(req, res) {
  * @returns text split into HTML paragraphs
  */
 function toParagraphs(text) {
-    return text
-        ? `<p>${text.replace(/\n\n/g, "</p><p>").replace(/\n/g, "<br />")}</p>`
-        : "No content.";
+    return `<p>${
+        text
+            ? text
+                  .replaceAll("\n\n", "</p><p>")
+                  .replaceAll("\n", "<br />")
+                  .replaceAll("<p></p>", "<br />")
+                  .replaceAll("<p><br />", "<br /><p>")
+                  .replace(/(<br \/>){2,}/g, "$&$&")
+            : "No content."
+    }</p>`;
 }
 
 /**
