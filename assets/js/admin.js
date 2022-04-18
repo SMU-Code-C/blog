@@ -179,9 +179,7 @@ const staticData = {
      */
     undo() {
         const editbox = $.el("#editbox");
-        const oldText = editbox.value.trim();
-        const newText = oldText.replace(/\s+\S*$/, " ");
-        editbox.value = newText === oldText ? "" : newText;
+        editbox.value = editbox.value.replace(/\S*\s*$/, "");
     },
 
     /**
