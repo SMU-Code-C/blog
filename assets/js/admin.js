@@ -45,14 +45,27 @@ const $ = {
         return elements.length === 1 ? elements[0] : elements;
     },
 
-    // wrapper around JQuery Ajax methods for GET request
+    /**
+     * Wrapper around JQuery Ajax methods for GET request
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     * @param {String} endpoint target to request data from
+     * @param {Function} callback function to process data received
+     */
     get(endpoint, callback) {
         jQuery
             .get(SERVER_URL + endpoint, callback)
             .fail((err) => console.log(err));
     },
 
-    // wrapper around JQuery Ajax methods for POST request
+    //
+    /**
+     * Wrapper around JQuery Ajax methods for POST request
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     * @param {String} endpoint target to send request to
+     * @param {Object} payload data to send
+     */
     post(endpoint, payload) {
         jQuery
             .post(SERVER_URL + endpoint, payload, (res) => console.log(res))
@@ -107,6 +120,7 @@ const staticData = {
      * Enable or disable the editing of a blog post
      *
      * @author Mohak Shrivastava (A00445470)
+     * @author Sheikh Saad Abdullah (A00447871)
      * @param {Object} elem DOM object of the switched edit toggle
      * @param {Number} index index of the toggle switch
      */
@@ -211,6 +225,7 @@ const staticData = {
      * Save a word to the word bank
      *
      * @author Mohak Shrivastava (A00445470)
+     * @author Sheikh Saad Abdullah (A00447871)
      */
     saveWord() {
         let wb = $.el("#wb");
@@ -236,6 +251,7 @@ const staticData = {
      * else append the word to the text being edited
      *
      * @author Mohak Shrivastava (A00445470)
+     * @author Sheikh Saad Abdullah (A00447871)
      * @param {String} word text from the word bank
      */
     putWord(word) {
@@ -285,6 +301,7 @@ const staticData = {
      * Variables and functions to control behaviour of the Keyboard
      *
      * @author Naziya Tasnim (A00447506)
+     * @author Sheikh Saad Abdullah (A00447871)
      * -------------------------------------------------------------------- */
 
     kbdFocus: null, // text field to focus
@@ -295,6 +312,7 @@ const staticData = {
      * Character of the key pressed
      *
      * @author Naziya Tasnim (A00447506)
+     * @author Sheikh Saad Abdullah (A00447871)
      * @param {String} char character or string to convert
      * @returns uppercase of char if keyboard is in caps/shift mode
      */
@@ -315,6 +333,7 @@ const staticData = {
      * Adds a character to the text area
      *
      * @author Naziya Tasnim (A00447506)
+     * @author Sheikh Saad Abdullah (A00447871)
      * @param {String} selection character to add to text area
      */
     addText(selection) {

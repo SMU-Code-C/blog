@@ -18,6 +18,12 @@ const PORT = 49149, // port to connect to server on
 const staticData = {
     content: "Disconnected from server.",
 
+    /**
+     * Load blog from database server
+     *
+     * @author Sheikh Saad Abdullah (A00447871)
+     * @param {Number} blogNum index of blog to load
+     */
     load(blogNum) {
         $.get(SERVER_URL + "/blog/" + blogNum, (res) => {
             this.content = res.data;
